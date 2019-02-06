@@ -1,3 +1,17 @@
+:root {
+  --primaryColor: #0984E3;
+  --primaryFont: 'Montserrat', sans-serif;
+  --secondaryFont: 'Lato', serif;
+}
+
+html,
+body,
+#root,
+.App,
+.wrapper {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -6,9 +20,85 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h1 {
+  font-family: var(--primaryFont);
+  font-weight: 700;
+}
+
+p {
+  font-family: var(--secondaryFont);
+}
+
+.wrapper {}
+
+.top-div {
+  display: grid;
+  grid-template-columns: 45% auto;
+}
+
+.landing-left {
+  display: grid;
+}
+
+.landing-right {
+  display: grid;
+  background-color: var(--primaryColor);
+}
+
+.middle-div {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 50% 50%;
+  max-height: 400px;
+  height: 100%;
+}
+
+.bottom-div {
+  background-color: var(--primaryColor);
+  max-height: 500px;
+  height: 100%;
+  display: grid;
+  justify-items: center;
+}
+
+.btn-primary {
+  background-color: var(--primaryColor);
+  width: 288px;
+  height: 78px;
+  border: none;
+  color: #ffffff;
+  font-size: 26px;
+  font-family: var(--primaryFont);
+  font-weight: 700;
+}
+
+.text-dark {
+  color: #000000;
+
+}
+
+.text-light {
+  color: #ffffff;
+}
+
+.text-light>h1 {
+
+  font-size: 70px;
+}
+
+
+.text-light>p {
+
+  font-size: 21px;
+  font-weight: 400;
+  max-width: 590px;
+  font-family: var(--secondaryFont);
 }
