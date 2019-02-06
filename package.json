@@ -1,0 +1,30 @@
+{
+  "name": "vgc",
+  "version": "0.0.1",
+  "description": "A video game collection database",
+  "main": "server.js",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robaboyd/VGC.git"
+  },
+  "author": "Bobby Boyd and Ricky Van Horn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robaboyd/VGC/issues"
+  },
+  "homepage": "https://github.com/robaboyd/VGC#readme",
+  "dependencies": {
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9"
+  }
+}
