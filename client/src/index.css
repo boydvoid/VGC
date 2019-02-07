@@ -37,15 +37,20 @@ p {
   font-family: var(--secondaryFont);
 }
 
-.wrapper {}
 
 .top-div {
   display: grid;
   grid-template-columns: 45% auto;
+  max-height: 1080px;
+  height: 100%;
 }
 
 .landing-left {
   display: grid;
+  grid-template-rows: 10% auto;
+  justify-items: center;
+  align-items: center;
+
 }
 
 .landing-right {
@@ -83,6 +88,19 @@ p {
 .text-dark {
   color: #000000;
 
+}
+
+.text-dark>h1 {
+  font-size: 70px;
+  text-align: left;
+}
+
+.text-dark>p {
+  font-size: 21px;
+  font-weight: 400;
+  max-width: 590px;
+  font-family: var(--secondaryFont);
+  text-align: left;
 }
 
 .text-light {
