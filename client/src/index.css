@@ -2,6 +2,7 @@
   --primaryColor: #0984E3;
   --primaryFont: 'Montserrat', sans-serif;
   --secondaryFont: 'Lato', serif;
+  --lightColor: #E8E8E8;
 }
 
 html,
@@ -20,7 +21,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  overflow-x: hidden;
 }
 
 code {
@@ -37,41 +38,49 @@ p {
   font-family: var(--secondaryFont);
 }
 
-.container-fluid{
+.container-fluid {
   margin: 0;
   padding: 0;
 }
+
 .top-div {
-  
+
   height: 100vh;
 }
 
-nav{
+.navbar {
   position: absolute;
-  display: flex;
+  top: 0;
   width: 100%;
   z-index: 9999;
 }
-.logo{
+
+.logo {
   color: #000000;
   font-family: var(--primaryFont);
   font-weight: 700;
-  font-size: 50px;
+  font-size: 45px;
   margin-right: auto;
-  padding: 0px 25px;
+  padding: 5px 50px;
 }
 
-.login-btn{
+.logo-dot {
+  color: var(--primaryColor);
+}
+
+.login-btn {
   color: #000000 !important;
   margin-left: auto;
   width: 148px !important;
   padding: 20px;
   background-color: transparent !important;
 }
+
 .landing-left {
   display: grid;
   justify-content: center;
-  align-items: center;;
+  align-items: center;
+
 }
 
 .landing-right {
@@ -82,7 +91,7 @@ nav{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 50% 50%;
-
+  background-color: var(--lightColor);
 }
 
 .bottom-div {
@@ -98,14 +107,14 @@ nav{
   height: 78px;
   border: none;
   color: #ffffff;
-  font-size: 26px;
+  font-size: 21px;
   font-family: var(--primaryFont);
   font-weight: 700;
 }
 
-.landing-icons{
+.landing-icons {
   padding: 100px;
-    margin: auto;
+  margin: auto;
 }
 
 .text-dark {
