@@ -5,5 +5,9 @@ import axios from "axios";
 export default {
 	gameSearch: function(query) {
 		return axios.get(`/api/search/${query}`);
+	},
+
+	coverSearch: function() {
+		return axios.get(`/api/games/covers/latest`);
 	}
 };

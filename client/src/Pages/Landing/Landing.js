@@ -1,11 +1,23 @@
 import React, { Component } from 'react'
 
+import GamesAPI from '../../utils/gamesAPI';
 //components
 import LandingIcons from '../../Components/LandingIcons/LandingIcons'
 import Button from '../../Components/Button/Button'
 import LandingText from '../../Components/LandingText/LandingText';
 import Nav from '../../Components/Nav/Nav';
 class Landing extends Component {
+
+  state= {
+    images: []
+  }
+
+  componentWillMount = () => {
+    GamesAPI.coverSearch().then(data => {
+      console.log(data);
+    })
+  }
+
   render() {
     return (
       <div className="container-fluid">

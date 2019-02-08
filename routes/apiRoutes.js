@@ -1,6 +1,6 @@
 const axios = require("axios");
 const router = require("express").Router();
-
+require('dotenv').config()
 // Search games using inputted text.
 
 router.get("/search/:id", (req, res) => {
@@ -46,7 +46,7 @@ router.get("/games/cover", (req, res) => {
 
 // Get 10 latest covet arts.
 
-router.get("/games/cover/latest", (req, res) => {
+router.get("/api/games/covers/latest", (req, res) => {
 	axios({
 		url: "https://api-v3.igdb.com/covers",
 		method: 'POST',
@@ -65,4 +65,4 @@ router.get("/games/cover/latest", (req, res) => {
 
 });
 
-module.exports = apiRouter;
+module.exports = router;
