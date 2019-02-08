@@ -1,6 +1,8 @@
 const axios = require("axios");
 const router = require("express").Router();
 
+// Search games using inputted text.
+
 router.get("/search/:id", (req, res) => {
 
 	axios({
@@ -21,6 +23,8 @@ router.get("/search/:id", (req, res) => {
 
 });
 
+// Get Cover for specific game ID.
+
 router.get("/games/cover", (req, res) => {
 	axios({
 		url: "https://api-v3.igdb.com/covers",
@@ -30,6 +34,27 @@ router.get("/games/cover", (req, res) => {
 			'user-key': process.env.GAMESUSERKEY
 		},
 		data: `fields url; where id = ${req.params.id};`
+	})
+		.then(response => {
+			console.log(response.data);
+		})
+		.catch(err => {
+			console.error(err);
+		});
+
+});
+
+// Get 10 latest covet arts.
+
+router.get("/games/cover/latest", (req, res) => {
+	axios({
+		url: "https://api-v3.igdb.com/covers",
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'user-key': process.env.GAMESUSERKEY
+		},
+		data: `fields url;`
 	})
 		.then(response => {
 			console.log(response.data);
