@@ -9,10 +9,12 @@ let passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
 let bcrypt = require('bcrypt');
 let db = require('./Models')
+var expressValidator = require("express-validator");
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(expressValidator());
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -20,7 +22,9 @@ if (process.env.NODE_ENV === "production") {
 
 
 // mongo
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/games', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/games', { useNewUrlParser: true }).then(() => {
+  console.log('connected')
+});
 //session
 app.use(require("express-session")({
   secret: "Hello World, this is a session",

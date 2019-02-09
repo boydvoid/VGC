@@ -6,7 +6,7 @@ export default {
   checkLogin: function () {
     return axios.get(`/api/checkLogin`);
   },
-  registerUser: function () {
-    return axios.post(`/api/register`);
+  registerUser: function (userData) {
+    return axios.post(`/api/register`,userData);
   },
 };

@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt');
 let db = require('../Models');
 let saltRounds = 10;
 const router = require("express").Router();
-const expressValidator = require('express-validator');
+const expressValidator = require('express-validator/check');
 
 //check login
 router.get("/checkLogin", (req, res) => {
@@ -29,7 +29,7 @@ router.post("/login", passport.authenticate('local', {
 // Create a new user
 router.post("/register", function (req, res) {
   console.log('clicked register')
-
+  console.log(req.body)
   req.checkBody('username', 'Username cannot be empty.').notEmpty();
   req.checkBody('email', 'Email field must not be empty.').notEmpty();
   req.checkBody('email', 'Email field must be and email.').isEmail();
@@ -49,14 +49,14 @@ router.post("/register", function (req, res) {
     var salt = bcrypt.genSaltSync(saltRounds);
     var hash = bcrypt.hashSync(req.body.password, salt);
     //bcrypt the password then insert
-    console.log('hello')
 
 
     //find user
     db.users.find({
       username: req.body.username
     }).then(user => {
-      if (user === false) {
+      console.log("user" + user)
+      if (user.length === 0) {
         db.users.create({
           username: req.body.username,
           email: req.body.email,

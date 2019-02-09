@@ -14,11 +14,11 @@ const Modal = (props) => (
       <div class="modal-content">
         <div class="modal-body">
           <label>Username</label>
-          <input type="username" placeholder="JohnDoe" name="username" />
+          <input type="username" placeholder="JohnDoe" name="username" onChange={props.change}/>
           <label>Password</label>
-          <input type="password" placeholder="********" name="password" />
-          <input type="password" placeholder="********" name="passwordMatch" />
-          <input type="email" placeholder="********" name="email" />
+          <input type="password" placeholder="********" name="password"  onChange={props.change}/>
+          <input type="password" placeholder="********" name="passwordMatch"  onChange={props.change}/>
+          <input type="email" placeholder="********" name="email"  onChange={props.change}/>
           <Button text="Register" id="btnLogin" onclick={props.action} />
         </div>
       </div>

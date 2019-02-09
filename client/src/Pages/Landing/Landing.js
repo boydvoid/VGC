@@ -15,6 +15,11 @@ class Landing extends Component {
   state = {
     random: [],
     images: [],
+    username: "",
+    password: "",
+    email: "",
+    passwordMatch:"",
+
 
   }
   componentWillMount = () => {
@@ -24,11 +29,18 @@ class Landing extends Component {
     this.getGames();
   }
 
-  checkLogin = () => {
+  handleInputChange = (event) => {
+    const { name , value } = event.target;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  checkLogin = event => {
     LoginAPI.checkLogin().then(user => {
     })
   }
-
   getGames = () => {
     //get 10 newest games for a specific platform XBOX, PS4, PC
     //48 = PS4, 49 = XBOX, 6 = PC
@@ -62,9 +74,15 @@ class Landing extends Component {
 
   //register user console.log
 
-  registerUser = () => {
-    console.log('clicked')
-    LoginAPI.registerUser().then(data => {
+  registerUser = (event) => {
+    event.preventDefault();
+    let data = {
+      username: this.state.username,
+      password: this.state.password,
+      passwordMatch: this.state.passwordMatch,
+      email: this.state.email,
+    }
+    LoginAPI.registerUser(data).then(data => {
       console.log(data)
     })
   }
@@ -83,7 +101,7 @@ class Landing extends Component {
 
             {/* landing */}
             <Nav />
-            <Modal id="loginModal" action={this.registerUser} />
+            <Modal id="loginModal" action={this.registerUser} change={this.handleInputChange}/>
             <div className="row top-div">
               <div className="col-xl-5 landing-left">
                 <LandingText class="text-dark"
