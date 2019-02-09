@@ -79,11 +79,20 @@ p {
   display: grid;
   justify-content: center;
   align-items: center;
-
 }
 
 .landing-right {
   background-color: var(--primaryColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imgGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 277px);
+  position: relative;
+  left: 251px;
 }
 
 .middle-div {

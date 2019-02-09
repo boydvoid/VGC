@@ -6,8 +6,11 @@ export default {
 	gameSearch: function(query) {
 		return axios.get(`/api/search/${query}`);
 	},
+	gamesNewest: function() {
+		return axios.get(`/api/popularity`);
+	},
 
-	coverSearch: function() {
-		return axios.get(`/api/games/covers/latest`);
+	coverSearch: function(query) {
+		return axios.get(`/api/games/covers/${query}`);
 	}
 };

@@ -6,16 +6,17 @@ require('dotenv').config()
 router.get("/search/:id", (req, res) => {
 
 	axios({
-		url: "https://api-v3.igdb.com/search",
+		url: "https://api-v3.igdb.com/games",
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
 			'user-key': process.env.GAMESUSERKEY
 		},
-		data: `fields game.*; search "${req.params.id}";`
+		data: `fields *; where id = ${req.params.id};`
 	})
 		.then(response => {
-			console.log(response.data);
+			console.log("Game search" + JSON.stringify(response.data));
+			res.send(response.data);
 		})
 		.catch(err => {
 			console.error(err);
@@ -23,9 +24,28 @@ router.get("/search/:id", (req, res) => {
 
 });
 
+router.get('/popularity', (req, res) => {
+	axios({
+		url: "https://api-v3.igdb.com/games/?fields=*&order=popularity:desc",
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'user-key': process.env.GAMESUSERKEY
+		},
+		// data: `fields *; where platform = 48 ;`
+	})
+		.then(response => {
+			console.log("Platform: " + response.data);
+			res.send(response.data)
+		})
+		.catch(err => {
+			console.error(err);
+		});
+})
+
 // Get Cover for specific game ID.
 
-router.get("/games/cover", (req, res) => {
+router.get("/games/covers/:id", (req, res) => {
 	axios({
 		url: "https://api-v3.igdb.com/covers",
 		method: 'POST',
@@ -37,6 +57,7 @@ router.get("/games/cover", (req, res) => {
 	})
 		.then(response => {
 			console.log(response.data);
+			res.send(response.data)
 		})
 		.catch(err => {
 			console.error(err);
@@ -46,23 +67,25 @@ router.get("/games/cover", (req, res) => {
 
 // Get 10 latest covet arts.
 
-router.get("/api/games/covers/latest", (req, res) => {
-	axios({
-		url: "https://api-v3.igdb.com/covers",
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'user-key': process.env.GAMESUSERKEY
-		},
-		data: `fields url;`
-	})
-		.then(response => {
-			console.log(response.data);
-		})
-		.catch(err => {
-			console.error(err);
-		});
+// router.get("/games/covers/latest", (req, res) => {
 
-});
+// 	axios({
+// 		url: "https://api-v3.igdb.com/covers",
+// 		method: 'POST',
+// 		headers: {
+// 			'Accept': 'application/json',
+// 			'user-key': process.env.GAMESUSERKEY
+// 		},
+// 		data: `fields url;`
+// 	})
+// 		.then(response => {
+// 			console.log(response.data);
+// 			res.send(response.data);
+// 		})
+// 		.catch(err => {
+// 			console.error(err);
+// 		});
+
+// });
 
 module.exports = router;
