@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import GamesAPI from '../../utils/gamesAPI';
 //components
 import LandingIcons from '../../Components/LandingIcons/LandingIcons'
-import Button from '../../Components/Button/Button'
 import LandingText from '../../Components/LandingText/LandingText';
 import Nav from '../../Components/Nav/Nav';
 
@@ -14,25 +13,25 @@ class Landing extends Component {
     random: [],
     images: [],
     
-  }
+  };
 
     componentDidMount  = () => {
      this.getGames();
-  }
+  };
 
   getGames = () => {
     //get 10 newest games for a specific platform XBOX, PS4, PC
     //48 = PS4, 49 = XBOX, 6 = PC
 
   GamesAPI.gamesNewest().then(res => {
-    console.log(res.data)
+    console.log(res.data);
     this.setState({
       random: res.data
-    })
+    });
 
     this.getCovers();
   })
-  }
+  };
 
 
   getCovers = () => {
@@ -40,11 +39,11 @@ class Landing extends Component {
     let games = [];
 
     this.state.random.forEach(element => {
-      console.log(element.cover)
+      console.log(element.cover);
       GamesAPI.coverSearch(element.cover).then(res => {
-        console.log(res.data[0].url) 
-        res.data[0].url = res.data[0].url.replace('t_thumb', 't_cover_big')
-        games.push(res.data)
+        console.log(res.data[0].url);
+        res.data[0].url = res.data[0].url.replace('t_thumb', 't_1080p');
+        games.push(res.data);
         this.setState({
           images: games
         })
@@ -52,7 +51,8 @@ class Landing extends Component {
       
     });
    
-  }
+  };
+
   render() {
     return (
       <div className="container-fluid">
@@ -82,7 +82,7 @@ class Landing extends Component {
             {this.state.images.map((item,i) => {
               if(item[0] !== undefined){
                 
-                return <img key={i} src={item[0].url} alt=""/>
+                return <img key={i} className="imgGrid-single img-fluid" src={item[0].url} alt=""/>
               }
             })}
             </div>

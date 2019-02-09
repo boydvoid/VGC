@@ -69,8 +69,6 @@ p {
 }
 
 .login-btn {
-  margin-left: auto;
-  width: 148px !important;
   padding: 20px;
   background-color: transparent !important;
 }
@@ -89,10 +87,20 @@ p {
 }
 
 .imgGrid {
-  display: grid;
-  grid-template-columns: repeat(5, 277px);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   position: relative;
-  left: 251px;
+  left: 10rem;
+  overflow: hidden;
+  max-height: 41rem;
+  max-width: 79rem;
+}
+
+.imgGrid-single {
+  margin: 0 1rem 1rem 0;
+  height: 20rem;
+  width: 15rem;
 }
 
 .middle-div {
@@ -160,4 +168,48 @@ p {
   font-weight: 400;
   max-width: 590px;
   font-family: var(--secondaryFont);
+}
+
+@media (max-width: 1200px) {
+  .login-btn {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 992px) {
+
+  .text-dark, .text-dark>h1, .text-dark>p {
+    text-align: center;
+  }
+
+  .text-light, .text-light>h1, .text-light>p {
+    text-align: center;
+  }
+
+  .navbar {
+    position: relative;
+  }
+
+  .top-div {
+    height: auto;
+  }
+
+  .landing-left {
+    margin: 2rem 0;
+  }
+
+  .imgGrid {
+    left: 8rem;
+    margin: 5em 0;
+    max-height: 36rem;
+  }
+
+  .imgGrid-single {
+    height: 17rem;
+  }
+
+  .bottom-div {
+    padding: 0;
+  }
+
 }
