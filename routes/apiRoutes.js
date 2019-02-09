@@ -1,6 +1,7 @@
 const axios = require("axios");
 const router = require("express").Router();
 require('dotenv').config()
+var express = require('express');
 // Search games using inputted text.
 
 router.get("/search/:id", (req, res) => {
@@ -24,7 +25,7 @@ router.get("/search/:id", (req, res) => {
 
 });
 
-router.get('/popularity', (req, res) => {
+router.get('/popular', (req, res) => {
 	axios({
 		url: "https://api-v3.igdb.com/games/?fields=*&order=popularity:desc",
 		method: 'POST',
@@ -88,4 +89,7 @@ router.get("/games/covers/:id", (req, res) => {
 
 // });
 
+
+
 module.exports = router;
+
