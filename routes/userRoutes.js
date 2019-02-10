@@ -3,12 +3,12 @@ var bcrypt = require('bcrypt');
 let db = require('../Models');
 let saltRounds = 10;
 const router = require("express").Router();
-const expressValidator = require('express-validator/check');
 
 //check login
 router.get("/checkLogin", (req, res) => {
-  let userId = checkForMultipleUsers(req);
-
+  console.log("users id " + req.user);
+  // let userId = checkForMultipleUsers(req);
+  userId = req.user;
   if (req.isAuthenticated()) {
     db.users.findOne({
       _id: userId
@@ -16,15 +16,22 @@ router.get("/checkLogin", (req, res) => {
       res.send(userInfo)
     })
   } else {
-    res.send("no user");
+    //no user
+    res.send(false);
   }
 })
 
+//login
 router.post("/login", passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/dashboard',
   failureRedirect: '/',
 }));
 
+//logout
+router.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/');
+});
 
 // Create a new user
 router.post("/register", function (req, res) {
@@ -51,11 +58,10 @@ router.post("/register", function (req, res) {
     //bcrypt the password then insert
 
 
-    //find user
+    //check if a username exists in the db, if it doesn't create the user
     db.users.find({
       username: req.body.username
     }).then(user => {
-      console.log("user" + user)
       if (user.length === 0) {
         db.users.create({
           username: req.body.username,
@@ -63,14 +69,25 @@ router.post("/register", function (req, res) {
           password: hash,
           theme: 1
         }).then(created => {
-          console.log(`created: ${created}`)
-          console.log(`user ${JSON.stringify(user.id)}`);
+          req.login(created._id, (err) => {
+          })
         })
       } else {
-        res.send("Already a user");
+        //user wasn't created
+        res.send(false);
       }
     })
   }
+});
+
+
+//req.login uses these functions 
+passport.serializeUser(function (user_id, done) {
+  done(null, user_id)
+})
+//this gets the users info
+passport.deserializeUser(function (user_id, done) {
+  done(null, user_id);
 });
 module.exports = router;
 
@@ -86,11 +103,3 @@ function checkForMultipleUsers(req) {
   }
 }
 
-//req.login uses these functions 
-passport.serializeUser(function (user_id, done) {
-  done(null, user_id)
-})
-//this gets the users info
-passport.deserializeUser(function (user_id, done) {
-  done(null, user_id);
-});

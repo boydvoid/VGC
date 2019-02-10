@@ -17,8 +17,8 @@ class Landing extends Component {
     username: "",
     password: "",
     email: "",
-    passwordMatch:"",
-
+    passwordMatch: "",
+    modalErrors: ""
 
   }
   componentWillMount = () => {
@@ -29,7 +29,7 @@ class Landing extends Component {
   }
 
   handleInputChange = (event) => {
-    const { name , value } = event.target;
+    const { name, value } = event.target;
 
     this.setState({
       [name]: value
@@ -38,8 +38,10 @@ class Landing extends Component {
 
   checkLogin = event => {
     LoginAPI.checkLogin().then(user => {
+
     })
   }
+
   getGames = () => {
     //get 10 newest games for a specific platform XBOX, PS4, PC
     //48 = PS4, 49 = XBOX, 6 = PC
@@ -71,9 +73,13 @@ class Landing extends Component {
   }
 
   //register user console.log
-
   registerUser = (event) => {
     event.preventDefault();
+
+    //reset the errors on button click
+    this.setState({
+      modalErrors: ""
+    })
     let data = {
       username: this.state.username,
       password: this.state.password,
@@ -81,7 +87,14 @@ class Landing extends Component {
       email: this.state.email,
     }
     LoginAPI.registerUser(data).then(data => {
-      console.log(data)
+      //check the return if false user wasnt created
+
+      if (data.data === false) {
+        this.setState({
+          modalErrors: "Username exists"
+        })
+      }
+      console.log(data.data);
     })
   }
 
@@ -89,7 +102,7 @@ class Landing extends Component {
     return (
       <div className="container-fluid">
 
-      {this.state.images.length === 0
+        {this.state.images.length === 0
           ?
           <p>Loading</p>
           :
@@ -97,7 +110,7 @@ class Landing extends Component {
 
             {/* landing */}
             <Nav />
-            <Modal id="loginModal" action={this.registerUser} change={this.handleInputChange}/>
+            <Modal id="loginModal" login={this.loginUser} register={this.registerUser} change={this.handleInputChange} errors={this.state.modalErrors} />
             <div className="row top-div">
               <div className="col-xl-5 landing-left">
                 <LandingText class="text-dark"
@@ -106,39 +119,39 @@ class Landing extends Component {
                   smallText="Lorem ipsum dolor sit amet, consectetur adipiscing eli t, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum."
                   button={true}
                   buttonText="Sign Up"
-              />
-          </div>
-          <div className="col-xl-7 landing-right">
-            <div className="imgGrid">
-            {this.state.images.map((item,i) => {
-              if(item[0] !== undefined){
-                
-                return <img key={i} className="imgGrid-single img-fluid" src={item[0].url} alt=""/>
-              }
-            })}
+                />
+              </div>
+              <div className="col-xl-7 landing-right">
+                <div className="imgGrid">
+                  {this.state.images.map((item, i) => {
+                    if (item[0] !== undefined) {
+
+                      return <img key={i} className="imgGrid-single img-fluid" src={item[0].url} alt="" />
+                    }
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        {/* icons */}
-        <div className="row">
-          <div className="col-xl-12 middle-div">
-            <LandingIcons icon="fas fa-search" title="Search" />
-            <LandingIcons icon="fas fa-search" title="Search" />
-            <LandingIcons icon="fas fa-search" title="Search" />
-            <LandingIcons icon="fas fa-search" title="Search" />
-            <LandingIcons icon="fas fa-search" title="Search" />
-            <LandingIcons icon="fas fa-search" title="Search" />
-          </div>
-        </div>
-        {/* free div */}
-        <div className="row">
-          <div className="col-xl-12">
-            <div className="bottom-div">
-              <LandingText class="text-light"
-                topText="Free."
-                bottomText="Forever."
-                smallText="Lorem ipsum dolor sit amet, consectetur adipiscing eli t, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum."
-                button={false}
+            {/* icons */}
+            <div className="row">
+              <div className="col-xl-12 middle-div">
+                <LandingIcons icon="fas fa-search" title="Search" />
+                <LandingIcons icon="fas fa-search" title="Search" />
+                <LandingIcons icon="fas fa-search" title="Search" />
+                <LandingIcons icon="fas fa-search" title="Search" />
+                <LandingIcons icon="fas fa-search" title="Search" />
+                <LandingIcons icon="fas fa-search" title="Search" />
+              </div>
+            </div>
+            {/* free div */}
+            <div className="row">
+              <div className="col-xl-12">
+                <div className="bottom-div">
+                  <LandingText class="text-light"
+                    topText="Free."
+                    bottomText="Forever."
+                    smallText="Lorem ipsum dolor sit amet, consectetur adipiscing eli t, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum."
+                    button={false}
                   />
                 </div>
               </div>
