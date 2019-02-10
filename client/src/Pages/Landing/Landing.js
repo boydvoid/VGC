@@ -1,80 +1,111 @@
 import React, { Component } from 'react'
 
 import GamesAPI from '../../utils/gamesAPI';
+import LoginAPI from '../../utils/loginAPI';
 //components
 import LandingIcons from '../../Components/LandingIcons/LandingIcons'
 import LandingText from '../../Components/LandingText/LandingText';
 import Nav from '../../Components/Nav/Nav';
+import Modal from '../../Components/Modal/Modal';
 
 
 class Landing extends Component {
 
-  state= {
+  state = {
     random: [],
     images: [],
-    
-  };
+    username: "",
+    password: "",
+    email: "",
+    passwordMatch:"",
 
-    componentDidMount  = () => {
-     this.getGames();
-  };
 
+  }
+  componentWillMount = () => {
+    this.checkLogin();
+  }
+  componentDidMount = () => {
+    this.getGames();
+  }
+
+  handleInputChange = (event) => {
+    const { name , value } = event.target;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  checkLogin = event => {
+    LoginAPI.checkLogin().then(user => {
+    })
+  }
   getGames = () => {
     //get 10 newest games for a specific platform XBOX, PS4, PC
     //48 = PS4, 49 = XBOX, 6 = PC
 
-  GamesAPI.gamesNewest().then(res => {
-    console.log(res.data);
-    this.setState({
-      random: res.data
-    });
+    GamesAPI.getPopular().then(res => {
+      this.setState({
+        random: res.data
+      })
 
-    this.getCovers();
-  })
-  };
-
+      this.getCovers();
+    })
+  }
 
   getCovers = () => {
 
     let games = [];
 
     this.state.random.forEach(element => {
-      console.log(element.cover);
+
       GamesAPI.coverSearch(element.cover).then(res => {
-        console.log(res.data[0].url);
-        res.data[0].url = res.data[0].url.replace('t_thumb', 't_1080p');
-        games.push(res.data);
+        res.data[0].url = res.data[0].url.replace('t_thumb', 't_cover_big')
+        games.push(res.data)
         this.setState({
           images: games
         })
       });
-      
+
     });
-   
-  };
+  }
+
+  //register user console.log
+
+  registerUser = (event) => {
+    event.preventDefault();
+    let data = {
+      username: this.state.username,
+      password: this.state.password,
+      passwordMatch: this.state.passwordMatch,
+      email: this.state.email,
+    }
+    LoginAPI.registerUser(data).then(data => {
+      console.log(data)
+    })
+  }
 
   render() {
     return (
       <div className="container-fluid">
-      {this.state.images.length === 0 
-      
-      ? 
-      
-      <p>Loading</p> 
-      
-      : 
-        <div>
 
-        {/* landing */}
-        <Nav />
-        <div className="row top-div">
-          <div className="col-xl-5 landing-left">
-            <LandingText class="text-dark"
-              topText="Your Collection."
-              bottomText="One Location."
-              smallText="Lorem ipsum dolor sit amet, consectetur adipiscing eli t, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum."
-              button={true}
-              buttonText="Sign Up"
+      {this.state.images.length === 0
+          ?
+          <p>Loading</p>
+          :
+          <div>
+
+            {/* landing */}
+            <Nav />
+            <Modal id="loginModal" action={this.registerUser} change={this.handleInputChange}/>
+            <div className="row top-div">
+              <div className="col-xl-5 landing-left">
+                <LandingText class="text-dark"
+                  topText="Your Collection."
+                  bottomText="One Location."
+                  smallText="Lorem ipsum dolor sit amet, consectetur adipiscing eli t, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum."
+                  button={true}
+                  buttonText="Sign Up"
               />
           </div>
           <div className="col-xl-7 landing-right">
@@ -108,12 +139,12 @@ class Landing extends Component {
                 bottomText="Forever."
                 smallText="Lorem ipsum dolor sit amet, consectetur adipiscing eli t, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum."
                 button={false}
-                />
+                  />
+                </div>
+              </div>
             </div>
           </div>
-                </div>
-        </div>
-    }
+        }
       </div>
     )
   }
