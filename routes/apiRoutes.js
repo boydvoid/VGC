@@ -27,7 +27,7 @@ router.get("/search/:id", (req, res) => {
 
 router.get('/popular', (req, res) => {
 	axios({
-		url: "https://api-v3.igdb.com/games/?fields=*&order=popularity:desc",
+		url: "https://api-v3.igdb.com/games/?fields=*&order=popularity:desc&limit=8",
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
@@ -36,7 +36,6 @@ router.get('/popular', (req, res) => {
 		// data: `fields *; where platform = 48 ;`
 	})
 		.then(response => {
-			console.log("Platform: " + response.data);
 			res.send(response.data)
 		})
 		.catch(err => {
@@ -57,7 +56,6 @@ router.get("/games/covers/:id", (req, res) => {
 		data: `fields url; where id = ${req.params.id};`
 	})
 		.then(response => {
-			console.log(response.data);
 			res.send(response.data)
 		})
 		.catch(err => {

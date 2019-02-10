@@ -1,52 +1,99 @@
+/*
+------------------------------------------------------
+Global ( ALl Pages )
+------------------------------------------------------
+*/
+
 :root {
-  --primaryColor: #0984E3;
-  --primaryFont: 'Montserrat', sans-serif;
-  --secondaryFont: 'Lato', serif;
-  --lightColor: #E8E8E8;
+	--lightColor: #E8E8E8;
+	--primaryColor: #0984E3;
+	--primaryFont: 'Montserrat', sans-serif;
+	--secondaryFont: 'Lato', serif;
 }
 
-html,
-body,
-#root,
-.App,
-.wrapper {
-  height: 100%;
+*, ::after, ::before {
+	box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
 }
 
 h1 {
-  font-family: var(--primaryFont);
-  font-weight: 700;
+	font-family: var(--primaryFont);
+	font-weight: 700;
 }
 
 p {
-  font-family: var(--secondaryFont);
+	font-family: var(--secondaryFont);
 }
+
+/*
+------------------------------------------------------
+Bootstrap Overrides
+------------------------------------------------------
+*/
 
 .container-fluid {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
-.top-div {
+/*
+------------------------------------------------------
+Landing Page
+------------------------------------------------------
+*/
 
-  height: 100vh;
+/*
+---------------------------
+Global ( Landing )
+---------------------------
+*/
+
+.btn-primary {
+	background-color: var(--primaryColor);
+	border: none;
+	color: #FFFFFF;
+	font-family: var(--primaryFont);
+	font-size: 21px;
+	font-weight: 700;
+	height: 78px;
+	width: 288px;
 }
+
+.text-dark > h1 {
+	font-size: 4.2em;
+	text-align: left;
+}
+
+.text-dark > p {
+	font-size: 1.3em;
+	font-weight: 400;
+	max-width: 590px;
+	margin: 2em 0;
+}
+
+.text-light > h1 {
+	font-size: 4.2rem;
+}
+
+.text-light > p {
+	font-size: 1.3em;
+	font-weight: 400;
+	max-width: 590px;
+	margin: 2em 0;
+}
+
+/*
+---------------------------
+Nav
+---------------------------
+*/
 
 .navbar {
   position: absolute;
@@ -56,108 +103,190 @@ p {
 }
 
 .logo {
-  color: #000000;
-  font-family: var(--primaryFont);
-  font-weight: 700;
-  font-size: 45px;
-  margin-right: auto;
-  padding: 5px 50px;
+	color: #000000;
+	font-family: var(--primaryFont);
+	font-size: 45px;
+	font-weight: 700;
+	margin-right: auto;
+	padding: 5px 50px;
 }
 
 .logo-dot {
-  color: var(--primaryColor);
+	color: var(--primaryColor);
 }
 
 .login-btn {
-  margin-left: auto;
-  width: 148px !important;
-  padding: 20px;
-  background-color: transparent !important;
+	background-color: transparent !important;
+	padding: 20px;
+}
+
+/*
+---------------------------
+Top Div
+---------------------------
+*/
+
+.top-div {
+	height: 100vh;
 }
 
 .landing-left {
-  display: grid;
-  justify-content: center;
-  align-items: center;
+	align-items: center;
+	display: grid;
+	justify-content: center;
 }
 
 .landing-right {
-  background-color: var(--primaryColor);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	align-items: center;
+	background-color: var(--primaryColor);
+	display: flex;
+	justify-content: center;
 }
 
 .imgGrid {
-  display: grid;
-  grid-template-columns: repeat(5, 277px);
-  position: relative;
-  left: 251px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	left: 10rem;
+	max-height: 41rem;
+	max-width: 79rem;
+	overflow: hidden;
+	position: relative;
 }
+
+.imgGrid-single {
+	height: 20rem;
+	margin: 0 1rem 1rem 0;
+	width: 15rem;
+}
+
+/*
+---------------------------
+Middle Div
+---------------------------
+*/
 
 .middle-div {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 50% 50%;
-  background-color: var(--lightColor);
-}
-
-.bottom-div {
-  background-color: var(--primaryColor);
-  display: grid;
-  padding: 100px;
-  justify-items: center;
-}
-
-.btn-primary {
-  background-color: var(--primaryColor);
-  width: 288px;
-  height: 78px;
-  border: none;
-  color: #ffffff;
-  font-size: 21px;
-  font-family: var(--primaryFont);
-  font-weight: 700;
+	background-color: var(--lightColor);
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 50% 50%;
 }
 
 .landing-icons {
-  padding: 100px;
-  margin: auto;
+	margin: auto;
+	padding: 100px;
 }
 
-.text-dark {
-  color: #000000;
+/*
+---------------------------
+Bottom Div
+---------------------------
+*/
+
+.bottom-div {
+	background-color: var(--primaryColor);
+	display: grid;
+	justify-items: center;
+	padding: 100px;
+}
+
+/*
+------------------------------------------------------
+Media Queries
+------------------------------------------------------
+*/
+
+@media (max-width: 1200px) {
+
+	/*
+	---------------------------
+	Landing Page
+	---------------------------
+	*/
+
+	.text-dark, .text-dark > h1, .text-dark > p {
+		text-align: center;
+	}
+
+	.text-light, .text-light > h1, .text-light > p {
+		text-align: center;
+	}
+
+	.login-btn {
+		color: #000000;
+		margin-right: 0;
+	}
+
+	.navbar {
+		position: relative;
+	}
+
+	.top-div {
+		height: auto;
+	}
+
+	.bottom-div {
+		padding: 0;
+	}
+
+	.landing-left {
+		margin: 2rem 0;
+	}
+
+	.imgGrid {
+		left: 6rem;
+		margin: 5em 0;
+		max-height: 36rem;
+	}
+
+	.imgGrid-single {
+		height: 17rem;
+	}
 
 }
 
-.text-dark>h1 {
-  font-size: 70px;
-  text-align: left;
+@media (max-width: 768px) {
+
+	/*
+	---------------------------
+	Landing Page
+	---------------------------
+	*/
+
+	.navbar {
+		background-color: var(--primaryColor);
+	}
+
+	.logo-dot {
+		color: #FFFFFF;
+	}
+
+	.login-btn {
+		color: #FFFFFF;
+	}
+
+	.imgGrid-single {
+		width: 12rem;
+	}
+
 }
 
-.text-dark>p {
-  font-size: 21px;
-  font-weight: 400;
-  max-width: 590px;
-  font-family: var(--secondaryFont);
-  text-align: left;
-}
+@media (max-width: 576px) {
 
-.text-light {
-  color: #ffffff;
-  padding: 50px;
-}
+	/*
+	---------------------------
+	Landing Page
+	---------------------------
+	*/
 
-.text-light>h1 {
+	.text-dark > h1 {
+		font-size: 3.5em;
+		text-align: center;
+	}
 
-  font-size: 70px;
-}
+	.text-dark > p {
+		margin: 2em 2em;
+	}
 
-
-.text-light>p {
-
-  font-size: 21px;
-  font-weight: 400;
-  max-width: 590px;
-  font-family: var(--secondaryFont);
 }
