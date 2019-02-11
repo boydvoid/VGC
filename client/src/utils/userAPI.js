@@ -14,5 +14,8 @@ export default {
   },
   logout: function() {
     return axios.get(`/api/logout`);
+  },
+  update: function (query) {
+    return axios.post(`/api/update/`,query)
   }
 };

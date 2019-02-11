@@ -19,7 +19,21 @@ module.exports = {
       res.send(userInfo)
     })
   },
-  
+  updateData: (req, res) => {
+
+    db.users.findOneAndUpdate({
+      _id: req.user
+    },
+    req.body
+    ).then(data => {
+      res.send(data)
+    })
+    .catch(err => {
+      if (err){
+        console.log(err)
+      }
+    })
+  },
   createUser: (req, res) => {
     
     req.checkBody('username', 'Username cannot be empty.').notEmpty();

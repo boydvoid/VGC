@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import GamesAPI from '../../utils/gamesAPI';
-import LoginAPI from '../../utils/loginAPI';
+import userAPI from '../../utils/userAPI';
 //components
 import LandingIcons from '../../Components/LandingIcons/LandingIcons'
 import LandingText from '../../Components/LandingText/LandingText';
@@ -78,7 +78,7 @@ class Landing extends Component {
       passwordMatch: this.state.passwordMatch,
       email: this.state.email,
     }
-    LoginAPI.registerUser(data).then(data => {
+    userAPI.registerUser(data).then(data => {
       //check the return if false user wasnt created
       console.log(data)
        if (data.data === true) {

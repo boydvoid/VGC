@@ -1,0 +1,15 @@
+.btn-primary {
+  background-color: var(--primaryColor);
+  border: none;
+  color: #FFFFFF;
+  font-family: var(--primaryFont);
+  font-size: 21px;
+  font-weight: 700;
+  height: 78px;
+  width: 288px;
+}
+
+.login-btn {
+  background-color: transparent !important;
+  border: 2px solid #ffffff;
+}

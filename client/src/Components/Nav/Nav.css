@@ -1,0 +1,19 @@
+.navbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo {
+  color: #000000;
+  font-family: var(--primaryFont);
+  font-size: 45px;
+  font-weight: 700;
+  margin-right: auto;
+  padding: 5px 50px;
+}
+
+.logo-dot {
+  color: var(--primaryColor);
+}

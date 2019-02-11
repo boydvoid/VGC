@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
-import LoginAPI from '../../utils/loginAPI';
+import userAPI from '../../utils/userAPI';
 import Button from '../../Components/Button/Button';
-
+import ThemeSelect from '../ThemeSelect/ThemeSelect'
 class Dashboard extends Component {
+  state = {
+    theme: this.props.theme
+  }
+  componentWillMount = () => {
+  }
 
   logout = () => {
-    LoginAPI.logout().then(data => {
+    userAPI.logout().then(data => {
       //reload the window on sucessful logout
       window.location.reload();
     });
@@ -13,10 +18,19 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-        <p>{this.props.username}</p>
-        <p>{this.props.email}</p>
-        <p>{this.props.theme}</p>
-        <Button text="Logout" onclick={this.logout} />
+        {this.state.theme === 0 
+        ?
+          <ThemeSelect /> 
+        : 
+
+        <div>
+          <p>{this.props.username}</p>
+          <p>{this.props.email}</p>
+          <p>{this.props.theme}</p>
+          <Button text="Logout" onclick={this.logout} />
+        </div>
+
+        }
       </div>
     )
 

@@ -7,11 +7,14 @@ Global ( ALl Pages )
 :root {
 	--lightColor: #E8E8E8;
 	--primaryColor: #0984E3;
+	--d_primary: #000000;
 	--primaryFont: 'Montserrat', sans-serif;
 	--secondaryFont: 'Lato', serif;
 }
 
-*, ::after, ::before {
+*,
+::after,
+::before {
 	box-sizing: border-box;
 }
 
@@ -30,6 +33,19 @@ h1 {
 
 p {
 	font-family: var(--secondaryFont);
+}
+
+/*
+------------------------------------------------------
+Themes
+------------------------------------------------------
+*/
+.light-theme {
+	background-color: var(--lightColor);
+}
+
+.dark-theme {
+	background-color: #000000;
 }
 
 /*
@@ -55,34 +71,24 @@ Global ( Landing )
 ---------------------------
 */
 
-.btn-primary {
-	background-color: var(--primaryColor);
-	border: none;
-	color: #FFFFFF;
-	font-family: var(--primaryFont);
-	font-size: 21px;
-	font-weight: 700;
-	height: 78px;
-	width: 288px;
-}
 
-.text-dark > h1 {
+.text-dark>h1 {
 	font-size: 4.2em;
 	text-align: left;
 }
 
-.text-dark > p {
+.text-dark>p {
 	font-size: 1.3em;
 	font-weight: 400;
 	max-width: 590px;
 	margin: 2em 0;
 }
 
-.text-light > h1 {
+.text-light>h1 {
 	font-size: 4.2rem;
 }
 
-.text-light > p {
+.text-light>p {
 	font-size: 1.3em;
 	font-weight: 400;
 	max-width: 590px;
@@ -95,30 +101,8 @@ Nav
 ---------------------------
 */
 
-.navbar {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-}
 
-.logo {
-	color: #000000;
-	font-family: var(--primaryFont);
-	font-size: 45px;
-	font-weight: 700;
-	margin-right: auto;
-	padding: 5px 50px;
-}
 
-.logo-dot {
-	color: var(--primaryColor);
-}
-
-.login-btn {
-	background-color: transparent !important;
-	padding: 20px;
-}
 
 /*
 ---------------------------
@@ -189,104 +173,4 @@ Bottom Div
 	display: grid;
 	justify-items: center;
 	padding: 100px;
-}
-
-/*
-------------------------------------------------------
-Media Queries
-------------------------------------------------------
-*/
-
-@media (max-width: 1200px) {
-
-	/*
-	---------------------------
-	Landing Page
-	---------------------------
-	*/
-
-	.text-dark, .text-dark > h1, .text-dark > p {
-		text-align: center;
-	}
-
-	.text-light, .text-light > h1, .text-light > p {
-		text-align: center;
-	}
-
-	.login-btn {
-		color: #000000;
-		margin-right: 0;
-	}
-
-	.navbar {
-		position: relative;
-	}
-
-	.top-div {
-		height: auto;
-	}
-
-	.bottom-div {
-		padding: 0;
-	}
-
-	.landing-left {
-		margin: 2rem 0;
-	}
-
-	.imgGrid {
-		left: 6rem;
-		margin: 5em 0;
-		max-height: 36rem;
-	}
-
-	.imgGrid-single {
-		height: 17rem;
-	}
-
-}
-
-@media (max-width: 768px) {
-
-	/*
-	---------------------------
-	Landing Page
-	---------------------------
-	*/
-
-	.navbar {
-		background-color: var(--primaryColor);
-	}
-
-	.logo-dot {
-		color: #FFFFFF;
-	}
-
-	.login-btn {
-		color: #FFFFFF;
-	}
-
-	.imgGrid-single {
-		width: 12rem;
-	}
-
-}
-
-@media (max-width: 576px) {
-
-	/*
-	---------------------------
-	Landing Page
-	---------------------------
-	*/
-
-	.text-dark > h1 {
-		font-size: 3.5em;
-		text-align: center;
-	}
-
-	.text-dark > p {
-		margin: 2em 2em;
-	}
-
 }

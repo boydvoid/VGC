@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {  Route, Redirect, Switch } from 'react-router-dom';
-import LoginAPI from './utils/loginAPI'
+import userAPI from './utils/userAPI'
 // components
 import Landing from './Pages/Landing/Landing'
 import Dashboard from './Pages/Dashboard/Dashboard'
@@ -19,9 +19,9 @@ class App extends Component {
   }
 
   checkLogin = () => {
-    LoginAPI.checkLogin().then((user) => {
+    userAPI.checkLogin().then((user) => {
       if (user.data !== false) {
-        LoginAPI.findUserById(user.data).then((data) => {
+        userAPI.findUserById(user.data).then((data) => {
           console.log(JSON.stringify(data.data))
           this.setState({
             loggedIn: true,
@@ -37,16 +37,18 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App" > 
+        <div className={this.state.theme === 2 ? "dark-theme" : "light-theme"} id="theme-div">
           <Switch>
             <Route exact path="/" render={() => (
               this.state.loggedIn ? (
                 <Dashboard username={this.state.username} email={this.state.email} theme={this.state.theme} />
                 ) : (
-                <Landing />
-                )
-              )} />
+                  <Landing />
+                  )
+                  )} />
           </Switch>
+        </div>
       </div>
     );
   }

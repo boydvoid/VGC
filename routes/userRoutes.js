@@ -26,6 +26,10 @@ router
   .route("/register")
   .post(usersController.createUser)
 
+router  
+  .route("/update")
+  .post(usersController.updateData)
+
 //req.login uses these functions 
 passport.serializeUser(function (user_id, done) {
   done(null, user_id)
