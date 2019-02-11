@@ -7,7 +7,8 @@ Global ( ALl Pages )
 :root {
 	--lightColor: #E8E8E8;
 	--primaryColor: #0984E3;
-	--d_primary: #000000;
+
+
 	--primaryFont: 'Montserrat', sans-serif;
 	--secondaryFont: 'Lato', serif;
 }
@@ -35,18 +36,6 @@ p {
 	font-family: var(--secondaryFont);
 }
 
-/*
-------------------------------------------------------
-Themes
-------------------------------------------------------
-*/
-.light-theme {
-	background-color: var(--lightColor);
-}
-
-.dark-theme {
-	background-color: #000000;
-}
 
 /*
 ------------------------------------------------------
@@ -58,12 +47,6 @@ Bootstrap Overrides
 	margin: 0;
 	padding: 0;
 }
-
-/*
-------------------------------------------------------
-Landing Page
-------------------------------------------------------
-*/
 
 /*
 ---------------------------
@@ -94,14 +77,6 @@ Global ( Landing )
 	max-width: 590px;
 	margin: 2em 0;
 }
-
-/*
----------------------------
-Nav
----------------------------
-*/
-
-
 
 
 /*

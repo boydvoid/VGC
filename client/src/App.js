@@ -42,7 +42,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => (
               this.state.loggedIn ? (
-                <Dashboard username={this.state.username} email={this.state.email} theme={this.state.theme} />
+                <Dashboard username={this.state.username} email={this.state.email}  />
                 ) : (
                   <Landing />
                   )

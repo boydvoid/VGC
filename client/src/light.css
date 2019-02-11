@@ -1,0 +1,12 @@
+:root {
+  --l_primary: #F3F3F3;
+  --l_secondary: #ffffff;
+}
+
+.light-theme {
+  background-color: var(--lightColor);
+}
+
+.light-theme .btn-primary {
+  background-color: var(--primaryColor);
+}

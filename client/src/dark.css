@@ -1,0 +1,16 @@
+:root {
+  --d_primary: #313440;
+  --d_secondary: #262831;
+  --d_titleColor: #CADBE8;
+  --d_secondaryFont: #A0A9C2;
+  --d_buttonColor: #3D4866;
+
+}
+
+.dark-theme {
+  background-color: var(--d_primary);
+}
+
+.dark-theme .btn-primary {
+  background-color: var(--d_buttonColor);
+}
