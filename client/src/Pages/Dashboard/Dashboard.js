@@ -15,7 +15,9 @@ class Dashboard extends Component {
   }
 
   logout = () => {
-    LoginAPI.logout();
+    LoginAPI.logout().then(data => {
+      window.location.reload();
+    });
   }
   render() {
     return (
