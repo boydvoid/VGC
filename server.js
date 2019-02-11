@@ -10,6 +10,9 @@ let LocalStrategy = require('passport-local').Strategy;
 let bcrypt = require('bcrypt');
 let db = require('./Models')
 var expressValidator = require("express-validator");
+const session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
+
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -25,11 +28,24 @@ if (process.env.NODE_ENV === "production") {
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/games', { useNewUrlParser: true }).then(() => {
   console.log('connected')
 });
+
+//store the session in mongo db
+var store = new MongoDBStore({
+  uri: process.env.MONGODB_URI || 'mongodb://localhost/games',
+  collection: 'sessions'
+});
+
+store.on('error', function (error) {
+  console.log(error);
+});
+
+
 //session
-app.use(require("express-session")({
-  secret: "Hello World, this is a session",
+app.use(session({
+  secret: "did you know that a platypus is a mammal that lays eggs?",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: store
 }));
 //passport
 app.use(passport.initialize());

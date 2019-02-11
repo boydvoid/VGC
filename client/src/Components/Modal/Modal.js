@@ -13,13 +13,22 @@ const Modal = (props) => (
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-body">
+          <p>{props.errors}</p>
           <label>Username</label>
-          <input type="username" placeholder="JohnDoe" name="username" onChange={props.change}/>
+          <input type="username" placeholder="JohnDoe" name="username" onChange={props.change} />
           <label>Password</label>
-          <input type="password" placeholder="********" name="password"  onChange={props.change}/>
-          <input type="password" placeholder="********" name="passwordMatch"  onChange={props.change}/>
-          <input type="email" placeholder="********" name="email"  onChange={props.change}/>
-          <Button text="Register" id="btnLogin" onclick={props.action} />
+          <input type="password" placeholder="********" name="password" onChange={props.change} />
+          <input type="password" placeholder="********" name="passwordMatch" onChange={props.change} />
+          <input type="email" placeholder="********" name="email" onChange={props.change} />
+          <Button text="Register" id="btnLogin" onclick={props.register} />
+
+          <form action="/api/login" method="POST">
+            <label>Username</label>
+            <input type="username" placeholder="JohnDoe" name="username" />
+            <label>Password</label>
+            <input type="password" placeholder="********" name="password" />
+            <Button type="submit" text="Login" id="btnLogin" onclick={props.login} />
+          </form>
         </div>
       </div>
     </div>
