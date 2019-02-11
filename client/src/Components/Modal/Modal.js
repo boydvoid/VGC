@@ -19,7 +19,7 @@ const Modal = (props) => (
           <label>Password</label>
           <input type="password" placeholder="********" name="password" onChange={props.change} />
           <input type="password" placeholder="********" name="passwordMatch" onChange={props.change} />
-          <input type="email" placeholder="********" name="email" onChange={props.change} />
+          <input type="email" placeholder="email" name="email" onChange={props.change} />
           <Button text="Register" id="btnLogin" onclick={props.register} />
 
           <form action="/api/login" method="POST">

@@ -9,4 +9,7 @@ export default {
   registerUser: function (userData) {
     return axios.post(`/api/register`,userData);
   },
+  logout: function() {
+    return axios.get(`/api/logout`);
+  }
 };

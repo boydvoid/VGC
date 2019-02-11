@@ -30,7 +30,7 @@ router.post("/login", passport.authenticate('local', {
 //logout
 router.get('/logout', function (req, res) {
   req.logout();
-  res.redirect('/');
+  res.send(true)
 });
 
 // Create a new user

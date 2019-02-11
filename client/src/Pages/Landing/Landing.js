@@ -21,9 +21,7 @@ class Landing extends Component {
     modalErrors: ""
 
   }
-  componentWillMount = () => {
-    this.checkLogin();
-  }
+ 
   componentDidMount = () => {
     this.getGames();
   }
@@ -34,12 +32,6 @@ class Landing extends Component {
     this.setState({
       [name]: value
     });
-  }
-
-  checkLogin = event => {
-    LoginAPI.checkLogin().then(user => {
-
-    })
   }
 
   getGames = () => {

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import LoginAPI from './utils/loginAPI'
 // components
 import Landing from './Pages/Landing/Landing'
 import Dashboard from './Pages/Dashboard/Dashboard'
 
-let loggedIn = "";
 class App extends Component {
+
+  state= {
+    loggedIn: false
+  }
 
   componentWillMount = () => {
     this.checkLogin();
@@ -15,8 +18,11 @@ class App extends Component {
 
   checkLogin = () => {
     LoginAPI.checkLogin().then((user) => {
-      if (user !== false) {
-        loggedIn = true
+      console.log(user)
+      if (user.data !== false) {
+        this.setState({
+          loggedIn: true
+        })
       }
     })
   }
@@ -24,18 +30,25 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Router>
-          <div>
-            <Route exact path="/dashboard" component={Dashboard} />
+        <BrowserRouter>
+          <Switch>
+          <Route exact path="/dashboard" render={() => (
+                    this.state.loggedIn === false ? (
+                      <Redirect to="/" />
+                    ) : (
+                        <Dashboard />
+                      )
+                  )} />
             <Route exact path="/" render={() => (
-              loggedIn ? (
+              this.state.loggedIn ? (
                 <Redirect to="/dashboard" />
-              ) : (
+                ) : (
                   <Landing />
-                )
-            )} />
-          </div>
-        </Router>
+                  )
+                  )} />
+          
+          </Switch>
+        </BrowserRouter>
       </div>
     );
   }

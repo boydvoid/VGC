@@ -58,21 +58,15 @@ app.use('/api', User);
 // Passport use
 passport.use(new LocalStrategy(
   function (username, password, done) {
-
-    console.log("Running");
-
     // When username is sent, find match in database.
     db.users.findOne({
       username: username
     }).then((user) => {
 
       if (user === null) {
-
         // User was not found in the database.
         done(null, false);
-
       }
-
       let passwordCheck = bcrypt.compareSync(password, user.password);
 
       // User was found in the database.
