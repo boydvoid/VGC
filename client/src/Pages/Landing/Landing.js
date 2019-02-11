@@ -96,7 +96,8 @@ class Landing extends Component {
 
         {this.state.images.length === 0
           ?
-          <p>Loading</p>
+          // have this so the landing page doesnt show before the dashboard
+         <div></div>
           :
           <div>
 

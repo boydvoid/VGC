@@ -23,7 +23,7 @@ router.get("/checkLogin", (req, res) => {
 
 //login
 router.post("/login", passport.authenticate('local', {
-  successRedirect: '/dashboard',
+  successRedirect: '/',
   failureRedirect: '/',
 }));
 

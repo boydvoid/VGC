@@ -16,6 +16,7 @@ class Dashboard extends Component {
 
   logout = () => {
     LoginAPI.logout().then(data => {
+      //reload the window on sucessful logout
       window.location.reload();
     });
   }

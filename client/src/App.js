@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import {  Route, Redirect, Switch } from 'react-router-dom';
 import LoginAPI from './utils/loginAPI'
 // components
 import Landing from './Pages/Landing/Landing'
@@ -30,25 +30,16 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <BrowserRouter>
           <Switch>
-          <Route exact path="/dashboard" render={() => (
-                    this.state.loggedIn === false ? (
-                      <Redirect to="/" />
-                    ) : (
-                        <Dashboard />
-                      )
-                  )} />
             <Route exact path="/" render={() => (
               this.state.loggedIn ? (
-                <Redirect to="/dashboard" />
+                <Dashboard />
                 ) : (
                   <Landing />
                   )
                   )} />
           
           </Switch>
-        </BrowserRouter>
       </div>
     );
   }
