@@ -11,6 +11,7 @@ module.exports = {
       res.send(req.user)
     }
    },
+
   findById: function (req, res) {
     db.users.findOne({
       _id: req.params.id
@@ -18,6 +19,7 @@ module.exports = {
       res.send(userInfo)
     })
   },
+  
   createUser: (req, res) => {
     
     req.checkBody('username', 'Username cannot be empty.').notEmpty();

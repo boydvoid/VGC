@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import {  Route, Redirect, Switch } from 'react-router-dom';
 import LoginAPI from './utils/loginAPI'
 // components
@@ -44,10 +43,9 @@ class App extends Component {
               this.state.loggedIn ? (
                 <Dashboard username={this.state.username} email={this.state.email} theme={this.state.theme} />
                 ) : (
-                  <Landing />
-                  )
-                  )} />
-          
+                <Landing />
+                )
+              )} />
           </Switch>
       </div>
     );
