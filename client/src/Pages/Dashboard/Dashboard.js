@@ -4,16 +4,6 @@ import Button from '../../Components/Button/Button';
 
 class Dashboard extends Component {
 
-  componentWillMount = () => {
-    this.checkLogin();
-  }
-
-  checkLogin = event => {
-    LoginAPI.checkLogin().then(user => {
-      console.log(user);
-    })
-  }
-
   logout = () => {
     LoginAPI.logout().then(data => {
       //reload the window on sucessful logout
@@ -23,6 +13,9 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
+        <p>{this.props.username}</p>
+        <p>{this.props.email}</p>
+        <p>{this.props.theme}</p>
         <Button text="Logout" onclick={this.logout} />
       </div>
     )

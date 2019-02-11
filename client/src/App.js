@@ -9,7 +9,10 @@ import Dashboard from './Pages/Dashboard/Dashboard'
 class App extends Component {
 
   state= {
-    loggedIn: false
+    loggedIn: false,
+    username: "",
+    email: "",
+    theme: ""
   }
 
   componentWillMount = () => {
@@ -18,10 +21,16 @@ class App extends Component {
 
   checkLogin = () => {
     LoginAPI.checkLogin().then((user) => {
-      console.log(user)
       if (user.data !== false) {
-        this.setState({
-          loggedIn: true
+        LoginAPI.findUserById(user.data).then((data) => {
+          console.log(JSON.stringify(data.data))
+          this.setState({
+            loggedIn: true,
+            username: data.data.username,
+            email: data.data.email,
+            theme: data.data.theme
+          })
+
         })
       }
     })
@@ -33,7 +42,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => (
               this.state.loggedIn ? (
-                <Dashboard />
+                <Dashboard username={this.state.username} email={this.state.email} theme={this.state.theme} />
                 ) : (
                   <Landing />
                   )

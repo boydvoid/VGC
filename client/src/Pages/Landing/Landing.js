@@ -80,13 +80,14 @@ class Landing extends Component {
     }
     LoginAPI.registerUser(data).then(data => {
       //check the return if false user wasnt created
-
-      if (data.data === false) {
-        this.setState({
-          modalErrors: "Username exists"
-        })
-      }
-      console.log(data.data);
+      console.log(data)
+       if (data.data === true) {
+         window.location.reload();
+       } else if(data.data[0] !== true) {
+           this.setState({
+             modalErrors: data.data[0]
+          })
+       } 
     })
   }
 

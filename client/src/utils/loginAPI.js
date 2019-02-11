@@ -6,6 +6,9 @@ export default {
   checkLogin: function () {
     return axios.get(`/api/checkLogin`);
   },
+  findUserById: (id) => {
+    return axios.get(`/api/users/find/${id}`)
+  },
   registerUser: function (userData) {
     return axios.post(`/api/register`,userData);
   },

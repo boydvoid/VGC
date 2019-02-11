@@ -3,23 +3,15 @@ var bcrypt = require('bcrypt');
 let db = require('../Models');
 let saltRounds = 10;
 const router = require("express").Router();
+const usersController = require('../Controllers/usersController');
 
-//check login
-router.get("/checkLogin", (req, res) => {
-  console.log("users id " + req.user);
-  // let userId = checkForMultipleUsers(req);
-  userId = req.user;
-  if (req.isAuthenticated()) {
-    db.users.findOne({
-      _id: userId
-    }).then((userInfo) => {
-      res.send(userInfo)
-    })
-  } else {
-    //no user
-    res.send(false);
-  }
-})
+router
+  .route("/checkLogin")
+  .get(usersController.checkLogin)
+
+router
+  .route("/users/find/:id")
+  .get(usersController.findById)
 
 //login
 router.post("/login", passport.authenticate('local', {
@@ -35,8 +27,6 @@ router.get('/logout', function (req, res) {
 
 // Create a new user
 router.post("/register", function (req, res) {
-  console.log('clicked register')
-  console.log(req.body)
   req.checkBody('username', 'Username cannot be empty.').notEmpty();
   req.checkBody('email', 'Email field must not be empty.').notEmpty();
   req.checkBody('email', 'Email field must be and email.').isEmail();
@@ -46,9 +36,7 @@ router.post("/register", function (req, res) {
 
   var errors = req.validationErrors();
 
-  //if there are errors display them on screen 
   if (errors) {
-    //console.log(`errors: ${JSON.stringify(errors)}`)
 
     res.send(errors)
   } else {
@@ -57,26 +45,24 @@ router.post("/register", function (req, res) {
     var hash = bcrypt.hashSync(req.body.password, salt);
     //bcrypt the password then insert
 
-
-    //check if a username exists in the db, if it doesn't create the user
-    db.users.find({
-      username: req.body.username
-    }).then(user => {
-      if (user.length === 0) {
         db.users.create({
           username: req.body.username,
           email: req.body.email,
           password: hash,
-          theme: 1
-        }).then(created => {
-          req.login(created._id, (err) => {
-          })
+          theme: 0
+        }).then((created) => {
+            req.login(created._id, (err) => {
+                res.send(true)
+            })
         })
-      } else {
-        //user wasn't created
-        res.send(false);
-      }
-    })
+        .catch(err => {
+          //create user errors
+          //either duplicate username or email
+          console.log(err.errmsg)
+          let data = [err.errmsg]
+          res.send(data) 
+        })
+     
   }
 });
 
