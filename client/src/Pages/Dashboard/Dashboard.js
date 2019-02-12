@@ -3,6 +3,8 @@ import userAPI from '../../utils/userAPI';
 import Button from '../../Components/Button/Button';
 import ThemeSelect from '../ThemeSelect/ThemeSelect'
 import SidePanel from '../../Components/SidePanel/SidePanel';
+import Searchbar from '../../Components/Searchbar/Searchbar'
+import './Dashboard.css'
 class Dashboard extends Component {
   state = {
     theme: this.props.theme
@@ -25,10 +27,13 @@ class Dashboard extends Component {
         : 
 
         <div>
-          <SidePanel username={this.props.username} buttonClick={this.logout} buttonText="Logout" profileImg={this.props.profileImg}/>
-          <p>{this.props.username}</p>
-          <p>{this.props.email}</p>
-          <p>{this.props.theme}</p>
+          <SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg} active={this.props.active}/>
+          
+          <div className="content">
+          <Searchbar />
+          {this.props.children}
+          </div>
+          
         </div>
 
         }

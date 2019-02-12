@@ -4,7 +4,7 @@
   --d_titleColor: #CADBE8;
   --d_secondaryFont: #A0A9C2;
   --d_buttonColor: #3D4866;
-
+  --borderColor: #8a8a8a33;
 }
 
 .dark-theme {
@@ -13,4 +13,34 @@
 
 .dark-theme .btn-primary {
   background-color: var(--d_buttonColor);
+}
+
+.dark-theme .logo {
+  color: var(--primaryColor);
+}
+
+.dark-theme .sidebar {
+  background-color: var(--d_secondary);
+  border-right: 1px solid var(--borderColor);
+}
+
+.dark-theme .sidebar-logo {
+  border-bottom: 1px solid var(--borderColor);
+}
+
+.dark-theme .secondaryText {
+  color: var(--d_secondaryFont);
+}
+
+.dark-theme .sidebar ul li a {
+  color: var(--d_secondaryFont);
+}
+
+.dark-theme .sidebar .active {
+  background-color: var(--d_primary);
+  border-right: 3px solid var(--primaryColor)
+}
+
+.dark-theme .searchbar {
+  border-bottom: 1px solid var(--borderColor);
 }

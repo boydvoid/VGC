@@ -4,7 +4,10 @@ import userAPI from './utils/userAPI'
 // components
 import Landing from './Pages/Landing/Landing'
 import Dashboard from './Pages/Dashboard/Dashboard'
-
+import Profile from './Components/Profile/Profile'
+import Collection from './Components/Collection/Collection'
+import Wishlist from './Components/Wishlist/Wishlist'
+import Sell from './Components/Sell/Sell'
 class App extends Component {
 
   state= {
@@ -44,9 +47,31 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => (
               this.state.loggedIn ? (
-                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} />
+                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
                 ) : (
                   <Landing />
+                  )
+                  )} />
+            
+            <Route exact path="/collection" render={() => (
+              this.state.loggedIn ? (
+                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection/></Dashboard >
+                ) : (
+                  <Redirect to='/' />
+                  )
+                  )} />
+            <Route exact path="/wishlist" render={() => (
+              this.state.loggedIn ? (
+                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="wishlist"> <Wishlist/></Dashboard >
+                ) : (
+                  <Redirect to='/' />
+                  )
+                  )} />
+            <Route exact path="/sell" render={() => (
+              this.state.loggedIn ? (
+                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell/></Dashboard >
+                ) : (
+                  <Redirect to='/' />
                   )
                   )} />
           </Switch>
