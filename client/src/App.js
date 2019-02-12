@@ -20,6 +20,7 @@ class App extends Component {
 
   componentWillMount = () => {
     this.checkLogin();
+    
   }
 
   checkLogin = () => {
@@ -40,6 +41,7 @@ class App extends Component {
     })
   }
 
+
   render() {
     return (
       <div className="App" > 
@@ -47,7 +49,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => (
               this.state.loggedIn ? (
-                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
+                <Dashboard theme = {this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
                 ) : (
                   <Landing />
                   )

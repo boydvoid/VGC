@@ -2,9 +2,9 @@
   --d_primary: #313440;
   --d_secondary: #262831;
   --d_titleColor: #CADBE8;
-  --d_secondaryFont: #A0A9C2;
+  --d_secondaryFontColor: #A0A9C2;
   --d_buttonColor: #3D4866;
-  --borderColor: #8a8a8a33;
+  --borderColor: #7070705b;
 }
 
 .dark-theme {
@@ -21,19 +21,16 @@
 
 .dark-theme .sidebar {
   background-color: var(--d_secondary);
-  border-right: 1px solid var(--borderColor);
 }
 
-.dark-theme .sidebar-logo {
-  border-bottom: 1px solid var(--borderColor);
-}
+.dark-theme .sidebar-logo {}
 
 .dark-theme .secondaryText {
-  color: var(--d_secondaryFont);
+  color: var(--d_secondaryFontColor);
 }
 
 .dark-theme .sidebar ul li a {
-  color: var(--d_secondaryFont);
+  color: var(--d_secondaryFontColor);
 }
 
 .dark-theme .sidebar .active {
@@ -42,5 +39,11 @@
 }
 
 .dark-theme .searchbar {
-  border-bottom: 1px solid var(--borderColor);
+  color: var(--d_secondaryFontColor);
+}
+
+.dark-theme .searchbar ::placeholder {
+  color: var(--d_secondaryFontColor);
+  font-family: var(--secondaryFont);
+  font-size: 18px;
 }
