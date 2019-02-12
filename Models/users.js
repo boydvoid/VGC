@@ -8,7 +8,8 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   date: { type: Date, default: Date.now },
-  theme: { type: Number, default: true }
+  theme: { type: Number, default: true },
+  img:  {type: String, required: false}
 });
 const users = mongoose.model("users", userSchema);
 userSchema.plugin(passportLocalMongoose);

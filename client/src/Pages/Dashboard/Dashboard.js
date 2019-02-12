@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import userAPI from '../../utils/userAPI';
 import Button from '../../Components/Button/Button';
 import ThemeSelect from '../ThemeSelect/ThemeSelect'
+import SidePanel from '../../Components/SidePanel/SidePanel';
 class Dashboard extends Component {
   state = {
     theme: this.props.theme
@@ -24,10 +25,10 @@ class Dashboard extends Component {
         : 
 
         <div>
+          <SidePanel username={this.props.username} buttonClick={this.logout} buttonText="Logout" profileImg={this.props.profileImg}/>
           <p>{this.props.username}</p>
           <p>{this.props.email}</p>
           <p>{this.props.theme}</p>
-          <Button text="Logout" onclick={this.logout} />
         </div>
 
         }

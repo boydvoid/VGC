@@ -10,3 +10,7 @@
 .light-theme .btn-primary {
   background-color: var(--primaryColor);
 }
+
+.light-theme .sidebar {
+  background-color: var(--l_primary);
+}

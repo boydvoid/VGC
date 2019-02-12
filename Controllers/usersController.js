@@ -59,7 +59,8 @@ module.exports = {
         username: req.body.username,
         email: req.body.email,
         password: hash,
-        theme: 0
+        theme: 0,
+        img: "https://stmed.net/sites/default/files/god-of-war-hd-wallpapers-33167-4211665.jpg"
       })
       .then((created) => {
           req.login(created._id, (err) => {

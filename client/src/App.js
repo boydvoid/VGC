@@ -11,7 +11,8 @@ class App extends Component {
     loggedIn: false,
     username: "",
     email: "",
-    theme: ""
+    theme: "",
+    img: ""
   }
 
   componentWillMount = () => {
@@ -27,7 +28,8 @@ class App extends Component {
             loggedIn: true,
             username: data.data.username,
             email: data.data.email,
-            theme: data.data.theme
+            theme: data.data.theme,
+            img: data.data.img
           })
 
         })
@@ -42,7 +44,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => (
               this.state.loggedIn ? (
-                <Dashboard username={this.state.username} email={this.state.email}  />
+                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} />
                 ) : (
                   <Landing />
                   )
