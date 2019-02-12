@@ -24,8 +24,10 @@ class Dashboard extends Component {
   switchState = () => {
     if(this.props.theme  === 1){
       document.getElementById("switch").checked = false;
-    } else {
+    } else if(this.props.theme === 2){
       document.getElementById("switch").checked = true;
+      
+    } else {
       
     }
   }
