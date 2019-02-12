@@ -1,16 +1,49 @@
 :root {
-  --l_primary: #F3F3F3;
-  --l_secondary: #ffffff;
+  --l_primary: #FFFFFF;
+  --l_secondary: #F3F3F3;
+  --l_titleColor: #818188;
+  --l_secondaryFontColor: #A0A9C2;
+  --l_buttonColor: #3D4866;
+  --borderColor: #7070705b;
 }
 
 .light-theme {
-  background-color: var(--lightColor);
+  background-color: var(--l_primary);
 }
 
 .light-theme .btn-primary {
   background-color: var(--primaryColor);
 }
 
+.light-theme .logo {
+  color: var(--primaryColor);
+}
+
 .light-theme .sidebar {
+  background-color: var(--l_secondary);
+}
+
+.light-theme .sidebar-logo {}
+
+.light-theme .secondaryText {
+  color: var(--l_secondaryFontColor);
+}
+
+.light-theme .sidebar ul li a {
+  color: var(--l_secondaryFontColor);
+}
+
+.light-theme .sidebar .active {
   background-color: var(--l_primary);
+  border-left: 3px solid var(--primaryColor)
+}
+
+.light-theme .searchbar {
+  color: var(--l_secondaryFontColor);
+}
+
+.light-theme .searchbar ::placeholder {
+  color: var(--l_secondaryFontColor);
+  font-family: var(--secondaryFont);
+  font-size: 18px;
 }

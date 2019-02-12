@@ -35,7 +35,7 @@
 
 .dark-theme .sidebar .active {
   background-color: var(--d_primary);
-  border-right: 3px solid var(--primaryColor)
+  border-left: 3px solid var(--primaryColor)
 }
 
 .dark-theme .searchbar {
