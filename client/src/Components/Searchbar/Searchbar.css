@@ -23,9 +23,9 @@
   width: 40px;
   height: 20px;
   background: grey;
-  display: block;
   border-radius: 100px;
   position: relative;
+  top: 5px;
 }
 
 .searchbar label:after {
@@ -51,4 +51,19 @@
 
 .searchbar label:active:after {
   width: 10px;
+}
+
+.searchbar ul {
+  list-style-type: none;
+}
+
+.searchbar ul li{
+  float: left;
+  padding: 0 10px; 
+}
+
+.searchbar ul li p {
+  font-size: 20px; 
+  font-family: var(--secondaryFont);
+  font-weight: 700;
 }

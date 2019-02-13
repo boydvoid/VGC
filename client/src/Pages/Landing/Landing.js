@@ -21,7 +21,7 @@ class Landing extends Component {
     modalErrors: ""
 
   }
- 
+
   componentDidMount = () => {
     this.getGames();
   }
@@ -81,13 +81,13 @@ class Landing extends Component {
     userAPI.registerUser(data).then(data => {
       //check the return if false user wasnt created
       console.log(data)
-       if (data.data === true) {
-         window.location.reload();
-       } else if(data.data[0] !== true) {
-           this.setState({
-             modalErrors: data.data[0]
-          })
-       } 
+      if (data.data === true) {
+        window.location.reload();
+      } else if (data.data[0] !== true) {
+        this.setState({
+          modalErrors: data.data[0]
+        })
+      }
     })
   }
 
@@ -98,7 +98,7 @@ class Landing extends Component {
         {this.state.images.length === 0
           ?
           // have this so the landing page doesnt show before the dashboard
-         <div></div>
+          <div></div>
           :
           <div>
 

@@ -62,7 +62,7 @@ class Dashboard extends Component {
       <div>
         <SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg} active={this.props.active} />
 
-        <div className="content">
+        <div className="content container-fluid">
           <Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} />
           {this.props.children}
         </div>
