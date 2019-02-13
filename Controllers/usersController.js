@@ -3,7 +3,6 @@ const passport = require('passport');
 const saltRounds = 10;
 const bcrypt = require('bcrypt');
 
-
 module.exports = {
 	checkLogin: (req, res) => {
 		if (req.isAuthenticated()) {
@@ -22,8 +21,8 @@ module.exports = {
 	updateData: (req, res) => {
 
 		db.users.findOneAndUpdate({
-				_id: req.user
-			},
+			_id: req.user
+		},
 			req.body
 		).then(data => {
 			res.send(data)
@@ -59,8 +58,9 @@ module.exports = {
 				username: req.body.username,
 				email: req.body.email,
 				password: hash,
-				theme: 0,
-				img: "https://stmed.net/sites/default/files/god-of-war-hd-wallpapers-33167-4211665.jpg"
+				theme: 1,
+				img: ""
+
 			})
 				.then((created) => {
 					req.login(created._id, (err) => {
