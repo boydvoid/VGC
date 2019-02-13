@@ -7,10 +7,23 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true},
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  date: { type: Date, default: Date.now },
+  date: { type: Date, default: convertTimeDate() },
   theme: { type: Number, default: true },
   img:  {type: String, required: false}
 });
+
+// Convert UTC to PST.
+function convertTimeDate() {
+
+  let date = new Date();
+  let utcDate = new Date(date.toUTCString());
+  utcDate.setHours(utcDate.getHours()-8);
+  let usDate = new Date(utcDate);
+
+  return usDate;
+
+}
+
 const users = mongoose.model("users", userSchema);
 userSchema.plugin(passportLocalMongoose);
 module.exports = users;
