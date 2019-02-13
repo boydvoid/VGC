@@ -1,0 +1,46 @@
+God of War - (ID:19560)
+
+age_ratings: (2) [23747, 23748]
+aggregated_rating: 96.9444444444444
+aggregated_rating_count: 21
+alternative_names: (2) [6680, 6681]
+artworks: (11) [1035, 1036, 2560, 2561, 2562, 2563, 2564, 2565, 2566, 2567, 2568]
+category: 0
+collection: 70
+cover: 55291
+created_at: 1465862400
+external_games: (2) [189887, 247002]
+first_release_date: 1524182400
+game_modes: [1]
+genres: (2) [12, 31]
+hypes: 92
+id: 19560
+involved_companies: (2) [36378, 38707]
+keywords: (23) [296, 332, 367, 926, 2414, 3222, 4169, 4221, 4224, 4392, 4419, 4508, 4548, 4622, 4883, 7650, 12087, 12157, 12556, 14051, 14052, 14096, 16809]
+name: "God of War"
+platforms: [48]
+player_perspectives: [2]
+popularity: 118.5924315718572
+rating: 96.30349688851551
+rating_count: 375
+release_dates: [136684]
+screenshots: (12) [25153, 25154, 25155, 44388, 44389, 208194, 208195, 208196, 208197, 208198, 208199, 208200]
+similar_games: (10) [19565, 22387, 25076, 28168, 36926, 36950, 47823, 54775, 76882, 80916]
+slug: "god-of-war--1"
+summary: ""It is a new beginning for Kratos. Living as a man, outside the shadow of the gods, he seeks solitude in the unfamiliar lands of Norse mythology. With new purpose and his son at his side, Kratos must fight for survival as powerful forces threaten to disrupt the new life he has created...""
+tags: (27) [1, 17, 268435468, 268435487, 536871208, 536871244, 536871279, 536871838, 536873326, 536874134, 536875081, 536875133, 536875136, 536875304, 536875331, 536875420, 536875460, 536875534, 536875795, 536878562, 536882999, 536883069, 536883468, 536884963, 536884964, 536885008, 536887721]
+themes: (2) [1, 17]
+total_rating: 96.62397066647995
+total_rating_count: 396
+updated_at: 1549929600
+url: "https://www.igdb.com/games/god-of-war--1"
+videos: (4) [14551, 16592, 17906, 18807]
+websites: (3) [7851, 7852, 69286]
+__proto__: Object
+length: 1
+__proto__: Array(0)
+headers: {date: "Wed, 13 Feb 2019 05:05:26 GMT", content-encoding: "gzip", etag: "W/"69b-G9un1lc4bZgEM/0e1Xhg8F8l7Vs"", x-powered-by: "Express", vary: "Accept-Encoding", …}
+request: XMLHttpRequest {onreadystatechange: ƒ, readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, …}
+status: 200
+statusText: "OK"
+__proto__: Object

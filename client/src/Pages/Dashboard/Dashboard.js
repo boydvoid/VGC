@@ -24,7 +24,7 @@ class Dashboard extends Component {
 
 	getGame = () => {
 
-		gameAPI.gameAgeRating("23748").then((data) => {
+		gameAPI.gameID("19560").then((data) => {
 
 				console.log(data);
 
