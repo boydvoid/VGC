@@ -59,7 +59,7 @@ module.exports = {
 				email: req.body.email,
 				password: hash,
 				theme: 1,
-				img: ""
+				img: "https://github.com/robaboyd/VGC/blob/master/client/src/assets/defaultProfile.png?raw=true"
 
 			})
 				.then((created) => {
