@@ -1,0 +1,21 @@
+.profile-data {
+    padding: 20px 100px 25px 40px;
+    margin: 20px 45px;
+    border-left: 7px solid;
+}
+
+.profile-data .primaryText {
+    font-size: 40px;
+    font-weight: 700;
+    font-family: var(--primaryFont);
+}
+
+.profile-data .secondaryText {
+    font-size: 18px;
+    font-family: var(--secondaryFont);
+}
+
+.control-div {
+    display: flex;
+    flex-wrap: wrap;
+}
