@@ -12,7 +12,8 @@ class Dashboard extends Component {
   state = {
 
     theme: this.props.theme,
-    searchGames: ""
+    searchedGames: [],
+    rightPanelOpen: false
   }
 
 	componentDidMount = () => {
@@ -21,10 +22,9 @@ class Dashboard extends Component {
 
 	getGame = () => {
 
-		gameAPI.gameID("19560").then((data) => {
 
+		gamesAPI.gameID("19560").then((data) => {
 				console.log(data);
-
 			})
 
 	};
@@ -76,28 +76,72 @@ class Dashboard extends Component {
 
   openRightPanel = () => {
     document.getElementById("mySidenav").style.width = "900px";
+    this.setState({
+      rightPanelOpen: true,
+      searchedGames: []
+    })
   }
 
   closeRightPanel = () => {
     document.getElementById("mySidenav").style.width = "0";
-  }
-
-  //temporary get popular search replace with game search
-  gameSearch = (event) => {
-    event.preventDefault();
-
-    gamesAPI.getPopular().then(data => {
-      this.setState({
-        searchedGames: data
-      })
+    this.setState({
+      rightPanelOpen: false,
+      searchedGames: []
     })
   }
 
+  gameSearch = (event) => {
+    event.preventDefault();
+    if(this.state.rightPanelOpen === true){
+
+      let query = document.getElementById("gameSearch").value;
+      gamesAPI.gameSearch(query).then(data => {
+        // this.setState({
+          //   searchedGames: data
+          // })
+          console.log(data.data)
+          //data.data[0].game.cover
+          //get cover
+          if(this.state.rightPanelOpen === true){
+
+            data.data.forEach(element => {
+              
+              this.coverSearch(element)
+              
+            });
+          }
+        })
+      }
+  }
+
+  coverSearch = (query) => {
+    //need to send game name and id to put in state
+    console.log(query) ;
+    if(query.game !== undefined){
+
+        gamesAPI.gameCover(query.game.cover).then(data => {
+          let tempArray = this.state.searchedGames;
+          if(data.data[0] !== undefined){
+
+            data.data[0].url = data.data[0].url.replace('t_thumb', 't_cover_big')
+            tempArray.push(
+              {
+                id: query.game.id,
+                imgUrl:  data.data[0].url,
+                name: query.game.name
+              });
+              this.setState({
+                searchedGames: tempArray
+              })
+            }
+          })
+      }
+      }
   render() {
     return (
       <div>
         {/* right panel */}
-        <RightPanel closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames}/>
+        <RightPanel closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames} gameSearch={this.gameSearch} />
         {/* nav panel */}
         <SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg} active={this.props.active} />
 

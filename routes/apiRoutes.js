@@ -15,13 +15,15 @@ router.get("/search/:id", (req, res) => {
 			'Accept': 'application/json',
 			'user-key': process.env.GAMESUSERKEY
 		},
-		data: `fields game.*; search "${req.params.id}";`
+
+		data: `fields game.*; search "${req.params.id}"; limit 30;`
 	})
 		.then(response => {
 			res.send(response.data);
 		})
 		.catch(err => {
 			console.error(err);
+			res.send(err)
 		});
 
 });
@@ -83,6 +85,7 @@ router.get("/games/covers/:id", (req, res) => {
 		})
 		.catch(err => {
 			console.error(err);
+			res.send(err)
 		});
 
 });
