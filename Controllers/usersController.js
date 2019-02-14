@@ -8,6 +8,8 @@ module.exports = {
 		if (req.isAuthenticated()) {
 			//send user id to client
 			res.send(req.user)
+		} else {
+			res.send(false)
 		}
 	},
 

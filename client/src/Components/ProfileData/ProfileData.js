@@ -1,10 +1,10 @@
 import React from 'react';
 import './ProfileData.css';
 
-const ProfileData = () => (
-	<div className="profile-data">
-		<h2>100</h2>
-		<h3>CollectionData</h3>
+const ProfileData = (props) => (
+	<div className={`profile-data`} style={{borderColor: props.borderColor}}>
+		<h2 className="primaryText">{props.data}</h2>
+		<h3 className="secondaryText">{props.category}</h3>
 	</div>
 )
 

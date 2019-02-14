@@ -1,0 +1,17 @@
+.profile-data-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.latest-img {
+  padding: 27px;
+}
+
+.section-title h2 {
+  margin: 10px 30px;
+  font-family: var(--primaryFont);
+  font-weight: 700;
+}
