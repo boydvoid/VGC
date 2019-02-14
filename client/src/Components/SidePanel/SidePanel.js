@@ -11,7 +11,7 @@ const SidePanel = (props) => (
       <p className="secondaryText username">{props.username}</p>
 
       <ul>
-        <li className={props.active === "profile" ? "active" : ""}><Link to="/">  <i class="fas fa-user"></i> Profile </Link></li>
+        <li className={props.active === "profile" ? "active" : ""}><Link to="/profile">  <i class="fas fa-user"></i> Profile </Link></li>
         <li className={props.active === "collection" ? "active" : ""}><Link to="/collection"><i class="fas fa-book"></i> Collection</Link></li>
         <li className={props.active === "wishlist" ? "active" : ""}><Link to="/wishlist"><i class="fas fa-list-ol"></i> Wishlist</Link></li>
         <li className={props.active === "sell" ? "active" : ""}><Link to="/sell"><i class="fas fa-tags"></i> Sell List</Link></li>

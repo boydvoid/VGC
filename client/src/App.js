@@ -15,7 +15,8 @@ class App extends Component {
     username: "",
     email: "",
     theme: "",
-    img: ""
+    img: "",
+    loaded: false,
   }
 
   componentWillMount = () => {
@@ -33,9 +34,15 @@ class App extends Component {
             username: data.data.username,
             email: data.data.email,
             theme: data.data.theme,
-            img: data.data.img
+            img: data.data.img,
+            loaded: true
           })
 
+        })
+      } else {
+        this.setState({
+          loggedIn: false,
+          loaded: true
         })
       }
     })
@@ -44,17 +51,25 @@ class App extends Component {
 
   render() {
     return (
+     
       <div className="App" > 
+      {this.state.loaded ? 
         <div className={this.state.theme === 2 ? "dark-theme" : "light-theme"} id="theme-div">
           <Switch>
             <Route exact path="/" render={() => (
-              this.state.loggedIn ? (
-                <Dashboard theme = {this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
+              this.state.loggedIn === true ? (
+                <Redirect to='/profile' />
                 ) : (
                   <Landing />
                   )
                   )} />
-            
+            <Route exact path="/profile" render={() => (
+              this.state.loggedIn ? (
+                <Dashboard theme = {this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
+                ) : (
+                  <Redirect to='/' />
+                  )
+                  )} />
             <Route exact path="/collection" render={() => (
               this.state.loggedIn ? (
                 <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection/></Dashboard >
@@ -78,6 +93,9 @@ class App extends Component {
                   )} />
           </Switch>
         </div>
+        
+        : <div></div>}
+
       </div>
     );
   }

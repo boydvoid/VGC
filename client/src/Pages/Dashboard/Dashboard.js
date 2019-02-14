@@ -1,11 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import userAPI from '../../utils/userAPI';
+import gamesAPI from '../../utils/gamesAPI';
 import SidePanel from '../../Components/SidePanel/SidePanel';
-import Searchbar from '../../Components/Searchbar/Searchbar'
-import './Dashboard.css'
+import Searchbar from '../../Components/Searchbar/Searchbar';
+import './Dashboard.css';
+import RightPanel from '../../Components/RightPanel/RightPanel';
 class Dashboard extends Component {
   state = {
-    theme: this.props.theme
+    theme: this.props.theme,
+    searchGames: ""
   }
   componentDidMount = () => {
     this.switchState();
@@ -24,10 +27,7 @@ class Dashboard extends Component {
       document.getElementById("switch").checked = false;
     } else if (this.props.theme === 2) {
       document.getElementById("switch").checked = true;
-
-    } else {
-
-    }
+    } 
   }
 
   toggleTheme = () => {
@@ -57,13 +57,35 @@ class Dashboard extends Component {
       document.getElementById("theme-div").classList.add("light-theme")
     }
   }
+
+  openRightPanel = () => {
+    document.getElementById("mySidenav").style.width = "900px";
+  }
+
+  closeRightPanel = () => {
+    document.getElementById("mySidenav").style.width = "0";
+  }
+
+  //temporary get popular search replace with game search
+  gameSearch = (event) => {
+    event.preventDefault();
+
+    gamesAPI.getPopular().then(data => {
+      this.setState({
+        searchedGames: data
+      })
+    })
+  }
   render() {
     return (
       <div>
+        {/* right panel */}
+        <RightPanel closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames}/>
+        {/* nav panel */}
         <SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg} active={this.props.active} />
 
-        <div className="content">
-          <Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} />
+        <div className="content container-fluid">
+          <Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} openRightPanel={this.openRightPanel} closeRightPanel={this.closeRightPanel}/>
           {this.props.children}
         </div>
 
