@@ -15,6 +15,7 @@ router.get("/search/:id", (req, res) => {
 			'Accept': 'application/json',
 			'user-key': process.env.GAMESUSERKEY
 		},
+
 		data: `fields game.*; search "${req.params.id}"; limit 30;`
 	})
 		.then(response => {

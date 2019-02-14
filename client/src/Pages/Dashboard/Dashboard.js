@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import userAPI from '../../utils/userAPI';
+
 import gamesAPI from '../../utils/gamesAPI';
 import SidePanel from '../../Components/SidePanel/SidePanel';
 import Searchbar from '../../Components/Searchbar/Searchbar';
 import './Dashboard.css';
 import RightPanel from '../../Components/RightPanel/RightPanel';
+
 class Dashboard extends Component {
 
   state = {
+
     theme: this.props.theme,
     searchedGames: [],
     rightPanelOpen: false
@@ -19,10 +22,9 @@ class Dashboard extends Component {
 
 	getGame = () => {
 
+
 		gamesAPI.gameID("19560").then((data) => {
-
 				console.log(data);
-
 			})
 
 	};
@@ -42,6 +44,7 @@ class Dashboard extends Component {
       document.getElementById("switch").checked = true;
     } 
   }
+
 
   toggleTheme = () => {
     if (this.state.theme === 1) {
