@@ -12,3 +12,12 @@
   background-color: transparent !important;
   border: 2px solid #ffffff;
 }
+
+.search-btn {
+  border-radius: 0;
+  width: 49px;
+  height: 58px;
+  top: -3px;
+  position: relative;
+  background-color: var(--primaryColor) !important;
+}

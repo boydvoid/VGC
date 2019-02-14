@@ -21,9 +21,12 @@
 
 .dark-theme .sidebar {
   background-color: var(--d_secondary);
+  border-right: 1px solid #70707033;
 }
 
-.dark-theme .sidebar-logo {}
+.dark-theme .sidebar-logo {
+  border-bottom: 1px solid #70707033;
+}
 
 .dark-theme .secondaryText {
   color: var(--d_secondaryFontColor);
@@ -33,17 +36,35 @@
   color: var(--d_secondaryFontColor);
 }
 
+.dark-theme .primaryText {
+  color: var(--d_titleColor);
+}
+
 .dark-theme .sidebar .active {
   background-color: var(--d_primary);
-  border-left: 3px solid var(--primaryColor)
+  border-left: 3px solid var(--d_titleColor);
+  color: var(--primaryColor) !important;
+}
+
+.dark-theme .sidebar .active a {
+  color: var(--d_titleColor) !important;
 }
 
 .dark-theme .searchbar {
   color: var(--d_secondaryFontColor);
+  border-bottom: 1px solid #70707033;
 }
 
 .dark-theme .searchbar ::placeholder {
   color: var(--d_secondaryFontColor);
   font-family: var(--secondaryFont);
   font-size: 18px;
+}
+
+.dark-theme .searchbar input {
+  background-color: var(--d_secondary);
+}
+
+.dark-theme .profile-data-div {
+  border-bottom: 1px solid #70707033;
 }
