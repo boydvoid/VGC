@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 import GamesAPI from '../../utils/gamesAPI';
 import userAPI from '../../utils/userAPI';

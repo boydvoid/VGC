@@ -1,25 +1,40 @@
 import React, { Component } from 'react';
 import userAPI from '../../utils/userAPI';
+
 import gamesAPI from '../../utils/gamesAPI';
 import SidePanel from '../../Components/SidePanel/SidePanel';
 import Searchbar from '../../Components/Searchbar/Searchbar';
 import './Dashboard.css';
 import RightPanel from '../../Components/RightPanel/RightPanel';
+
 class Dashboard extends Component {
+
   state = {
+
     theme: this.props.theme,
     searchGames: ""
   }
-  componentDidMount = () => {
+
+	componentDidMount = () => {
     this.switchState();
-  }
+  };
+
+	getGame = () => {
+
+		gameAPI.gameID("19560").then((data) => {
+
+				console.log(data);
+
+			})
+
+	};
 
   logout = () => {
-    userAPI.logout().then(data => {
+    userAPI.logout().then(()=> {
       //reload the window on sucessful logout
       window.location.reload();
     });
-  }
+  };
 
   //check the state of the theme toggle on the dashboard
   switchState = () => {
@@ -30,25 +45,26 @@ class Dashboard extends Component {
     } 
   }
 
+
   toggleTheme = () => {
     if (this.state.theme === 1) {
       let data = {
         theme: 2
-      }
-      userAPI.update(data).then(data => {
+      };
+      userAPI.update(data).then(() => {
         this.setState({
           theme: 2
-        })
+        });
 
-        document.getElementById("theme-div").classList.remove("light-theme")
+        document.getElementById("theme-div").classList.remove("light-theme");
         document.getElementById("theme-div").classList.add("dark-theme")
       })
     } else {
 
       let data = {
         theme: 1
-      }
-      userAPI.update(data).then(data => {
+      };
+      userAPI.update(data).then(() => {
         this.setState({
           theme: 1
         })
@@ -76,6 +92,7 @@ class Dashboard extends Component {
       })
     })
   }
+
   render() {
     return (
       <div>
