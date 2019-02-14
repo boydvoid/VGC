@@ -3,6 +3,7 @@ import userAPI from '../../utils/userAPI';
 import SidePanel from '../../Components/SidePanel/SidePanel';
 import Searchbar from '../../Components/Searchbar/Searchbar'
 import './Dashboard.css'
+import RightPanel from '../../Components/RightPanel/RightPanel';
 class Dashboard extends Component {
   state = {
     theme: this.props.theme
@@ -57,13 +58,24 @@ class Dashboard extends Component {
       document.getElementById("theme-div").classList.add("light-theme")
     }
   }
+
+  openRightPanel = () => {
+    document.getElementById("mySidenav").style.width = "900px";
+  }
+
+  closeRightPanel = () => {
+    document.getElementById("mySidenav").style.width = "0";
+  }
   render() {
     return (
       <div>
+        {/* right panel */}
+        <RightPanel closeRightPanel={this.closeRightPanel}/>
+        {/* nav panel */}
         <SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg} active={this.props.active} />
 
         <div className="content container-fluid">
-          <Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} />
+          <Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} openRightPanel={this.openRightPanel} closeRightPanel={this.closeRightPanel}/>
           {this.props.children}
         </div>
 
