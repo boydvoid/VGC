@@ -6,11 +6,12 @@ const Searchbar = (props) => (
 
   <nav class="searchbar">
     <div>
-       <input type="text" placeholder="Search..." />
-      <Button text={<i class="fas fa-search"></i>} class="search-btn" onclick={props.openRightPanel}/>
     </div>
     <span className="ml-auto">
       <ul>
+        <li>
+      <Button text={<i class="fas fa-search"></i>} class="search-btn" onclick={props.openRightPanel}/>
+        </li>
         <li>
           <p>Night Mode</p>
         </li>

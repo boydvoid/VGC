@@ -6,11 +6,11 @@ const Profile = (props) => (
   <div className="row">
     <div className="col-xl-12 profile-data-div">
       <div className="control-div">
-        <ProfileData borderColor="#C32B2B" data="100" category="Collection"/>
-        <ProfileData borderColor="#6EC6FF" data="100" category="System"/>
-        <ProfileData borderColor="#3BC32B" data="100" category="Value"/>
-        <ProfileData borderColor="#C32BC3" data="100" category="Wishlist"/>
-        <ProfileData borderColor="#CBCB10" data="100" category="Selling"/>
+        <ProfileData borderColor="#EE4E4E" data="100" category="Collection"/>
+        <ProfileData borderColor="#4EA3EE" data="100" category="System"/>
+        <ProfileData borderColor="#4EEE59" data="100" category="Value"/>
+        <ProfileData borderColor="#CF4EEE" data="100" category="Wishlist"/>
+        <ProfileData borderColor="#EE8E4E" data="100" category="Selling"/>
       </div>
     </div>
     <div className="col-xl-12 profile-data-div">
