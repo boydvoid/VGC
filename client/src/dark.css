@@ -61,6 +61,10 @@
   font-size: 18px;
 }
 
+.dark-theme .searchbar input {
+  background-color: var(--d_secondary);
+}
+
 .dark-theme .profile-data-div {
   border-bottom: 1px solid #70707033;
 }

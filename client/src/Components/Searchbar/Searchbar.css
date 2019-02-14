@@ -6,9 +6,8 @@
 }
 
 .searchbar input {
-  background-color: transparent;
   border: none;
-  padding: 20px;
+  padding: 17px;
 }
 
 .searchbar input[type=checkbox] {
@@ -57,13 +56,13 @@
   list-style-type: none;
 }
 
-.searchbar ul li{
+.searchbar ul li {
   float: left;
-  padding: 0 10px; 
+  padding: 0 10px;
 }
 
 .searchbar ul li p {
-  font-size: 20px; 
+  font-size: 20px;
   font-family: var(--secondaryFont);
   font-weight: 700;
 }

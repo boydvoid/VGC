@@ -6,7 +6,10 @@ const Searchbar = (props) => (
 
   <nav class="searchbar">
     <div>
-      <i class="fas fa-search"></i> <input type="text" placeholder="Search..." />
+      <form action="">
+       <input type="text" placeholder="Search..." />
+      <Button text={<i class="fas fa-search"></i>} class="search-btn"/>
+      </form>
     </div>
     <span className="ml-auto">
       <ul>
