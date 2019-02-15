@@ -11,11 +11,11 @@ const SidePanel = (props) => (
       <p className="secondaryText username">{props.username}</p>
 
       <ul>
-        <li className={props.active === "profile" ? "active" : ""}><Link to="/profile">  <i class="fas fa-user"></i> Profile </Link></li>
-        <li className={props.active === "collection" ? "active" : ""}><Link to="/collection"><i class="fas fa-book"></i> Collection</Link></li>
-        <li className={props.active === "wishlist" ? "active" : ""}><Link to="/wishlist"><i class="fas fa-list-ol"></i> Wishlist</Link></li>
-        <li className={props.active === "sell" ? "active" : ""}><Link to="/sell"><i class="fas fa-tags"></i> Sell List</Link></li>
-        <li className={props.active === "chat" ? "active" : ""}><Link to="/chat"><i class="fas fa-comment-alt"></i> Chat</Link></li>
+        <li className={props.active === "profile" ? "active" : ""}><Link to="/profile">  <i className="fas fa-user"></i> Profile </Link></li>
+        <li className={props.active === "collection" ? "active" : ""}><Link to="/collection"><i className="fas fa-book"></i> Collection</Link></li>
+        <li className={props.active === "wishlist" ? "active" : ""}><Link to="/wishlist"><i className="fas fa-list-ol"></i> Wishlist</Link></li>
+        <li className={props.active === "sell" ? "active" : ""}><Link to="/sell"><i className="fas fa-tags"></i> Sell List</Link></li>
+        <li className={props.active === "chat" ? "active" : ""}><Link to="/chat"><i className="fas fa-comment-alt"></i> Chat</Link></li>
       </ul>
     <Button class="sidebar-btn" text={props.buttonText} onclick={props.buttonClick}/>
   </nav>
