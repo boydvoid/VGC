@@ -19,6 +19,7 @@ class Dashboard extends Component {
 		socket: this.props.socket
 	};
 
+
 	componentDidMount = () => {
 		this.switchState();
 	};
@@ -97,6 +98,7 @@ class Dashboard extends Component {
 				//data.data[0].game.cover
 				//get cover
 				if (this.state.rightPanelOpen === true) {
+
 
 					data.data.forEach(element => {
 
@@ -183,6 +185,7 @@ class Dashboard extends Component {
 		)
 
 	}
+
 }
 
 

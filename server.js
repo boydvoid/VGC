@@ -13,6 +13,24 @@ var expressValidator = require("express-validator");
 const session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 
+//socket.io
+const http = require('http')
+const socketIO = require('socket.io')
+const server = http.createServer(app);
+const io = socketIO(server);
+
+// This is what the socket.io syntax is like, we will work this later
+io.on('connection', socket => {
+  console.log('User connected')
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg)
+  })
+})
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -93,6 +111,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening on PORT:  ${PORT}`);
 })
