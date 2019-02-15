@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 import GamesAPI from '../../utils/gamesAPI';
 import userAPI from '../../utils/userAPI';
@@ -53,7 +53,7 @@ class Landing extends Component {
 
     this.state.random.forEach(element => {
 
-      GamesAPI.coverSearch(element.cover).then(res => {
+      GamesAPI.gameCover(element.cover).then(res => {
         res.data[0].url = res.data[0].url.replace('t_thumb', 't_cover_big')
         games.push(res.data)
         this.setState({
