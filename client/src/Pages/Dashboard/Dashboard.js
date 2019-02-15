@@ -7,7 +7,6 @@ import Searchbar from '../../Components/Searchbar/Searchbar';
 import './Dashboard.css';
 import RightPanel from '../../Components/RightPanel/RightPanel';
 import Chat from '../../Components/Chat/Chat'
-import { Socket } from 'net';
 class Dashboard extends Component {
 
   state = {
@@ -19,21 +18,21 @@ class Dashboard extends Component {
     socket: this.props.socket
   }
 
-	componentDidMount = () => {
+  componentDidMount = () => {
     this.switchState();
   };
 
-	getGame = () => {
+  getGame = () => {
 
 
-		gamesAPI.gameID("19560").then((data) => {
-				console.log(data);
-			})
+    gamesAPI.gameID("19560").then((data) => {
+      console.log(data);
+    })
 
-	};
+  };
 
   logout = () => {
-    userAPI.logout().then(()=> {
+    userAPI.logout().then(() => {
       //reload the window on sucessful logout
       window.location.reload();
     });
@@ -45,7 +44,7 @@ class Dashboard extends Component {
       document.getElementById("switch").checked = false;
     } else if (this.props.theme === 2) {
       document.getElementById("switch").checked = true;
-    } 
+    }
   }
 
 
@@ -95,93 +94,93 @@ class Dashboard extends Component {
 
   gameSearch = (event) => {
     event.preventDefault();
-    if(this.state.rightPanelOpen === true){
+    if (this.state.rightPanelOpen === true) {
 
       let query = document.getElementById("gameSearch").value;
       gamesAPI.gameSearch(query).then(data => {
         // this.setState({
-          //   searchedGames: data
-          // })
-          console.log(data.data)
-          //data.data[0].game.cover
-          //get cover
-          if(this.state.rightPanelOpen === true){
+        //   searchedGames: data
+        // })
+        console.log(data.data)
+        //data.data[0].game.cover
+        //get cover
+        if (this.state.rightPanelOpen === true) {
 
-            data.data.forEach(element => {
-              
-              this.coverSearch(element)
-              
-            });
-          }
-        })
-      }
+          data.data.forEach(element => {
+
+            this.coverSearch(element)
+
+          });
+        }
+      })
+    }
   }
 
   coverSearch = (query) => {
     //need to send game name and id to put in state
-    console.log(query) ;
-    if(query.game !== undefined){
+    console.log(query);
+    if (query.game !== undefined && query.game.cover !== undefined) {
 
-        gamesAPI.gameCover(query.game.cover).then(data => {
-          let tempArray = this.state.searchedGames;
-          if(data.data[0] !== undefined){
+      gamesAPI.gameCover(query.game.cover).then(data => {
+        let tempArray = this.state.searchedGames;
+        if (data.data !== undefined && data.data[0].url !== undefined) {
 
-            data.data[0].url = data.data[0].url.replace('t_thumb', 't_cover_big')
-            tempArray.push(
-              {
-                id: query.game.id,
-                imgUrl:  data.data[0].url,
-                name: query.game.name
-              });
-              this.setState({
-                searchedGames: tempArray
-              })
-            }
-          })
-      }
-      }
-
-      expandChatBox = () => {
-        if(this.state.chatboxExpanded === false){
+          data.data[0].url = data.data[0].url.replace('t_thumb', 't_cover_big')
+          tempArray.push(
+            {
+              id: query.game.id,
+              imgUrl: data.data[0].url,
+              name: query.game.name
+            });
           this.setState({
-            chatboxExpanded: true
-          })
-        } else {
-          this.setState({
-            chatboxExpanded: false
+            searchedGames: tempArray
           })
         }
-      }
+      })
+    }
+  }
 
-      // receive msg
-      sendMsg = (event) => {
-        event.preventDefault();
-        const { socket } = this.state;
-        //change to state later
-        let msg = document.getElementById('chatInput');
+  expandChatBox = () => {
+    if (this.state.chatboxExpanded === false) {
+      this.setState({
+        chatboxExpanded: true
+      })
+    } else {
+      this.setState({
+        chatboxExpanded: false
+      })
+    }
+  }
 
-        socket.emit('chat message', msg.value);
-        msg.value = "";
-         
-        socket.on('chat message', (msg) => {
-          let msgP = document.createElement("p").text = msg;
-          document.getElementById('msgs').append(msgP);
-        }); 
+  // receive msg
+  sendMsg = (event) => {
+    event.preventDefault();
+    const { socket } = this.state;
+    //change to state later
+    let msg = document.getElementById('chatInput');
 
-      }
+    socket.emit('chat message', msg.value);
+    msg.value = "";
+
+    socket.on('chat message', (msg) => {
+      let msgP = document.createElement("p").text = msg;
+      document.getElementById('msgs').append(msgP);
+    });
+
+  }
   render() {
     return (
       <div>
-          
+
         {/* chat */}
-        <Chat titleClick={this.expandChatBox} chatExpanded={this.state.chatboxExpanded} sendMsg={this.sendMsg}/>
+        <Chat titleClick={this.expandChatBox} chatExpanded={this.state.chatboxExpanded} sendMsg={this.sendMsg} />
         {/* right panel */}
         <RightPanel closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames} gameSearch={this.gameSearch} />
         {/* nav panel */}
         <SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg} active={this.props.active} />
 
         <div className="content container-fluid">
-          <Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} openRightPanel={this.openRightPanel} closeRightPanel={this.closeRightPanel}/>
+          <Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} openRightPanel={this.openRightPanel} closeRightPanel={this.closeRightPanel} />
           {this.props.children}
         </div>
 
