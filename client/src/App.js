@@ -8,6 +8,8 @@ import Profile from './Components/Profile/Profile'
 import Collection from './Components/Collection/Collection'
 import Wishlist from './Components/Wishlist/Wishlist'
 import Sell from './Components/Sell/Sell'
+//socket io
+import socketIO from 'socket.io-client'
 class App extends Component {
 
   state= {
@@ -17,27 +19,42 @@ class App extends Component {
     theme: "",
     img: "",
     loaded: false,
+    socket: socketIO()
   }
 
   componentWillMount = () => {
-    this.checkLogin();
-    
+    this.initSocket();
+    ;
+  }
+
+  initSocket = () => {
+    const {socket}= this.state;
+
+      let promise = new Promise ((resolve, reject) => {
+        resolve(socket.on('connected'))
+      })
+      promise.then(() => {
+        this.checkLogin()
+      }) 
   }
 
   checkLogin = () => {
     userAPI.checkLogin().then((user) => {
       if (user.data !== false) {
         userAPI.findUserById(user.data).then((data) => {
-          console.log(JSON.stringify(data.data))
+
+          //connect socket 
+          const { socket } = this.state;
+          socket.emit("USER_CONNECTED", data.data.username)
+
           this.setState({
             loggedIn: true,
             username: data.data.username,
             email: data.data.email,
             theme: data.data.theme,
             img: data.data.img,
-            loaded: true
+            loaded: true,
           })
-
         })
       } else {
         this.setState({
@@ -53,6 +70,7 @@ class App extends Component {
     return (
      
       <div className="App" > 
+
       {this.state.loaded ? 
         <div className={this.state.theme === 2 ? "dark-theme" : "light-theme"} id="theme-div">
           <Switch>
@@ -65,28 +83,28 @@ class App extends Component {
                   )} />
             <Route exact path="/profile" render={() => (
               this.state.loggedIn ? (
-                <Dashboard theme = {this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
+                <Dashboard socket={this.state.socket} theme = {this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
                 ) : (
                   <Redirect to='/' />
                   )
                   )} />
             <Route exact path="/collection" render={() => (
               this.state.loggedIn ? (
-                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection/></Dashboard >
+                <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection/></Dashboard >
                 ) : (
                   <Redirect to='/' />
                   )
                   )} />
             <Route exact path="/wishlist" render={() => (
               this.state.loggedIn ? (
-                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="wishlist"> <Wishlist/></Dashboard >
+                <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="wishlist"> <Wishlist/></Dashboard >
                 ) : (
                   <Redirect to='/' />
                   )
                   )} />
             <Route exact path="/sell" render={() => (
               this.state.loggedIn ? (
-                <Dashboard username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell/></Dashboard >
+                <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell/></Dashboard >
                 ) : (
                   <Redirect to='/' />
                   )

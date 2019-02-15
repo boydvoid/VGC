@@ -68,3 +68,12 @@
 .dark-theme .profile-data-div {
   border-bottom: 1px solid #70707033;
 }
+
+.dark-theme .chatbox {
+  background-color: var(--d_secondary);
+}
+
+.dark-theme .chat-title {
+  background-color: var(--primaryColor);
+  color: var(--d_titleColor);
+}

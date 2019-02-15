@@ -15,6 +15,7 @@ const SidePanel = (props) => (
         <li className={props.active === "collection" ? "active" : ""}><Link to="/collection"><i class="fas fa-book"></i> Collection</Link></li>
         <li className={props.active === "wishlist" ? "active" : ""}><Link to="/wishlist"><i class="fas fa-list-ol"></i> Wishlist</Link></li>
         <li className={props.active === "sell" ? "active" : ""}><Link to="/sell"><i class="fas fa-tags"></i> Sell List</Link></li>
+        <li className={props.active === "chat" ? "active" : ""}><Link to="/chat"><i class="fas fa-comment-alt"></i> Chat</Link></li>
       </ul>
     <Button class="sidebar-btn" text={props.buttonText} onclick={props.buttonClick}/>
   </nav>

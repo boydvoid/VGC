@@ -6,14 +6,17 @@ import SidePanel from '../../Components/SidePanel/SidePanel';
 import Searchbar from '../../Components/Searchbar/Searchbar';
 import './Dashboard.css';
 import RightPanel from '../../Components/RightPanel/RightPanel';
-
+import Chat from '../../Components/Chat/Chat'
+import { Socket } from 'net';
 class Dashboard extends Component {
 
   state = {
 
     theme: this.props.theme,
     searchedGames: [],
-    rightPanelOpen: false
+    rightPanelOpen: false,
+    chatboxExpanded: false,
+    socket: this.props.socket
   }
 
 	componentDidMount = () => {
@@ -137,9 +140,41 @@ class Dashboard extends Component {
           })
       }
       }
+
+      expandChatBox = () => {
+        if(this.state.chatboxExpanded === false){
+          this.setState({
+            chatboxExpanded: true
+          })
+        } else {
+          this.setState({
+            chatboxExpanded: false
+          })
+        }
+      }
+
+      // receive msg
+      sendMsg = (event) => {
+        event.preventDefault();
+        const { socket } = this.state;
+        //change to state later
+        let msg = document.getElementById('chatInput');
+
+        socket.emit('chat message', msg.value);
+        msg.value = "";
+         
+        socket.on('chat message', (msg) => {
+          let msgP = document.createElement("p").text = msg;
+          document.getElementById('msgs').append(msgP);
+        }); 
+
+      }
   render() {
     return (
       <div>
+          
+        {/* chat */}
+        <Chat titleClick={this.expandChatBox} chatExpanded={this.state.chatboxExpanded} sendMsg={this.sendMsg}/>
         {/* right panel */}
         <RightPanel closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames} gameSearch={this.gameSearch} />
         {/* nav panel */}
