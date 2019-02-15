@@ -16,8 +16,8 @@ const RightPanel = (props) => (
       <div key={key}>
         <img className="search-img" src={game.imgUrl} />)
         <p>{game.name}</p> 
-        <Button text="Add to Collection"/>
-        <Button text="Add to Wishlist"/>
+        <Button text="Add to Collection" dataId={game.id} dataName={game.name} dataUrl={game.imgUrl} onclick={props.addToCollection}/>
+        <Button text="Add to Wishlist"dataId={game.id} dataName={game.name} dataUrl={game.imgUrl}/>
       </div>
       )
     })}

@@ -1,6 +1,7 @@
 const express = require('express');
 const routes = require("./routes/apiRoutes");
 const User = require("./routes/userRoutes");
+const collectionRoutes = require("./routes/collectionRoutes");
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -72,6 +73,7 @@ app.use(passport.session());
 // Define API routes here
 app.use('/api', routes);
 app.use('/api', User);
+app.use('/api', collectionRoutes);
 
 // Passport use
 passport.use(new LocalStrategy(

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import GamesAPI from '../../utils/gamesAPI';
 import userAPI from '../../utils/userAPI';
+import collectionAPI from '../../utils/collectionAPI';
 //components
 import LandingIcons from '../../Components/LandingIcons/LandingIcons'
 import LandingText from '../../Components/LandingText/LandingText';
@@ -82,7 +83,7 @@ class Landing extends Component {
       //check the return if false user wasnt created
       console.log(data)
       if (data.data === true) {
-        window.location.reload();
+        this.createUserCollection();
       } else if (data.data[0] !== true) {
         this.setState({
           modalErrors: data.data[0]
@@ -90,7 +91,14 @@ class Landing extends Component {
       }
     })
   }
-
+  
+  createUserCollection = () => {
+    collectionAPI.create().then(data => {
+      window.location.reload();
+      
+    })
+  }
+  
   render() {
     return (
       <div className="container-fluid">

@@ -7,6 +7,7 @@ import Searchbar from '../../Components/Searchbar/Searchbar';
 import './Dashboard.css';
 import RightPanel from '../../Components/RightPanel/RightPanel';
 import Chat from '../../Components/Chat/Chat'
+import collectionAPI from '../../utils/collectionAPI';
 
 class Dashboard extends Component {
 
@@ -116,7 +117,7 @@ class Dashboard extends Component {
 
 			gamesAPI.gameCover(query.game.cover).then(data => {
 				let tempArray = this.state.searchedGames;
-				if (data.data !== undefined && data.data[0].url !== undefined) {
+				if (data.data !== undefined && data.data[0] !== undefined && data.data[0].url !== undefined) {
 
 					data.data[0].url = data.data[0].url.replace('t_thumb', 't_1080p');
 					tempArray.push(
@@ -162,6 +163,25 @@ class Dashboard extends Component {
 
 	};
 
+	addToCollection = (event) => {
+		let id= event.target.attributes.getNamedItem('data-id').value;
+		let name= event.target.attributes.getNamedItem('data-name').value;
+		let url= event.target.attributes.getNamedItem('data-url').value;
+		let data= {
+			id: id,
+			name: name,
+			url: url
+		}
+		collectionAPI.add(data).then((done) => {
+			console.log('added');
+		})
+	}
+	addToSell = () => {
+
+	}
+	addToWishlist = () => {
+
+	}
 	render() {
 		return (
 			<div>
@@ -169,7 +189,7 @@ class Dashboard extends Component {
 				{/* chat */}
 				<Chat titleClick = {this.expandChatBox} chatExpanded = {this.state.chatboxExpanded} sendMsg = {this.sendMsg}/>
 				{/* right panel */}
-				<RightPanel closeRightPanel = {this.closeRightPanel} searchedGames = {this.state.searchedGames} gameSearch = {this.gameSearch}/>
+				<RightPanel closeRightPanel = {this.closeRightPanel} searchedGames = {this.state.searchedGames} gameSearch = {this.gameSearch} addToCollection={this.addToCollection}/>
 				{/* nav panel */}
 				<SidePanel username = {this.props.username} buttonClick = {this.logout} buttonText = {"Logout"} profileImg = {this.props.profileImg}
 					active = {this.props.active}/>

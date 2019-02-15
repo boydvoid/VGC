@@ -5,7 +5,7 @@ import userAPI from './utils/userAPI'
 import Landing from './Pages/Landing/Landing'
 import Dashboard from './Pages/Dashboard/Dashboard'
 import Profile from './Components/Profile/Profile'
-import Collection from './Components/Collection/Collection'
+import Collection from './Pages/Collection/Collection'
 import Wishlist from './Components/Wishlist/Wishlist'
 import Sell from './Components/Sell/Sell'
 //socket io

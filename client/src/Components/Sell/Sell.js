@@ -1,7 +1,9 @@
 import React from 'react'
 
 const Sell = (props) => (
-  <div>Sell</div>
+  <div>
+    <p>{props.title}</p>
+  </div>
 )
 
 export default Sell;

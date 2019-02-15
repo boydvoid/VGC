@@ -1,7 +1,6 @@
 const axios = require("axios");
 const router = require("express").Router();
 require('dotenv').config();
-var express = require('express');
 
 
 // Search games using inputted text.
