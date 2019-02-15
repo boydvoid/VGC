@@ -67,7 +67,7 @@ class App extends Component {
     })
   }
 
-
+  
   render() {
     return (
 
@@ -92,21 +92,21 @@ class App extends Component {
               )} />
               <Route exact path="/collection" render={() => (
                 this.state.loggedIn ? (
-                  <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection /></Dashboard >
+                  <Dashboard socket={this.state.socket} theme={this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection socket={this.state.socket}/></Dashboard >
                 ) : (
                     <Redirect to='/' />
                   )
               )} />
               <Route exact path="/wishlist" render={() => (
                 this.state.loggedIn ? (
-                  <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="wishlist"> <Wishlist /></Dashboard >
+                  <Dashboard socket={this.state.socket} theme={this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="wishlist"> <Wishlist /></Dashboard >
                 ) : (
                     <Redirect to='/' />
                   )
               )} />
               <Route exact path="/sell" render={() => (
                 this.state.loggedIn ? (
-                  <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell /></Dashboard >
+                  <Dashboard socket={this.state.socket} theme={this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell /></Dashboard >
                 ) : (
                     <Redirect to='/' />
                   )

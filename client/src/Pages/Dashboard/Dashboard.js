@@ -174,6 +174,10 @@ class Dashboard extends Component {
 		}
 		collectionAPI.add(data).then((done) => {
 			console.log('added');
+			//live update with reloading page
+			const { socket } = this.state;
+			socket.emit('added to collection', data);
+		
 		})
 	}
 	addToSell = () => {

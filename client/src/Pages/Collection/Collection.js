@@ -1,12 +1,23 @@
 import React, { Component } from 'react'
 import collectionAPI from '../../utils/collectionAPI'
+import './Collection.css';
+import Button from '../../Components/Button/Button';
 class Collection extends Component {
   state= {
-    collection: []
+    collection: [],
+    socket: this.props.socket
   }
 
   componentWillMount = () => {
     this.getGames();
+    const { socket } = this.state;
+    socket.on('added to collection', data => {
+      let tempArray = this.state.collection;
+      tempArray.push(data)
+				this.setState({
+          collection: tempArray
+        })
+    })
   }
 
   getGames = () => {
@@ -17,18 +28,25 @@ class Collection extends Component {
       })
     })
   }
+
+
   render () {
     return (
-      <div>
+      <div className="container-fluid">
+        <div className="row">
+           
+      <div className="col-xl-12 d-flex" id="collection-wrapper">
         {this.state.collection.map((item,i) => {
-          console.log(item.data)
           return (
-            <div>
-              <img src={item.url} alt=""/>
+            <div key={i} className="collection-content">
+              <img className="collection-img" src={item.url} alt=""/>
               <p>{item.name}</p>
+              <Button text="X" onclick={this.props.removeFromCollection} />
             </div>
             )
         })}
+      </div>
+        </div> 
       </div>
     )
   }
