@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import userAPI from './utils/userAPI'
 // components
 import Landing from './Pages/Landing/Landing'
@@ -12,7 +12,7 @@ import Sell from './Components/Sell/Sell'
 import socketIO from 'socket.io-client'
 class App extends Component {
 
-  state= {
+  state = {
     loggedIn: false,
     username: "",
     email: "",
@@ -22,20 +22,22 @@ class App extends Component {
     socket: socketIO()
   }
 
-  componentWillMount = () => {
-    this.initSocket();
-    ;
+  componentWillMount = async () => {
+    await this.initSocket();
+    this.checkLogin();
   }
 
   initSocket = () => {
-    const {socket}= this.state;
+    const { socket } = this.state;
 
-      let promise = new Promise ((resolve, reject) => {
-        resolve(socket.on('connected'))
-      })
-      promise.then(() => {
-        this.checkLogin()
-      }) 
+    let promise = new Promise((resolve, reject) => {
+      resolve(socket.on('connected'))
+    })
+
+    return promise;
+    // promise.then(() => {
+    //   this.checkLogin()
+    // })
   }
 
   checkLogin = () => {
@@ -68,51 +70,51 @@ class App extends Component {
 
   render() {
     return (
-     
-      <div className="App" > 
 
-      {this.state.loaded ? 
-        <div className={this.state.theme === 2 ? "dark-theme" : "light-theme"} id="theme-div">
-          <Switch>
-            <Route exact path="/" render={() => (
-              this.state.loggedIn === true ? (
-                <Redirect to='/profile' />
+      <div className="App" >
+
+        {this.state.loaded ?
+          <div className={this.state.theme === 2 ? "dark-theme" : "light-theme"} id="theme-div">
+            <Switch>
+              <Route exact path="/" render={() => (
+                this.state.loggedIn === true ? (
+                  <Redirect to='/profile' />
                 ) : (
-                  <Landing />
+                    <Landing />
                   )
-                  )} />
-            <Route exact path="/profile" render={() => (
-              this.state.loggedIn ? (
-                <Dashboard socket={this.state.socket} theme = {this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile/></Dashboard >
+              )} />
+              <Route exact path="/profile" render={() => (
+                this.state.loggedIn ? (
+                  <Dashboard socket={this.state.socket} theme={this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="profile" > <Profile /></Dashboard >
                 ) : (
-                  <Redirect to='/' />
+                    <Redirect to='/' />
                   )
-                  )} />
-            <Route exact path="/collection" render={() => (
-              this.state.loggedIn ? (
-                <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection/></Dashboard >
+              )} />
+              <Route exact path="/collection" render={() => (
+                this.state.loggedIn ? (
+                  <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="collection"> <Collection /></Dashboard >
                 ) : (
-                  <Redirect to='/' />
+                    <Redirect to='/' />
                   )
-                  )} />
-            <Route exact path="/wishlist" render={() => (
-              this.state.loggedIn ? (
-                <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="wishlist"> <Wishlist/></Dashboard >
+              )} />
+              <Route exact path="/wishlist" render={() => (
+                this.state.loggedIn ? (
+                  <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="wishlist"> <Wishlist /></Dashboard >
                 ) : (
-                  <Redirect to='/' />
+                    <Redirect to='/' />
                   )
-                  )} />
-            <Route exact path="/sell" render={() => (
-              this.state.loggedIn ? (
-                <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell/></Dashboard >
+              )} />
+              <Route exact path="/sell" render={() => (
+                this.state.loggedIn ? (
+                  <Dashboard socket={this.state.socket} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell /></Dashboard >
                 ) : (
-                  <Redirect to='/' />
+                    <Redirect to='/' />
                   )
-                  )} />
-          </Switch>
-        </div>
-        
-        : <div></div>}
+              )} />
+            </Switch>
+          </div>
+
+          : <div></div>}
 
       </div>
     );
