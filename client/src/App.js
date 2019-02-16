@@ -7,7 +7,7 @@ import Dashboard from './Pages/Dashboard/Dashboard'
 import Profile from './Components/Profile/Profile'
 import Collection from './Pages/Collection/Collection'
 import Wishlist from './Components/Wishlist/Wishlist'
-import Sell from './Components/Sell/Sell'
+import Sell from './Pages/Sell/Sell'
 //socket io
 import socketIO from 'socket.io-client'
 class App extends Component {
@@ -106,7 +106,7 @@ class App extends Component {
               )} />
               <Route exact path="/sell" render={() => (
                 this.state.loggedIn ? (
-                  <Dashboard socket={this.state.socket} theme={this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell /></Dashboard >
+                  <Dashboard socket={this.state.socket} theme={this.state.theme} username={this.state.username} email={this.state.email} profileImg={this.state.img} active="sell"> <Sell socket={this.state.socket} /></Dashboard >
                 ) : (
                     <Redirect to='/' />
                   )

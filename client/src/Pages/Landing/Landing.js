@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import GamesAPI from '../../utils/gamesAPI';
 import userAPI from '../../utils/userAPI';
 import collectionAPI from '../../utils/collectionAPI';
+import sellAPI from '../../utils/sellAPI';
 //components
 import LandingIcons from '../../Components/LandingIcons/LandingIcons'
 import LandingText from '../../Components/LandingText/LandingText';
@@ -94,11 +95,16 @@ class Landing extends Component {
   
   createUserCollection = () => {
     collectionAPI.create().then(data => {
+      this.createUserSell();      
+    })
+  }
+  
+  createUserSell = () => {
+    sellAPI.create().then(data => {
       window.location.reload();
       
     })
   }
-  
   render() {
     return (
       <div className="container-fluid">

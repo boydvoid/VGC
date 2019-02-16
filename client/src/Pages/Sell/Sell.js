@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import collectionAPI from '../../utils/collectionAPI'
 import sellAPI from '../../utils/sellAPI'
-import './Collection.css';
 import Button from '../../Components/Button/Button';
 
-class Collection extends Component {
+class Sell extends Component {
   state= {
-    collection: [],
+    sell: [],
     socket: this.props.socket
   }
 
@@ -26,8 +25,8 @@ class Collection extends Component {
         })
     })
 
-    socket.on('removed from collection', data => {
-      let tempArray = this.state.collection;
+    socket.on('removed from sell', data => {
+      let tempArray = this.state.sell;
       tempArray = tempArray.filter(array => {return array.index !== data.index})
       this.setState({
         collection: tempArray
@@ -37,15 +36,15 @@ class Collection extends Component {
   }
 
   getGames = () => {
-    collectionAPI.getGames().then(data => {
+    sellAPI.getSell().then(data => {
       console.log(data.data)
       this.setState({
-        collection: data.data
+        sell: data.data
       })
     })
   }
 
-  removeFromCollection = (event) => {
+  removeFromSell = (event) => {
 		let id= event.target.attributes.getNamedItem('data-id').value;
 		let name= event.target.attributes.getNamedItem('data-name').value;
     let url= event.target.attributes.getNamedItem('data-url').value;
@@ -58,34 +57,16 @@ class Collection extends Component {
       index: parseInt(index) 
     }
 
-    collectionAPI.updateGames(data).then(done => {
+    sellAPI.updateSell(data).then(done => {
       const { socket } = this.state;
 
-      socket.emit('removed from collection', data);
+      socket.emit('removed from sell', data);
 
  
     })
   }
   
-  addToSell =(event) => {
-    console.log("pressed sell")
-    let id= event.target.attributes.getNamedItem('data-id').value;
-		let name= event.target.attributes.getNamedItem('data-name').value;
-		let url= event.target.attributes.getNamedItem('data-url').value;
-    let index= event.target.attributes.getNamedItem('data-index').value;
-		let data= {
-			id: id,
-			name: name,
-			url: url,
-			index: parseInt(index) 
-		}
-		sellAPI.add(data).then((done) => {
-			//live update with reloading page
-			const { socket } = this.state;
-			socket.emit('added to sell', done);
-		
-		})
-  }
+ 
 
   render () {
     return (
@@ -93,13 +74,12 @@ class Collection extends Component {
         <div className="row">
            
         <div className="col-xl-12 d-flex" id="collection-wrapper">
-          {this.state.collection.map((game,i) => {
+          {this.state.sell.map((game,i) => {
             return (
               <div key={i} className="collection-content">
                 <img className="collection-img" src={game.url} alt=""/>
                 <p>{game.name}</p>
-                <Button text="X" onclick={this.removeFromCollection} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index}/>
-                <Button text="Add to Sell List" onclick={this.addToSell} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index}/>
+                <Button text="X" onclick={this.removeFromSell} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index}/>
               </div>
               )
           })}
@@ -109,4 +89,4 @@ class Collection extends Component {
     )
   }
 }
-export default Collection;
+export default Sell;

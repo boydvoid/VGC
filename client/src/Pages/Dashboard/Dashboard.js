@@ -71,18 +71,16 @@ class Dashboard extends Component {
 	};
 
 	openRightPanel = () => {
-		document.getElementById("mySidenav").style.width = "900px";
+		document.getElementById("mySidenav").style.right = "0px";
 		this.setState({
 			rightPanelOpen: true,
-			searchedGames: []
 		})
 	};
 
 	closeRightPanel = () => {
-		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("mySidenav").style.right = "-900px";
 		this.setState({
 			rightPanelOpen: false,
-			searchedGames: []
 		})
 	};
 
@@ -174,16 +172,13 @@ class Dashboard extends Component {
 			index: ""
 		}
 		collectionAPI.add(data).then((done) => {
-			console.log(done)
 			//live update with reloading page
 			const { socket } = this.state;
 			socket.emit('added to collection', done);
 		
 		})
 	}
-	addToSell = () => {
-
-	}
+	
 	addToWishlist = () => {
 
 	}
