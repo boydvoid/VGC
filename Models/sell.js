@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const sellSchema = new Schema({
   date: { type: Date, default: convertTimeDate() },
-  userID: {type: Number, required: true},
+  userID: {type: String, required: true},
   data: {type: Array, required: true}
 });
 

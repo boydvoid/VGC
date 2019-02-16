@@ -10,9 +10,9 @@ const userSchema = new Schema({
   date: { type: Date, default: convertTimeDate() },
   theme: { type: Number, default: true },
   img:  {type: String, required: false},
-  userGames: {type: Number},
-  wishlist: {type: Number},
-  sell: {type: Number}
+  userGames: {type: String},
+  wishlist: {type: String},
+  sell: {type: String}
 });
 
 // Convert UTC to PST.

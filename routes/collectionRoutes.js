@@ -10,6 +10,11 @@ router
   .route('/add')
   .post(collectionController.add);
 
+//removes an item from the games array
+router
+  .route('/remove/game')
+  .post(collectionController.updateGames);
+  
 router 
   .route(`/getGames`)
   .get(collectionController.getGames);
