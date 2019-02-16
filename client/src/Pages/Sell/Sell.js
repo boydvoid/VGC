@@ -66,7 +66,20 @@ class Sell extends Component {
     })
   }
   
- 
+  addToPublicSell = (event) => {
+		let id= event.target.attributes.getNamedItem('data-id').value;
+		let name= event.target.attributes.getNamedItem('data-name').value;
+    let url= event.target.attributes.getNamedItem('data-url').value;
+    let index= event.target.attributes.getNamedItem('data-index').value;
+    let data = {
+			id: id,
+			name: name,
+      url: url,
+      index: parseInt(index) 
+    }
+
+    
+  }
 
   render () {
     return (
@@ -80,6 +93,7 @@ class Sell extends Component {
                 <img className="collection-img" src={game.url} alt=""/>
                 <p>{game.name}</p>
                 <Button text="X" onclick={this.removeFromSell} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index}/>
+                <Button text="Sell Game" onclick={this.addToPublicSell} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index}/>
               </div>
               )
           })}
