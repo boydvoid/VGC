@@ -93,11 +93,13 @@ class Dashboard extends Component {
 
 			let query = document.getElementById("gameSearch").value;
 
-			gamesAPI.gameSearch(query).then(data => {
+			gamesAPI.pop(query).then(data => {
 
 				if (this.state.rightPanelOpen === true) {
 
 					let tempArray = [];
+
+					console.log(data);
 
 					for (let i = 0; i < data.data.length; i++) {
 
@@ -113,8 +115,7 @@ class Dashboard extends Component {
 
 					}
 
-					console.log(tempArray);
-					this.coverSearch(tempArray)
+					// this.coverSearch(tempArray)
 
 				}
 			})
