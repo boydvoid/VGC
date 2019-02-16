@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import collectionAPI from '../../utils/collectionAPI'
 import './Collection.css';
 import Button from '../../Components/Button/Button';
+
 class Collection extends Component {
   state= {
     collection: [],
@@ -10,14 +11,28 @@ class Collection extends Component {
 
   componentWillMount = () => {
     this.getGames();
+    this.socketFunction();
+  }
+  
+  socketFunction = () => {
     const { socket } = this.state;
+
     socket.on('added to collection', data => {
       let tempArray = this.state.collection;
-      tempArray.push(data)
+      tempArray.push(data.data)
 				this.setState({
           collection: tempArray
         })
     })
+
+    socket.on('removed from collection', data => {
+      let tempArray = this.state.collection;
+      tempArray = tempArray.filter(array => {return array.index !== data.index})
+      this.setState({
+        collection: tempArray
+      })
+    }) 
+
   }
 
   getGames = () => {
@@ -29,6 +44,27 @@ class Collection extends Component {
     })
   }
 
+  removeFromCollection = (event) => {
+		let id= event.target.attributes.getNamedItem('data-id').value;
+		let name= event.target.attributes.getNamedItem('data-name').value;
+    let url= event.target.attributes.getNamedItem('data-url').value;
+    let index= event.target.attributes.getNamedItem('data-index').value;
+     
+		let data= {
+			id: id,
+			name: name,
+      url: url,
+      index: parseInt(index) 
+    }
+
+    collectionAPI.updateGames(data).then(done => {
+      const { socket } = this.state;
+
+      socket.emit('removed from collection', data);
+
+ 
+    })
+  }
 
   render () {
     return (
@@ -36,12 +72,12 @@ class Collection extends Component {
         <div className="row">
            
       <div className="col-xl-12 d-flex" id="collection-wrapper">
-        {this.state.collection.map((item,i) => {
+        {this.state.collection.map((game,i) => {
           return (
             <div key={i} className="collection-content">
-              <img className="collection-img" src={item.url} alt=""/>
-              <p>{item.name}</p>
-              <Button text="X" onclick={this.props.removeFromCollection} />
+              <img className="collection-img" src={game.url} alt=""/>
+              <p>{game.name}</p>
+              <Button text="X" onclick={this.removeFromCollection} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index}/>
             </div>
             )
         })}

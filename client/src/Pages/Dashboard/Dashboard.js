@@ -170,13 +170,14 @@ class Dashboard extends Component {
 		let data= {
 			id: id,
 			name: name,
-			url: url
+			url: url,
+			index: ""
 		}
 		collectionAPI.add(data).then((done) => {
-			console.log('added');
+			console.log(done)
 			//live update with reloading page
 			const { socket } = this.state;
-			socket.emit('added to collection', data);
+			socket.emit('added to collection', done);
 		
 		})
 	}

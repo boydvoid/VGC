@@ -10,6 +10,7 @@ const Button = (props) => (
     data-id={props.dataId}
     data-name={props.dataName}
     data-url={props.dataUrl}
+    data-index={props.dataIndex}
     
   >{props.text}</button>
 )
