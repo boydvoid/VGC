@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import userAPI from '../../utils/userAPI';
-
+import publicSellAPI from '../../utils/publicSellAPI'
 import gamesAPI from '../../utils/gamesAPI';
 import SidePanel from '../../Components/SidePanel/SidePanel';
 import Searchbar from '../../Components/Searchbar/Searchbar';
@@ -17,6 +17,8 @@ class Dashboard extends Component {
 		searchedGames: [],
 		rightPanelOpen: false,
 		chatboxExpanded: false,
+		showPublicSell: false,
+		publicSellGames: [],
 		socket: this.props.socket
 	};
 
@@ -84,6 +86,8 @@ class Dashboard extends Component {
 		})
 	};
 
+
+
 	gameSearch = (event) => {
 		event.preventDefault();
 		if (this.state.rightPanelOpen === true) {
@@ -147,7 +151,7 @@ class Dashboard extends Component {
 	// receive msg
 	sendMsg = (event) => {
 		event.preventDefault();
-		const {socket} = this.state;
+		const { socket } = this.state;
 		//change to state later
 		let msg = document.getElementById('chatInput');
 
@@ -162,10 +166,10 @@ class Dashboard extends Component {
 	};
 
 	addToCollection = (event) => {
-		let id= event.target.attributes.getNamedItem('data-id').value;
-		let name= event.target.attributes.getNamedItem('data-name').value;
-		let url= event.target.attributes.getNamedItem('data-url').value;
-		let data= {
+		let id = event.target.attributes.getNamedItem('data-id').value;
+		let name = event.target.attributes.getNamedItem('data-name').value;
+		let url = event.target.attributes.getNamedItem('data-url').value;
+		let data = {
 			id: id,
 			name: name,
 			url: url,
@@ -175,10 +179,28 @@ class Dashboard extends Component {
 			//live update with reloading page
 			const { socket } = this.state;
 			socket.emit('added to collection', done);
-		
+
 		})
 	}
-	
+	togglePublicSell = () => {
+		if (this.state.showPublicSell === false) {
+			this.getGamesForSale();
+		} else {
+			this.setState({
+				showPublicSell: false
+			})
+
+		}
+	}
+	getGamesForSale = () => {
+		publicSellAPI.getGames().then(data => {
+			this.setState({
+				publicSellGames: data.data,
+				showPublicSell: true
+			})
+		})
+	}
+
 	addToWishlist = () => {
 
 	}
@@ -187,16 +209,16 @@ class Dashboard extends Component {
 			<div>
 
 				{/* chat */}
-				<Chat titleClick = {this.expandChatBox} chatExpanded = {this.state.chatboxExpanded} sendMsg = {this.sendMsg}/>
+				<Chat titleClick={this.expandChatBox} chatExpanded={this.state.chatboxExpanded} sendMsg={this.sendMsg} />
 				{/* right panel */}
-				<RightPanel closeRightPanel = {this.closeRightPanel} searchedGames = {this.state.searchedGames} gameSearch = {this.gameSearch} addToCollection={this.addToCollection}/>
+				<RightPanel showPublicSell={this.state.showPublicSell} publicSellToggle={this.togglePublicSell} getGamesForSale={this.getGamesForSale} publicSellGames={this.state.publicSellGames} closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames} gameSearch={this.gameSearch} addToCollection={this.addToCollection} />
 				{/* nav panel */}
-				<SidePanel username = {this.props.username} buttonClick = {this.logout} buttonText = {"Logout"} profileImg = {this.props.profileImg}
-					active = {this.props.active}/>
+				<SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg}
+					active={this.props.active} />
 
-				<div className = "content container-fluid">
-					<Searchbar themeChecked = {this.props.themeChecked} toggleTheme = {this.toggleTheme} openRightPanel = {this.openRightPanel}
-						closeRightPanel = {this.closeRightPanel}/>
+				<div className="content container-fluid">
+					<Searchbar themeChecked={this.props.themeChecked} toggleTheme={this.toggleTheme} openRightPanel={this.openRightPanel}
+						closeRightPanel={this.closeRightPanel} />
 					{this.props.children}
 				</div>
 
