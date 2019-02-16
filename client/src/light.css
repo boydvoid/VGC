@@ -1,74 +1,74 @@
 :root {
-  --l_primary: #FFFFFF;
-  --l_secondary: #F3F3F3;
-  --l_titleColor: #818188;
-  --l_secondaryFontColor: #818182;
-  --l_buttonColor: #3D4866;
-  --borderColor: #7070705b;
+	--l_primary: #FFFFFF;
+	--l_secondary: #F3F3F3;
+	--l_titleColor: #818188;
+	--l_secondaryFontColor: #818182;
+	--l_buttonColor: #3D4866;
+	--borderColor: #7070705B;
 }
 
 .light-theme {
-  background-color: var(--l_primary);
+	background-color: var(--l_primary);
 }
 
 .light-theme .btn-primary {
-  background-color: var(--primaryColor);
+	background-color: var(--primaryColor);
 }
 
 .light-theme .logo {
-  color: var(--primaryColor);
+	color: var(--primaryColor);
 }
 
 .light-theme .sidebar {
-  background-color: var(--l_secondary);
-  border-right: 1px solid #70707033;
+	background-color: var(--l_secondary);
+	border-right: 1px solid #70707033;
 }
 
 .light-theme .sidebar-logo {
-  border-bottom: 1px solid #70707033;
+	border-bottom: 1px solid #70707033;
 }
 
 .light-theme .secondaryText {
-  color: var(--l_secondaryFontColor);
+	color: var(--l_secondaryFontColor);
 }
 
 .light-theme .sidebar ul li a {
-  color: var(--l_titleColor);
+	color: var(--l_titleColor);
 }
 
 .light-theme .title-text {
-  color: var(--l_titleColor);
+	color: var(--l_titleColor);
 }
 
 .light-theme .sidebar .active {
-  background-color: var(--l_primary);
-  border-left: 3px solid var(--primaryColor);
-  color: var(--primaryColor) !important;
+	background-color: var(--l_primary);
+	border-left: 3px solid var(--primaryColor);
+	color: var(--primaryColor) !important;
 }
 
 .light-theme .sidebar .active a {
-  color: var(--primaryColor) !important;
+	color: var(--primaryColor) !important;
 }
 
 .light-theme .searchbar {
-  color: var(--l_secondaryFontColor);
-  border-bottom: 1px solid #70707033;
+	color: var(--l_secondaryFontColor);
+	border-bottom: 1px solid #70707033;
 }
 
 .light-theme .searchbar ::placeholder {
-  color: var(--l_secondaryFontColor);
-  font-family: var(--secondaryFont);
-  font-size: 18px;
+	color: var(--l_secondaryFontColor);
+	font-family: var(--secondaryFont);
+	font-size: 18px;
 }
 
 .light-theme .searchbar input {
-  background-color: var(--l_secondary);
+	background-color: var(--l_secondary);
 }
 
 .light-theme .profile-data-div {
-  border-bottom: 1px solid #70707033;
+	border-bottom: 1px solid #70707033;
 }
 
 .light-theme .profile-data h2 {
-  color: #000000;
+	color: #000000;
 }

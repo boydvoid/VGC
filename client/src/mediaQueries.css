@@ -1,97 +1,94 @@
 @media (max-width: 1200px) {
 
-  /*
+	/*
 	---------------------------
 	Landing Page
 	---------------------------
 	*/
+	.text-dark,
+	.text-dark > h1,
+	.text-dark > p {
+		text-align: center;
+	}
 
-  .text-dark,
-  .text-dark>h1,
-  .text-dark>p {
-    text-align: center;
-  }
+	.text-light,
+	.text-light > h1,
+	.text-light > p {
+		text-align: center;
+	}
 
-  .text-light,
-  .text-light>h1,
-  .text-light>p {
-    text-align: center;
-  }
+	.login-btn {
+		color: #000000;
+		margin-right: 0;
+	}
 
-  .login-btn {
-    color: #000000;
-    margin-right: 0;
-  }
+	.navbar {
+		position: relative;
+	}
 
-  .navbar {
-    position: relative;
-  }
+	.top-div {
+		height: auto;
+	}
 
-  .top-div {
-    height: auto;
-  }
+	.bottom-div {
+		padding: 0;
+	}
 
-  .bottom-div {
-    padding: 0;
-  }
+	.landing-left {
+		margin: 2rem 0;
+	}
 
-  .landing-left {
-    margin: 2rem 0;
-  }
+	.imgGrid {
+		left: 6rem;
+		margin: 5em 0;
+		max-height: 36rem;
+	}
 
-  .imgGrid {
-    left: 6rem;
-    margin: 5em 0;
-    max-height: 36rem;
-  }
-
-  .imgGrid-single {
-    height: 17rem;
-  }
+	.imgGrid-single {
+		height: 17rem;
+	}
 
 }
 
 @media (max-width: 768px) {
 
-  /*
+	/*
 	---------------------------
 	Landing Page
 	---------------------------
 	*/
+	.navbar {
+		background-color: var(--primaryColor);
+	}
 
-  .navbar {
-    background-color: var(--primaryColor);
-  }
+	.logo-dot {
+		color: #FFFFFF;
+	}
 
-  .logo-dot {
-    color: #FFFFFF;
-  }
+	.login-btn {
+		color: #FFFFFF;
+	}
 
-  .login-btn {
-    color: #FFFFFF;
-  }
-
-  .imgGrid-single {
-    width: 12rem;
-  }
+	.imgGrid-single {
+		width: 12rem;
+	}
 
 }
 
 @media (max-width: 576px) {
 
-  /*
+	/*
 	---------------------------
 	Landing Page
 	---------------------------
 	*/
+	.text-dark > h1 {
+		font-size: 3.5em;
+		text-align: center;
+	}
 
-  .text-dark>h1 {
-    font-size: 3.5em;
-    text-align: center;
-  }
-
-  .text-dark>p {
-    margin: 2em 2em;
-  }
+	.text-dark > p {
+		margin: 2em 2em;
+	}
 
 }

@@ -24,15 +24,6 @@ class Landing extends Component {
 
 	};
 
-	// componentWillMount = () => {
-	//
-	// 	GamesAPI.gameID("(19560,19561)").then((data) => {
-	// 		console.log(data);
-	//
-	// 	})
-	//
-	// };
-
 	componentDidMount = () => {
 		this.getGames();
 	};
@@ -46,6 +37,7 @@ class Landing extends Component {
 	};
 
 	getGames = () => {
+
 		//get 10 newest games for a specific platform XBOX, PS4, PC
 		//48 = PS4, 49 = XBOX, 6 = PC
 

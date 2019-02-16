@@ -17,7 +17,8 @@ class Dashboard extends Component {
 		searchedGames: [],
 		rightPanelOpen: false,
 		chatboxExpanded: false,
-		socket: this.props.socket
+		socket: this.props.socket,
+		coversID: []
 	};
 
 
@@ -85,51 +86,62 @@ class Dashboard extends Component {
 	};
 
 	gameSearch = (event) => {
+
 		event.preventDefault();
+
 		if (this.state.rightPanelOpen === true) {
 
 			let query = document.getElementById("gameSearch").value;
+
 			gamesAPI.gameSearch(query).then(data => {
-				// this.setState({
-				//   searchedGames: data
-				// })
-				console.log(data.data);
-				//data.data[0].game.cover
-				//get cover
+
 				if (this.state.rightPanelOpen === true) {
 
+					let tempArray = [];
 
-					data.data.forEach(element => {
+					for (let i = 0; i < data.data.length; i++) {
 
-						this.coverSearch(element)
+						if (data.data[i].game !== undefined && data.data[i].game.cover !== undefined) {
 
-					});
+							tempArray.push(data.data[i].game.cover);
+
+						}
+
+						this.setState({
+							coversID: tempArray
+						})
+
+					}
+
+					console.log(tempArray);
+					this.coverSearch(tempArray)
+
 				}
 			})
 		}
 	};
 
-	coverSearch = (query) => {
-		//need to send game name and id to put in state
-		if (query.game !== undefined && query.game.cover !== undefined) {
+	coverSearch = (data) => {
 
-			gamesAPI.gameCover(query.game.cover).then(data => {
-				let tempArray = this.state.searchedGames;
-				if (data.data !== undefined && data.data[0] !== undefined && data.data[0].url !== undefined) {
+		gamesAPI.gameCover(`(${data})`).then(data => {
 
-					data.data[0].url = data.data[0].url.replace('t_thumb', 't_1080p');
-					tempArray.push(
-						{
-							id: query.game.id,
-							imgUrl: data.data[0].url,
-							name: query.game.name
-						});
-					this.setState({
-						searchedGames: tempArray
-					})
-				}
-			})
-		}
+			console.log(data);
+
+			// let tempArray = this.state.searchedGames;
+			// if (data.data !== undefined && data.data[0] !== undefined && data.data[0].url !== undefined) {
+			//
+			// 	data.data[0].url = data.data[0].url.replace('t_thumb', 't_1080p');
+			// 	tempArray.push(
+			// 		{
+			// 			id: query.game.id,
+			// 			imgUrl: data.data[0].url,
+			// 			name: query.game.name
+			// 		});
+			// 	this.setState({
+			// 		searchedGames: tempArray
+			// 	})
+			// }
+		})
 	};
 
 	expandChatBox = () => {
@@ -162,10 +174,10 @@ class Dashboard extends Component {
 	};
 
 	addToCollection = (event) => {
-		let id= event.target.attributes.getNamedItem('data-id').value;
-		let name= event.target.attributes.getNamedItem('data-name').value;
-		let url= event.target.attributes.getNamedItem('data-url').value;
-		let data= {
+		let id = event.target.attributes.getNamedItem('data-id').value;
+		let name = event.target.attributes.getNamedItem('data-name').value;
+		let url = event.target.attributes.getNamedItem('data-url').value;
+		let data = {
 			id: id,
 			name: name,
 			url: url,
@@ -173,15 +185,16 @@ class Dashboard extends Component {
 		}
 		collectionAPI.add(data).then((done) => {
 			//live update with reloading page
-			const { socket } = this.state;
+			const {socket} = this.state;
 			socket.emit('added to collection', done);
-		
+
 		})
 	}
-	
+
 	addToWishlist = () => {
 
 	}
+
 	render() {
 		return (
 			<div>
@@ -189,7 +202,8 @@ class Dashboard extends Component {
 				{/* chat */}
 				<Chat titleClick = {this.expandChatBox} chatExpanded = {this.state.chatboxExpanded} sendMsg = {this.sendMsg}/>
 				{/* right panel */}
-				<RightPanel closeRightPanel = {this.closeRightPanel} searchedGames = {this.state.searchedGames} gameSearch = {this.gameSearch} addToCollection={this.addToCollection}/>
+				<RightPanel closeRightPanel = {this.closeRightPanel} searchedGames = {this.state.searchedGames} gameSearch = {this.gameSearch}
+					addToCollection = {this.addToCollection}/>
 				{/* nav panel */}
 				<SidePanel username = {this.props.username} buttonClick = {this.logout} buttonText = {"Logout"} profileImg = {this.props.profileImg}
 					active = {this.props.active}/>
