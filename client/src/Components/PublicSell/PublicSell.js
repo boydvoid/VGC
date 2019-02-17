@@ -1,9 +1,13 @@
 import React from 'react';
 import Button from '../Button/Button';
 
-const RightPanel = (props) => (
+const PublicSell = (props) => (
 	<div id="publicSell" className="publicSell">
-		{props.publicSellGames.map((game, i) => {
+		<form>
+			<input type="text" name="searchPublicSellInput" onChange={props.handleChange}/>
+			<Button type="submit" text="Search" onclick={props.search}/>
+		</form>
+		{props.filteredGameResults.map((game, i) => {
 			return (
 				<div key={i}>
 					<img className="search-img" src={game.url} alt="" />
@@ -16,4 +20,4 @@ const RightPanel = (props) => (
 
 )
 
-export default RightPanel;
+export default PublicSell;

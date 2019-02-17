@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import userAPI from '../../utils/userAPI';
-import publicSellAPI from '../../utils/publicSellAPI'
-import gamesAPI from '../../utils/gamesAPI';
 import SidePanel from '../../Components/SidePanel/SidePanel';
 import Searchbar from '../../Components/Searchbar/Searchbar';
 import './Dashboard.css';
-import RightPanel from '../../Components/RightPanel/RightPanel';
+import RightPanel from '../../Pages/RightPanel/RightPanel';
 import Chat from '../../Components/Chat/Chat'
 import collectionAPI from '../../utils/collectionAPI';
 
@@ -17,7 +15,6 @@ class Dashboard extends Component {
 		searchedGames: [],
 		rightPanelOpen: false,
 		chatboxExpanded: false,
-		showPublicSell: false,
 		publicSellGames: [],
 		socket: this.props.socket
 	};
@@ -88,54 +85,6 @@ class Dashboard extends Component {
 
 
 
-	gameSearch = (event) => {
-		event.preventDefault();
-		if (this.state.rightPanelOpen === true) {
-
-			let query = document.getElementById("gameSearch").value;
-			gamesAPI.gameSearch(query).then(data => {
-				// this.setState({
-				//   searchedGames: data
-				// })
-				console.log(data.data);
-				//data.data[0].game.cover
-				//get cover
-				if (this.state.rightPanelOpen === true) {
-
-
-					data.data.forEach(element => {
-
-						this.coverSearch(element)
-
-					});
-				}
-			})
-		}
-	};
-
-	coverSearch = (query) => {
-		//need to send game name and id to put in state
-		if (query.game !== undefined && query.game.cover !== undefined) {
-
-			gamesAPI.gameCover(query.game.cover).then(data => {
-				let tempArray = this.state.searchedGames;
-				if (data.data !== undefined && data.data[0] !== undefined && data.data[0].url !== undefined) {
-
-					data.data[0].url = data.data[0].url.replace('t_thumb', 't_1080p');
-					tempArray.push(
-						{
-							id: query.game.id,
-							imgUrl: data.data[0].url,
-							name: query.game.name
-						});
-					this.setState({
-						searchedGames: tempArray
-					})
-				}
-			})
-		}
-	};
-
 	expandChatBox = () => {
 		if (this.state.chatboxExpanded === false) {
 			this.setState({
@@ -182,24 +131,7 @@ class Dashboard extends Component {
 
 		})
 	}
-	togglePublicSell = () => {
-		if (this.state.showPublicSell === false) {
-			this.getGamesForSale();
-		} else {
-			this.setState({
-				showPublicSell: false
-			})
 
-		}
-	}
-	getGamesForSale = () => {
-		publicSellAPI.getGames().then(data => {
-			this.setState({
-				publicSellGames: data.data,
-				showPublicSell: true
-			})
-		})
-	}
 
 	addToWishlist = () => {
 
@@ -211,7 +143,7 @@ class Dashboard extends Component {
 				{/* chat */}
 				<Chat titleClick={this.expandChatBox} chatExpanded={this.state.chatboxExpanded} sendMsg={this.sendMsg} />
 				{/* right panel */}
-				<RightPanel showPublicSell={this.state.showPublicSell} publicSellToggle={this.togglePublicSell} getGamesForSale={this.getGamesForSale} publicSellGames={this.state.publicSellGames} closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames} gameSearch={this.gameSearch} addToCollection={this.addToCollection} />
+				<RightPanel   closeRightPanel={this.closeRightPanel} searchedGames={this.state.searchedGames}  addToCollection={this.addToCollection} />
 				{/* nav panel */}
 				<SidePanel username={this.props.username} buttonClick={this.logout} buttonText={"Logout"} profileImg={this.props.profileImg}
 					active={this.props.active} />

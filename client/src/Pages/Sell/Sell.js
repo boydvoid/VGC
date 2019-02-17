@@ -18,13 +18,6 @@ class Sell extends Component {
   socketFunction = () => {
     const { socket } = this.state;
 
-    socket.on('added to collection', data => {
-      let tempArray = this.state.collection;
-      tempArray.push(data.data)
-      this.setState({
-        collection: tempArray
-      })
-    })
 
     socket.on('removed from sell', data => {
       let tempArray = this.state.sell;
@@ -45,7 +38,7 @@ class Sell extends Component {
     })
   }
 
-  removeFromSell = (event) => {
+  removeFromSellPage = (event) => {
     let id = event.target.attributes.getNamedItem('data-id').value;
     let name = event.target.attributes.getNamedItem('data-name').value;
     let url = event.target.attributes.getNamedItem('data-url').value;
@@ -67,24 +60,6 @@ class Sell extends Component {
     })
   }
 
-  addToPublicSell = (event) => {
-    let id = event.target.attributes.getNamedItem('data-id').value;
-    let name = event.target.attributes.getNamedItem('data-name').value;
-    let url = event.target.attributes.getNamedItem('data-url').value;
-    let index = event.target.attributes.getNamedItem('data-index').value;
-    let data = {
-      id: id,
-      name: name,
-      url: url,
-      index: parseInt(index)
-    }
-
-    publicSellAPI.add(data).then(done => {
-      const { socket } = this.state;
-      socket.emit('added to publick sell', data);
-    })
-
-  }
 
   render() {
     return (
@@ -97,7 +72,7 @@ class Sell extends Component {
                 <div key={i} className="collection-content">
                   <img className="collection-img" src={game.url} alt="" />
                   <p>{game.name}</p>
-                  <Button text="X" onclick={this.removeFromSell} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index} />
+                  <Button text="X" onclick={this.removeFromSellPage} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index} />
                   <Button text="Sell Game" onclick={this.addToPublicSell} dataId={game.id} dataName={game.name} dataUrl={game.url} dataIndex={game.index} />
                 </div>
               )
