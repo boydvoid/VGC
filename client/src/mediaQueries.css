@@ -6,14 +6,14 @@
 	---------------------------
 	*/
 	.text-dark,
-	.text-dark > h1,
-	.text-dark > p {
+	.text-dark>h1,
+	.text-dark>p {
 		text-align: center;
 	}
 
 	.text-light,
-	.text-light > h1,
-	.text-light > p {
+	.text-light>h1,
+	.text-light>p {
 		text-align: center;
 	}
 
@@ -82,12 +82,12 @@
 	Landing Page
 	---------------------------
 	*/
-	.text-dark > h1 {
+	.text-dark>h1 {
 		font-size: 3.5em;
 		text-align: center;
 	}
 
-	.text-dark > p {
+	.text-dark>p {
 		margin: 2em 2em;
 	}
 

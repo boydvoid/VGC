@@ -1,0 +1,11 @@
+{
+    "extends": ["airbnb", "react-app", "plugin:prettier/recommended"],
+    "rules": {
+        "no-console": "warn",
+        "linebreak-style": 0,
+        "react/jsx-filename-extension": [1, {
+            "extensions": [".js", ".jsx"]
+        }],
+        "react/prop-types": 0
+    }
+}
