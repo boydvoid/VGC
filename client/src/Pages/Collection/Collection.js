@@ -3,7 +3,7 @@ import collectionAPI from '../../utils/collectionAPI'
 import sellAPI from '../../utils/sellAPI'
 import './Collection.css';
 import Button from '../../Components/Button/Button';
-
+import publicSellAPI from '../../utils/publicSellAPI';
 class Collection extends Component {
   state= {
     collection: [],
@@ -83,8 +83,18 @@ class Collection extends Component {
 			//live update with reloading page
 			const { socket } = this.state;
 			socket.emit('added to sell', done);
-		
+    
+      this.addToPublicSell(data)
 		})
+  }
+
+  addToPublicSell = (data) => {
+
+    publicSellAPI.add(data).then(done => {
+      const { socket } = this.state;
+      socket.emit('added to public sell', data);
+    })
+
   }
 
   render () {

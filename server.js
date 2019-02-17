@@ -3,6 +3,7 @@ const routes = require("./routes/apiRoutes");
 const User = require("./routes/userRoutes");
 const collectionRoutes = require("./routes/collectionRoutes");
 const sellRoutes = require("./routes/sellRoutes");
+const publicSell = require("./routes/publicSellRoutes");
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -23,25 +24,25 @@ const io = socketIO(server);
 
 // This is what the socket.io syntax is like, we will work this later
 io.on('connection', socket => {
-	console.log('User connected')
+  console.log('User connected')
 
-	socket.on('disconnect', () => {
-		console.log('user disconnected')
-	})
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
 
-	socket.on('chat message', (msg) => {
-		io.emit('chat message', msg)
-	})
-	socket.on('added to collection', data => {
-		io.emit('added to collection', data)
-	})
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg)
+  })
+  socket.on('added to collection', data => {
+    io.emit('added to collection', data)
+  })
 
-	socket.on('removed from collection', data => {
-		io.emit('removed from collection', data)
-	})
-	socket.on('removed from sell', data => {
-		io.emit('removed from sell', data)
-	})
+  socket.on('removed from collection', data => {
+    io.emit('removed from collection', data)
+  })
+  socket.on('removed from sell', data => {
+    io.emit('removed from sell', data)
+  })
 })
 
 // Define middleware here
@@ -86,6 +87,7 @@ app.use('/api', routes);
 app.use('/api', User);
 app.use('/api', collectionRoutes);
 app.use('/api', sellRoutes);
+app.use('/api', publicSell);
 
 // Passport use
 passport.use(new LocalStrategy(

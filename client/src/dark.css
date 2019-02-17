@@ -1,79 +1,104 @@
 :root {
-	--d_primary: #313440;
-	--d_secondary: #262831;
-	--d_titleColor: #CADBE8;
-	--d_secondaryFontColor: #A0A9C2;
-	--d_buttonColor: #3D4866;
-	--borderColor: #7070705B;
+  --d_primary: #313440;
+  --d_secondary: #262831;
+  --d_titleColor: #CADBE8;
+  --d_secondaryFontColor: #A0A9C2;
+  --d_buttonColor: #3D4866;
+  --d_borderColor: #202128;
 }
 
 .dark-theme {
-	background-color: var(--d_primary);
+  background-color: var(--d_primary);
 }
 
 .dark-theme .btn-primary {
-	background-color: var(--d_buttonColor);
+  background-color: var(--d_buttonColor);
 }
 
 .dark-theme .logo {
-	color: var(--primaryColor);
+  color: var(--primaryColor);
 }
 
 .dark-theme .sidebar {
-	background-color: var(--d_secondary);
-	border-right: 1px solid #70707033;
+  background-color: var(--d_secondary);
+  border-right: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .sidebar-logo {
-	border-bottom: 1px solid #70707033;
+  border-bottom: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .secondaryText {
-	color: var(--d_secondaryFontColor);
+  color: var(--d_secondaryFontColor);
 }
 
 .dark-theme .sidebar ul li a {
-	color: var(--d_secondaryFontColor);
+  color: var(--d_secondaryFontColor);
 }
 
 .dark-theme .primaryText {
-	color: var(--d_titleColor);
+  color: var(--d_titleColor);
 }
 
 .dark-theme .sidebar .active {
-	background-color: var(--d_primary);
-	border-left: 3px solid var(--d_titleColor);
-	color: var(--primaryColor) !important;
+  background-color: var(--d_primary);
+  border-left: 1px solid var(--d_titleColor);
+  color: var(--primaryColor) !important;
 }
 
 .dark-theme .sidebar .active a {
-	color: var(--d_titleColor) !important;
+  color: var(--d_titleColor) !important;
 }
 
 .dark-theme .searchbar {
-	color: var(--d_secondaryFontColor);
-	border-bottom: 1px solid #70707033;
+  color: var(--d_secondaryFontColor);
+  border-bottom: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .searchbar ::placeholder {
-	color: var(--d_secondaryFontColor);
-	font-family: var(--secondaryFont);
-	font-size: 18px;
+  color: var(--d_secondaryFontColor);
+  font-family: var(--secondaryFont);
+  font-size: 18px;
 }
 
 .dark-theme .searchbar input {
-	background-color: var(--d_secondary);
+  background-color: var(--d_secondary);
 }
 
 .dark-theme .profile-data-div {
-	border-bottom: 1px solid #70707033;
+  border-bottom: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .chatbox {
-	background-color: var(--d_secondary);
+  background-color: var(--d_secondary);
 }
 
 .dark-theme .chat-title {
-	background-color: var(--primaryColor);
-	color: var(--d_titleColor);
+  background-color: var(--primaryColor);
+  color: var(--d_titleColor);
+}
+
+.dark-theme .sidenav {
+  background-color: var(--d_secondary);
+}
+
+.dark-theme .searchInput {
+  background-color: var(--d_primary);
+
+}
+
+.dark-theme .right-panel-nav {
+  border-bottom: 1px solid var(--d_borderColor);
+}
+
+.dark-theme .searchToggle {
+  background-color: var(--d_primary);
+}
+
+.dark-theme .toggleActive {
+  background-color: var(--d_buttonColor);
+}
+
+.dark-theme .overlay-show {
+  background-color: rgba(148, 148, 148, 0.397);
 }
