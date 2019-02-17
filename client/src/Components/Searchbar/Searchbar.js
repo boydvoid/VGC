@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import Button from '../Button/Button';
 import './Searchbar.css'
 const Searchbar = (props) => (
@@ -21,6 +20,6 @@ const Searchbar = (props) => (
       </ul>
     </span>
   </nav>
-)
+);
 
 export default Searchbar;

@@ -19,7 +19,7 @@ function convertTimeDate() {
   utcDate.setHours(utcDate.getHours() - 8);
   let usDate = new Date(utcDate);
 
-  return usDate;
+	return usDate;
 
 }
 

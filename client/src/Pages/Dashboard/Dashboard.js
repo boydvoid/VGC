@@ -12,7 +12,6 @@ class Dashboard extends Component {
 	state = {
 
 		theme: this.props.theme,
-		searchedGames: [],
 		rightPanelOpen: false,
 		chatboxExpanded: false,
 		publicSellGames: [],
@@ -126,10 +125,10 @@ class Dashboard extends Component {
 			name: name,
 			url: url,
 			index: ""
-		}
+		};
 		collectionAPI.add(data).then((done) => {
 			//live update with reloading page
-			const { socket } = this.state;
+			const {socket} = this.state;
 			socket.emit('added to collection', done);
 
 		})
@@ -138,7 +137,8 @@ class Dashboard extends Component {
 
 	addToWishlist = () => {
 
-	}
+	};
+
 	render() {
 		return (
 			<div>
