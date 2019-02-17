@@ -17,7 +17,8 @@ class Dashboard extends Component {
 		searchedGames: [],
 		rightPanelOpen: false,
 		chatboxExpanded: false,
-		socket: this.props.socket
+		socket: this.props.socket,
+		coversID: []
 	};
 
 
@@ -85,48 +86,152 @@ class Dashboard extends Component {
 	};
 
 	gameSearch = (event) => {
+
 		event.preventDefault();
+
 		if (this.state.rightPanelOpen === true) {
 
 			let query = document.getElementById("gameSearch").value;
+
 			gamesAPI.gameSearch(query).then(data => {
-				// this.setState({
-				//   searchedGames: data
-				// })
-				console.log(data.data);
-				//data.data[0].game.cover
-				//get cover
+
 				if (this.state.rightPanelOpen === true) {
 
+					let tempArray = [];
 
-					data.data.forEach(element => {
+					console.log(data);
 
-						this.coverSearch(element)
+					for (let i = 0; i < data.data.length; i++) {
 
-					});
-				}
-			})
-		}
-	};
+						let gameSeries;
+						let gameModes = [];
+						let gameCompanies = [];
+						let gamePlatforms = [];
+						let gameReleaseDate = [];
+						let gameScreenshots = [];
+						let gameWebsites = [];
 
-	coverSearch = (query) => {
-		//need to send game name and id to put in state
-		if (query.game !== undefined && query.game.cover !== undefined) {
+						if (data.data[i].cover !== undefined && data.data[i].cover.url !== undefined) {
 
-			gamesAPI.gameCover(query.game.cover).then(data => {
-				let tempArray = this.state.searchedGames;
-				if (data.data !== undefined && data.data[0] !== undefined && data.data[0].url !== undefined) {
+							// Replace image size.
+							data.data[i].cover.url = data.data[i].cover.url.replace('t_thumb', 't_1080p');
 
-					data.data[0].url = data.data[0].url.replace('t_thumb', 't_1080p');
-					tempArray.push(
-						{
-							id: query.game.id,
-							imgUrl: data.data[0].url,
-							name: query.game.name
-						});
-					this.setState({
-						searchedGames: tempArray
-					})
+							// Check if Game is part of a series.
+							data.data[i].collection === undefined || data.data[i].collection.name === undefined ? gameSeries = 'No Series' : gameSeries = data.data[i].collection.name;
+
+							// Check if Game has Game Modes listed.
+							if (data.data[i].game_modes === undefined) {
+
+								gameModes.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].game_modes.length; j++) {
+
+									gameModes.push(data.data[i].game_modes[j].name);
+
+								}
+							}
+
+							// Check if Game has Companies listed.
+							if (data.data[i].involved_companies === undefined) {
+
+								gameCompanies.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].involved_companies.length; j++) {
+
+									gameCompanies.push(data.data[i].involved_companies[j].company.name);
+
+								}
+							}
+
+							// Check if Game has platforms listed.
+							if (data.data[i].platforms === undefined) {
+
+								gamePlatforms.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].platforms.length; j++) {
+
+									gamePlatforms.push(data.data[i].platforms[j].name);
+
+								}
+							}
+
+							// Check if Game has Release Date listed.
+							if (data.data[i].release_dates === undefined) {
+
+								gameReleaseDate.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].release_dates.length; j++) {
+
+									gameReleaseDate.push(data.data[i].release_dates[j].human);
+
+								}
+							}
+
+							// Check if Game has screenshots listed.
+							if (data.data[i].screenshots === undefined) {
+
+								gameScreenshots.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].screenshots.length; j++) {
+
+									gameScreenshots.push(data.data[i].screenshots[j].url);
+
+								}
+							}
+
+							// Check if Game has websites listed.
+							if (data.data[i].websites === undefined) {
+
+								gameWebsites.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].websites.length; j++) {
+
+									gameWebsites.push(data.data[i].websites[j].url);
+
+								}
+							}
+
+							tempArray.push(
+								{
+									id: data.data[i].id,
+									name: data.data[i].name,
+									series: gameSeries,
+									imgUrl: data.data[i].cover.url,
+									gameModes: gameModes,
+									company: gameCompanies,
+									platform: gamePlatforms,
+									releaseDate: gameReleaseDate,
+									averageRating: data.data[i].aggregated_rating,
+									averageRatingSources: data.data[i].aggregated_rating_count,
+									screenshots: gameScreenshots,
+									summary: data.data[i].summary,
+									igdbLink: data.data[i].url,
+									websites: gameWebsites
+								});
+
+							this.setState({
+								searchedGames: tempArray
+							});
+
+						} else {
+
+						}
+					}
+
+					console.log(this.state.searchedGames);
+
 				}
 			})
 		}
@@ -162,26 +267,27 @@ class Dashboard extends Component {
 	};
 
 	addToCollection = (event) => {
-		let id= event.target.attributes.getNamedItem('data-id').value;
-		let name= event.target.attributes.getNamedItem('data-name').value;
-		let url= event.target.attributes.getNamedItem('data-url').value;
-		let data= {
+		let id = event.target.attributes.getNamedItem('data-id').value;
+		let name = event.target.attributes.getNamedItem('data-name').value;
+		let url = event.target.attributes.getNamedItem('data-url').value;
+		let data = {
 			id: id,
 			name: name,
 			url: url,
 			index: ""
-		}
+		};
 		collectionAPI.add(data).then((done) => {
 			//live update with reloading page
-			const { socket } = this.state;
+			const {socket} = this.state;
 			socket.emit('added to collection', done);
-		
+
 		})
-	}
-	
+	};
+
 	addToWishlist = () => {
 
-	}
+	};
+
 	render() {
 		return (
 			<div>
@@ -189,7 +295,8 @@ class Dashboard extends Component {
 				{/* chat */}
 				<Chat titleClick = {this.expandChatBox} chatExpanded = {this.state.chatboxExpanded} sendMsg = {this.sendMsg}/>
 				{/* right panel */}
-				<RightPanel closeRightPanel = {this.closeRightPanel} searchedGames = {this.state.searchedGames} gameSearch = {this.gameSearch} addToCollection={this.addToCollection}/>
+				<RightPanel closeRightPanel = {this.closeRightPanel} searchedGames = {this.state.searchedGames} gameSearch = {this.gameSearch}
+					addToCollection = {this.addToCollection}/>
 				{/* nav panel */}
 				<SidePanel username = {this.props.username} buttonClick = {this.logout} buttonText = {"Logout"} profileImg = {this.props.profileImg}
 					active = {this.props.active}/>

@@ -24,15 +24,6 @@ class Landing extends Component {
 
 	};
 
-	// componentWillMount = () => {
-	//
-	// 	GamesAPI.gameID("(19560,19561)").then((data) => {
-	// 		console.log(data);
-	//
-	// 	})
-	//
-	// };
-
 	componentDidMount = () => {
 		this.getGames();
 	};
@@ -46,6 +37,7 @@ class Landing extends Component {
 	};
 
 	getGames = () => {
+
 		//get 10 newest games for a specific platform XBOX, PS4, PC
 		//48 = PS4, 49 = XBOX, 6 = PC
 
@@ -77,7 +69,6 @@ class Landing extends Component {
 			for (let i = 0; i < res.data.length; i++) {
 
 				res.data[i].url = res.data[i].url.replace('t_thumb', 't_1080p');
-				res.data[i].url = res.data[i].url.replace('//', 'https://');
 				gameCoverIDImages.push(res.data[i].url);
 
 			}

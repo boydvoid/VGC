@@ -23,8 +23,8 @@ module.exports = {
 	updateData: (req, res) => {
 
 		db.users.findOneAndUpdate({
-			_id: req.user
-		},
+				_id: req.user
+			},
 			req.body
 		).then(data => {
 			res.send(data)
