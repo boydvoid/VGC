@@ -4,7 +4,7 @@
   --d_titleColor: #CADBE8;
   --d_secondaryFontColor: #A0A9C2;
   --d_buttonColor: #3D4866;
-  --borderColor: #7070705b;
+  --d_borderColor: #202128;
 }
 
 .dark-theme {
@@ -21,11 +21,11 @@
 
 .dark-theme .sidebar {
   background-color: var(--d_secondary);
-  border-right: 1px solid #70707033;
+  border-right: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .sidebar-logo {
-  border-bottom: 1px solid #70707033;
+  border-bottom: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .secondaryText {
@@ -42,7 +42,7 @@
 
 .dark-theme .sidebar .active {
   background-color: var(--d_primary);
-  border-left: 3px solid var(--d_titleColor);
+  border-left: 1px solid var(--d_titleColor);
   color: var(--primaryColor) !important;
 }
 
@@ -52,7 +52,7 @@
 
 .dark-theme .searchbar {
   color: var(--d_secondaryFontColor);
-  border-bottom: 1px solid #70707033;
+  border-bottom: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .searchbar ::placeholder {
@@ -66,7 +66,7 @@
 }
 
 .dark-theme .profile-data-div {
-  border-bottom: 1px solid #70707033;
+  border-bottom: 1px solid var(--d_borderColor);
 }
 
 .dark-theme .chatbox {
@@ -76,4 +76,25 @@
 .dark-theme .chat-title {
   background-color: var(--primaryColor);
   color: var(--d_titleColor);
+}
+
+.dark-theme .sidenav {
+  background-color: var(--d_secondary);
+}
+
+.dark-theme .searchInput {
+  background-color: var(--d_primary);
+
+}
+
+.dark-theme .right-panel-nav {
+  border-bottom: 1px solid var(--d_borderColor);
+}
+
+.dark-theme .searchToggle {
+  background-color: var(--d_primary);
+}
+
+.dark-theme .toggleActive {
+  background-color: var(--d_buttonColor);
 }

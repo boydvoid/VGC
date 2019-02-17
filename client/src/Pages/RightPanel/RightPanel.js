@@ -13,7 +13,8 @@ class RightPanel extends Component {
     resultsSearchedGames: [],
     showPublicSell: false,
     resultsSearchedPublicSellGames: [],
-    filteredGameResults: []
+    filteredGameResults: [],
+    activeSearch: 'games'
   }
 
   handleChange = (event) => {
@@ -100,10 +101,14 @@ class RightPanel extends Component {
  
   togglePublicSell = () => {
 		if (this.state.showPublicSell === false) {
-			this.getGamesForSale();
+      this.getGamesForSale();
+      this.setState({
+        activeSearch: 'sell'
+      })
 		} else {
 			this.setState({
-				showPublicSell: false
+        showPublicSell: false,
+        activeSearch: 'games'
 			})
 
 		}
@@ -120,8 +125,22 @@ class RightPanel extends Component {
   render () {
     return (
       <div id="mySidenav" className="sidenav">
-      <Button text="&times;" onclick={this.props.closeRightPanel} class="closebtn" />
-      <Button text={this.state.showPublicSell ? "Search for Games" : "Games for Sale"} onclick={this.togglePublicSell} />
+        <div className="d-flex right-panel-nav justify-content-between align-items-center">
+          <Button text="&times;" onclick={this.props.closeRightPanel} class="closebtn" />
+          <div>
+            <Button class={this.state.activeSearch === 'games' ? "searchToggle toggleActive border-radius-left": "searchToggle border-radius-left"} text={"Search for Games"} onclick={this.state.showPublicSell ? this.togglePublicSell : ""} />
+            <Button class={this.state.activeSearch === 'sell' ? "searchToggle toggleActive border-radius-right": "searchToggle border-radius-right"} text={ "Games for Sale"} onclick={this.state.showPublicSell ? "" : this.togglePublicSell} />
+          </div>
+          <form className="searchForm">
+            <input className="searchInput" id="gameSearch" type="text" placeholder="Search" name={this.state.showPublicSell ?"searchPublicSellInput" :"searchGamesInput" }  onChange={this.handleChange}/>
+            {
+              this.state.showPublicSell ? 
+              "" 
+              : 
+              <Button class="search-btn" type="submit" text={<i className="fas fa-search"></i>} onclick={ this.state.showPublicSell ? "": this.gameSearch} />
+            }
+          </form>
+        </div>
       {this.state.showPublicSell ?
         // show games for sale 
         <PublicSell 
@@ -133,10 +152,7 @@ class RightPanel extends Component {
   
         // show search list
         <div className="searchResults">
-          <form>
-            <input id="gameSearch" type="text" placeholder="Search" name="searchGamesInput"  onChange={this.handleChange}/>
-            <Button class="search-btn" type="submit" text={<i className="fas fa-search"></i>} onclick={this.gameSearch} />
-          </form>
+       
   
           {this.state.resultsSearchedGames.map((game, key) => {
             return (

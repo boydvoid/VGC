@@ -157,3 +157,11 @@ Bottom Div
 	justify-items: center;
 	padding: 100px;
 }
+
+/* search field for the right panel */
+.searchInput {
+	border: none;
+	padding: 5px 20px;
+	border-radius: 10px 0 0 10px;
+
+}
