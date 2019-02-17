@@ -61,6 +61,10 @@
   font-size: 18px;
 }
 
+.light-theme .sidenav {
+  background-color: var(--l_secondary);
+}
+
 .light-theme .searchbar input {
   background-color: var(--l_secondary);
 }
@@ -71,4 +75,16 @@
 
 .light-theme .profile-data h2 {
   color: #000000;
+}
+
+.light-theme .searchToggle {
+  background-color: var(--l_primary);
+}
+
+.light-theme .toggleActive {
+  background-color: var(--l_buttonColor);
+}
+
+.light-theme .overlay-show {
+  background-color: rgba(61, 61, 61, 0.397);
 }

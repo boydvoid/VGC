@@ -98,3 +98,7 @@
 .dark-theme .toggleActive {
   background-color: var(--d_buttonColor);
 }
+
+.dark-theme .overlay-show {
+  background-color: rgba(148, 148, 148, 0.397);
+}

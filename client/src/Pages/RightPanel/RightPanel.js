@@ -126,10 +126,22 @@ class RightPanel extends Component {
     return (
       <div id="mySidenav" className="sidenav">
         <div className="d-flex right-panel-nav justify-content-between align-items-center">
-          <Button text="&times;" onclick={this.props.closeRightPanel} class="closebtn" />
+          <Button 
+            text="&times;" 
+            onclick={this.props.closeRightPanel} 
+            class="closebtn" 
+           />
           <div>
-            <Button class={this.state.activeSearch === 'games' ? "searchToggle toggleActive border-radius-left": "searchToggle border-radius-left"} text={"Search for Games"} onclick={this.state.showPublicSell ? this.togglePublicSell : ""} />
-            <Button class={this.state.activeSearch === 'sell' ? "searchToggle toggleActive border-radius-right": "searchToggle border-radius-right"} text={ "Games for Sale"} onclick={this.state.showPublicSell ? "" : this.togglePublicSell} />
+            <Button 
+              class={this.state.activeSearch === 'games' ? "searchToggle toggleActive border-radius-left": "searchToggle border-radius-left"} 
+              text={"Search for Games"} 
+              onclick={this.state.showPublicSell ? this.togglePublicSell : ""} 
+            />
+            <Button 
+              class={this.state.activeSearch === 'sell' ? "searchToggle toggleActive border-radius-right": "searchToggle border-radius-right"} 
+              text={ "Games for Sale"} 
+              onclick={this.state.showPublicSell ? "" : this.togglePublicSell} 
+            />
           </div>
           <form className="searchForm">
             <input className="searchInput" id="gameSearch" type="text" placeholder="Search" name={this.state.showPublicSell ?"searchPublicSellInput" :"searchGamesInput" }  onChange={this.handleChange}/>

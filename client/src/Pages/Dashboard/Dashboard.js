@@ -16,6 +16,7 @@ class Dashboard extends Component {
 		rightPanelOpen: false,
 		chatboxExpanded: false,
 		publicSellGames: [],
+		overlayShow: "",
 		socket: this.props.socket
 	};
 
@@ -73,6 +74,7 @@ class Dashboard extends Component {
 		document.getElementById("mySidenav").style.right = "0px";
 		this.setState({
 			rightPanelOpen: true,
+			overlayShow: "overlay-show"
 		})
 	};
 
@@ -80,6 +82,7 @@ class Dashboard extends Component {
 		document.getElementById("mySidenav").style.right = "-900px";
 		this.setState({
 			rightPanelOpen: false,
+			overlayShow: ""
 		})
 	};
 
@@ -139,7 +142,7 @@ class Dashboard extends Component {
 	render() {
 		return (
 			<div>
-
+				<div className={`overlay ${this.state.overlayShow}`} onClick={this.closeRightPanel}></div>
 				{/* chat */}
 				<Chat titleClick={this.expandChatBox} chatExpanded={this.state.chatboxExpanded} sendMsg={this.sendMsg} />
 				{/* right panel */}
