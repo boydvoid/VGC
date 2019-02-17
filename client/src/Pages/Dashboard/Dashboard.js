@@ -93,7 +93,7 @@ class Dashboard extends Component {
 
 			let query = document.getElementById("gameSearch").value;
 
-			gamesAPI.pop(query).then(data => {
+			gamesAPI.gameSearch(query).then(data => {
 
 				if (this.state.rightPanelOpen === true) {
 
@@ -103,46 +103,138 @@ class Dashboard extends Component {
 
 					for (let i = 0; i < data.data.length; i++) {
 
-						if (data.data[i].game !== undefined && data.data[i].game.cover !== undefined) {
+						let gameSeries;
+						let gameModes = [];
+						let gameCompanies = [];
+						let gamePlatforms = [];
+						let gameReleaseDate = [];
+						let gameScreenshots = [];
+						let gameWebsites = [];
 
-							tempArray.push(data.data[i].game.cover);
+						if (data.data[i].cover !== undefined && data.data[i].cover.url !== undefined) {
+
+							// Replace image size.
+							data.data[i].cover.url = data.data[i].cover.url.replace('t_thumb', 't_1080p');
+
+							// Check if Game is part of a series.
+							data.data[i].collection === undefined || data.data[i].collection.name === undefined ? gameSeries = 'No Series' : gameSeries = data.data[i].collection.name;
+
+							// Check if Game has Game Modes listed.
+							if (data.data[i].game_modes === undefined) {
+
+								gameModes.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].game_modes.length; j++) {
+
+									gameModes.push(data.data[i].game_modes[j].name);
+
+								}
+							}
+
+							// Check if Game has Companies listed.
+							if (data.data[i].involved_companies === undefined) {
+
+								gameCompanies.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].involved_companies.length; j++) {
+
+									gameCompanies.push(data.data[i].involved_companies[j].company.name);
+
+								}
+							}
+
+							// Check if Game has platforms listed.
+							if (data.data[i].platforms === undefined) {
+
+								gamePlatforms.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].platforms.length; j++) {
+
+									gamePlatforms.push(data.data[i].platforms[j].name);
+
+								}
+							}
+
+							// Check if Game has Release Date listed.
+							if (data.data[i].release_dates === undefined) {
+
+								gameReleaseDate.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].release_dates.length; j++) {
+
+									gameReleaseDate.push(data.data[i].release_dates[j].human);
+
+								}
+							}
+
+							// Check if Game has screenshots listed.
+							if (data.data[i].screenshots === undefined) {
+
+								gameScreenshots.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].screenshots.length; j++) {
+
+									gameScreenshots.push(data.data[i].screenshots[j].url);
+
+								}
+							}
+
+							// Check if Game has websites listed.
+							if (data.data[i].websites === undefined) {
+
+								gameWebsites.push("Not Available")
+
+							} else {
+
+								for (let j = 0; j < data.data[i].websites.length; j++) {
+
+									gameWebsites.push(data.data[i].websites[j].url);
+
+								}
+							}
+
+							tempArray.push(
+								{
+									id: data.data[i].id,
+									name: data.data[i].name,
+									series: gameSeries,
+									imgUrl: data.data[i].cover.url,
+									gameModes: gameModes,
+									company: gameCompanies,
+									platform: gamePlatforms,
+									releaseDate: gameReleaseDate,
+									averageRating: data.data[i].aggregated_rating,
+									averageRatingSources: data.data[i].aggregated_rating_count,
+									screenshots: gameScreenshots,
+									summary: data.data[i].summary,
+									igdbLink: data.data[i].url,
+									websites: gameWebsites
+								});
+
+							this.setState({
+								searchedGames: tempArray
+							});
+
+						} else {
 
 						}
-
-						this.setState({
-							coversID: tempArray
-						})
-
 					}
 
-					// this.coverSearch(tempArray)
+					console.log(this.state.searchedGames);
 
 				}
 			})
 		}
-	};
-
-	coverSearch = (data) => {
-
-		gamesAPI.gameCover(`(${data})`).then(data => {
-
-			console.log(data);
-
-			// let tempArray = this.state.searchedGames;
-			// if (data.data !== undefined && data.data[0] !== undefined && data.data[0].url !== undefined) {
-			//
-			// 	data.data[0].url = data.data[0].url.replace('t_thumb', 't_1080p');
-			// 	tempArray.push(
-			// 		{
-			// 			id: query.game.id,
-			// 			imgUrl: data.data[0].url,
-			// 			name: query.game.name
-			// 		});
-			// 	this.setState({
-			// 		searchedGames: tempArray
-			// 	})
-			// }
-		})
 	};
 
 	expandChatBox = () => {
@@ -183,18 +275,18 @@ class Dashboard extends Component {
 			name: name,
 			url: url,
 			index: ""
-		}
+		};
 		collectionAPI.add(data).then((done) => {
 			//live update with reloading page
 			const {socket} = this.state;
 			socket.emit('added to collection', done);
 
 		})
-	}
+	};
 
 	addToWishlist = () => {
 
-	}
+	};
 
 	render() {
 		return (

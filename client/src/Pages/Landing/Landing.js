@@ -69,7 +69,6 @@ class Landing extends Component {
 			for (let i = 0; i < res.data.length; i++) {
 
 				res.data[i].url = res.data[i].url.replace('t_thumb', 't_1080p');
-				res.data[i].url = res.data[i].url.replace('//', 'https://');
 				gameCoverIDImages.push(res.data[i].url);
 
 			}
