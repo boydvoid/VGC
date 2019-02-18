@@ -1,20 +1,21 @@
 const express = require('express');
 const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
-const mongoose = require('mongoose')
-let passport = require('passport');
-let LocalStrategy = require('passport-local').Strategy;
-let bcrypt = require('bcrypt');
-let db = require('./Models')
-var expressValidator = require("express-validator");
+const mongoose = require('mongoose');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
+const expressValidator = require('express-validator');
 const session = require('express-session');
-var MongoDBStore = require('connect-mongodb-session')(session);
+const MongoDBStore = require('connect-mongodb-session')(session);
 
-//socket.io
-const http = require('http')
-const socketIO = require('socket.io')
-const publicSell = require("./routes/publicSellRoutes");
+// socket.io
+const http = require('http');
+const socketIO = require('socket.io');
+const db = require('./Models');
+const publicSell = require('./routes/publicSellRoutes');
 const sellRoutes = require('./routes/sellRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const User = require('./routes/userRoutes');
@@ -22,27 +23,39 @@ const routes = require('./routes/apiRoutes');
 
 const server = http.createServer(app);
 const io = socketIO(server);
+const users = [];
+const connections = [];
 
-// This is what the socket.io syntax is like, we will work this later
-io.on('connection', (socket) => {
-  console.log('User connected');
+io.sockets.on('connection', (socket) => {
+  connections.push(socket);
+  console.log('connected: %s connected', connections.length);
 
+  // disconnect
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    if (!socket.username) return;
+    users.splice(users.indexOf(socket.username), 1);
+    connections.splice(connections.indexOf(socket), 1);
+
+    console.log('Disconnected: %s sockets connected', connections.length);
   });
 
+  socket.on('USER_CONNECTED', (username) => {
+    console.log(username);
+    users.push(username);
+    socket.username = username;
+  });
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
   socket.on('added to collection', (data) => {
-    io.emit('added to collection', data);
+    io.emit('added to collection', { data, username: socket.username });
   });
 
   socket.on('removed from collection', (data) => {
-    io.emit('removed from collection', data);
+    io.emit('removed from collection', { data, username: socket.username });
   });
   socket.on('removed from sell', (data) => {
-    io.emit('removed from sell', data);
+    io.emit('removed from sell', { data, username: socket.username });
   });
 });
 

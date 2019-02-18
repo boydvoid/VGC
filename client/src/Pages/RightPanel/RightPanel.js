@@ -25,21 +25,6 @@ class RightPanel extends Component {
 
   socketFunction = () => {
     const { socket } = this.state;
-
-    socket.on("removed from sell", data => {
-      console.log("removed");
-      const { sResultsSell, sResultsFiltered } = this.state;
-      const tempArray = sResultsSell.filter(array => {
-        return array.index !== data.index;
-      });
-      const x = sResultsFiltered.filter(array => {
-        return array.index !== data.index;
-      });
-      this.setState({
-        sResultsSell: tempArray,
-        sResultsFiltered: x
-      });
-    });
   };
 
   handleChange = event => {

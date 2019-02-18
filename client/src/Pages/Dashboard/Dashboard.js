@@ -9,6 +9,7 @@ import collectionAPI from "../../utils/collectionAPI";
 
 class Dashboard extends Component {
   state = {
+    username: this.props.username,
     theme: this.props.theme,
     rightPanelOpen: false,
     chatboxExpanded: false,

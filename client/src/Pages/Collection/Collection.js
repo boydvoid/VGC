@@ -7,6 +7,7 @@ import publicSellAPI from "../../utils/publicSellAPI";
 
 class Collection extends Component {
   state = {
+    username: this.props.username,
     collection: [],
     socket: this.props.socket
   };
@@ -20,21 +21,28 @@ class Collection extends Component {
     const { socket } = this.state;
 
     socket.on("added to collection", data => {
+      console.log(data);
+      const { username } = this.state;
       const tempArray = this.state.collection;
-      tempArray.push(data.data);
-      this.setState({
-        collection: tempArray
-      });
+      tempArray.push(data.data.data);
+      if (data.username === username) {
+        this.setState({
+          collection: tempArray
+        });
+      }
     });
 
     socket.on("removed from collection", data => {
       let tempArray = this.state.collection;
+      const { username } = this.state;
       tempArray = tempArray.filter(array => {
         return array.index !== data.index;
       });
-      this.setState({
-        collection: tempArray
-      });
+      if (data.username === username) {
+        this.setState({
+          collection: tempArray
+        });
+      }
     });
   };
 

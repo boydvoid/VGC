@@ -5,6 +5,7 @@ import publicSellAPI from "../../utils/publicSellAPI";
 
 class Sell extends Component {
   state = {
+    username: this.props.username,
     sSell: [],
     socket: this.props.socket
   };
@@ -17,13 +18,15 @@ class Sell extends Component {
   socketFunction = () => {
     const { socket } = this.state;
     socket.on("removed from sell", data => {
-      const { sSell } = this.state;
-      const tempArray = sSell.filter(array => {
-        return array.index !== data.index;
+      const { username } = this.state;
+      const tempArray = this.state.sSell.filter(array => {
+        return array.index !== data.data.index;
       });
-      this.setState({
-        sSell: tempArray
-      });
+      if (username === data.username) {
+        this.setState({
+          sSell: tempArray
+        });
+      }
     });
   };
 
