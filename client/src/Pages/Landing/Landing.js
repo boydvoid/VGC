@@ -80,7 +80,7 @@ class Landing extends Component {
     };
     userAPI.registerUser(data).then(user => {
       // check the return if false user wasnt created
-      console.log("anything");
+      console.log(user);
       this.createUserCollection();
       if (user.data === true) {
       } else if (user.data[0] !== true) {

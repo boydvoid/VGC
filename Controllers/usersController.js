@@ -74,7 +74,7 @@ module.exports = {
           if (err) {
             console.log(err.errmsg);
             const data = [err.errmsg];
-            res.send(data);
+            res.send(err);
           }
         });
     }
