@@ -4,7 +4,6 @@ import SidePanel from "../../Components/SidePanel/SidePanel";
 import Searchbar from "../../Components/Searchbar/Searchbar";
 import "./Dashboard.css";
 import RightPanel from "../RightPanel/RightPanel";
-import Chat from "../../Components/Chat/Chat";
 import collectionAPI from "../../utils/collectionAPI";
 
 class Dashboard extends Component {
@@ -81,33 +80,7 @@ class Dashboard extends Component {
     });
   };
 
-  expandChatBox = () => {
-    if (this.state.chatboxExpanded === false) {
-      this.setState({
-        chatboxExpanded: true
-      });
-    } else {
-      this.setState({
-        chatboxExpanded: false
-      });
-    }
-  };
-
-  // receive msg
-  sendMsg = event => {
-    event.preventDefault();
-    const { socket } = this.state;
-    // change to state later
-    const msg = document.getElementById("chatInput");
-
-    socket.emit("chat message", msg.value);
-    msg.value = "";
-
-    socket.on("chat message", msg => {
-      const msgP = (document.createElement("p").text = msg);
-      document.getElementById("msgs").append(msgP);
-    });
-  };
+  // chat stuffs
 
   addToCollection = event => {
     const id = event.target.attributes.getNamedItem("data-id").value;
@@ -135,18 +108,14 @@ class Dashboard extends Component {
           className={`overlay ${this.state.overlayShow}`}
           onClick={this.closeRightPanel}
         />
-        {/* chat */}
-        <Chat
-          titleClick={this.expandChatBox}
-          chatExpanded={this.state.chatboxExpanded}
-          sendMsg={this.sendMsg}
-        />
+
         {/* right panel */}
         <RightPanel
           closeRightPanel={this.closeRightPanel}
           searchedGames={this.state.searchedGames}
           addToCollection={this.addToCollection}
           socket={this.props.socket}
+          username={this.props.username}
         />
         {/* nav panel */}
         <SidePanel

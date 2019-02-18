@@ -1,6 +1,6 @@
 const passport = require('passport');
 const db = require('../Models');
-//we need passport for req.user easy way to get user id 
+// we need passport for req.user easy way to get user id
 
 module.exports = {
   create: (req, res) => {
@@ -20,7 +20,6 @@ module.exports = {
     db.sell.find({
       userID: req.user,
     }).then((games) => {
-      console.log(games);
       const insert = {
         id: req.body.id,
         name: req.body.name,
@@ -30,7 +29,7 @@ module.exports = {
       db.sell.findOneAndUpdate({
         userID: req.user,
       },
-      { $push: { data: insert } },).then((done) => {
+      { $push: { data: insert } }).then((done) => {
         res.send(insert);
       });
     });
@@ -51,7 +50,6 @@ module.exports = {
     db.sell.findOne({
       userID: req.user,
     }).then((data) => {
-      console.log(data.data);
       res.send(data.data);
     });
   },

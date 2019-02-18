@@ -1,26 +1,25 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 mongoose.set('useFindAndModify', false);
 const Schema = mongoose.Schema;
 
 const chatSchema = new Schema({
-	date: {type: Date, default: convertTimeDate()},
-	gameID: {type: Number, required: true},
-	messages: {type: Object, required: true},
-	user1: {type: Number, required: true},
-	user2: {type: Number, required: true},
+  date: { type: Date, default: convertTimeDate() },
+  gameID: { type: String, required: true },
+  messages: { type: Array, required: true },
+  user1: { type: String, required: true },
+  user2: { type: String, required: true },
 });
 
 // Convert UTC to PST.
 function convertTimeDate() {
+  const date = new Date();
+  const utcDate = new Date(date.toUTCString());
+  utcDate.setHours(utcDate.getHours() - 8);
+  const usDate = new Date(utcDate);
 
-	let date = new Date();
-	let utcDate = new Date(date.toUTCString());
-	utcDate.setHours(utcDate.getHours() - 8);
-	let usDate = new Date(utcDate);
-
-	return usDate;
-
+  return usDate;
 }
 
-const chat = mongoose.model("chat", chatSchema);
+const chat = mongoose.model('chat', chatSchema);
 module.exports = chat;

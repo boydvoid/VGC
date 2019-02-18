@@ -34,8 +34,18 @@ module.exports = {
         }
       });
   },
+  addChat: (req, res) => {
+    const insert = {
+      chatId: req.body.chatId,
+    };
+    db.userGames.findOneAndUpdate({
+      userID: req.body.username,
+    },
+    { $push: { chatId: insert } }).then((done) => {
+      res.send(insert);
+    });
+  },
   createUser: (req, res) => {
-    console.log('create user func');
     req.checkBody('username', 'Username cannot be empty.').notEmpty();
     req.checkBody('email', 'Email field must not be empty.').notEmpty();
     req.checkBody('email', 'Email field must be and email.').isEmail();

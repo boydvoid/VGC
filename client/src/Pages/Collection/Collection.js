@@ -21,7 +21,6 @@ class Collection extends Component {
     const { socket } = this.state;
 
     socket.on("added to collection", data => {
-      console.log(data);
       const { username } = this.state;
       const tempArray = this.state.collection;
       tempArray.push(data.data.data);

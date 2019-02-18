@@ -4,7 +4,7 @@ const db = require('../Models');
 
 module.exports = {
   add: (req, res) => {
-    db.publicSell.create({
+    db.gamesInfo.create({
       userID: req.user,
       gameID: req.body.id,
       name: req.body.name,
@@ -15,20 +15,13 @@ module.exports = {
     });
   },
   getPublicSell: (req, res) => {
-    db.publicSell.find({
+    db.gamesInfo.find({
     }).then((data) => {
       res.send(data);
     });
   },
-  findGame: (req, res) => {
-    db.publicSell.findOne({
-      gameIndex: req.params.id,
-    }).then((results) => {
-      res.send(results);
-    });
-  },
   remove: (req, res) => {
-    db.publicSell.find({
+    db.gamesInfo.find({
       gameIndex: req.body.index,
     }).remove().then((done) => {
       res.send(done);

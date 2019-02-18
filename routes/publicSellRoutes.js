@@ -10,6 +10,9 @@ router
   .route('/getPublicSell')
   .get(publicSellController.getPublicSell);
 
+router
+  .route('/find/game/:id')
+  .get(publicSellController.findGame);
 
 router
   .route('/remove/public/sell')

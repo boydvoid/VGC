@@ -23,6 +23,10 @@
   bottom: 0;
 }
 
+.red {
+  background-color: red !important;
+}
+
 #msgs {
   color: #ffffff;
 }

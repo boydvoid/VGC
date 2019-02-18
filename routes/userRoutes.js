@@ -18,8 +18,8 @@ router.post('/login', passport.authenticate('local', {
 
 // logout
 router.get('/logout', (req, res) => {
-	req.logout();
-	res.send(false)
+  req.logout();
+  res.send(false);
 });
 
 router
@@ -30,12 +30,16 @@ router
   .route('/update')
   .post(usersController.updateData);
 
+router
+  .route('/add/chat')
+  .post(usersController.addChat);
+
 // req.login uses these functions
 passport.serializeUser((user_id, done) => {
-	done(null, user_id)
+  done(null, user_id);
 });
 // this gets the users info
 passport.deserializeUser((user_id, done) => {
-	done(null, user_id);
+  done(null, user_id);
 });
 module.exports = router;

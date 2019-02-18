@@ -4,11 +4,16 @@ import Button from "../../Components/Button/Button";
 import PublicSell from "../../Components/PublicSell/PublicSell";
 import gamesAPI from "../../utils/gamesAPI";
 import publicSellAPI from "../../utils/publicSellAPI";
+import userAPI from "../../utils/userAPI";
+import chatAPI from "../../utils/chatAPI";
+
+import Chat from "../../Components/Chat/Chat";
 
 const fuzzysort = require("fuzzysort");
 
 class RightPanel extends Component {
   state = {
+    username: this.props.username,
     sInputGames: "",
     sInputSell: "",
     sResultsGames: [],
@@ -16,7 +21,10 @@ class RightPanel extends Component {
     sResultsSell: [],
     sResultsFiltered: [],
     sToggleActiveSearch: "games",
-    socket: this.props.socket
+    socket: this.props.socket,
+    chatMessages: [],
+    chatNotification: false,
+    chatboxExpanded: false
   };
 
   componentWillMount = () => {
@@ -25,6 +33,65 @@ class RightPanel extends Component {
 
   socketFunction = () => {
     const { socket } = this.state;
+
+    socket.on("chat started", data => {
+      const { username } = this.state;
+      console.log(data.data.id);
+
+      publicSellAPI.findGame(data.data.id).then(done => {
+        // find the user who posted the game for sale
+        userAPI.findUserById(done.data.userID).then(postedUser => {
+          const chatInfo = {
+            gameId: data.data.id,
+            user1: data.username,
+            user2: postedUser.data.username,
+            gameName: done.data.name
+          };
+          if (username === postedUser.data.username) {
+            // create notification
+            // create chat id in posted users db
+            // make chat bar red
+            this.chatNotify();
+          }
+          // the inquiring user
+          if (username === data.username) {
+            this.createChatId(chatInfo);
+            // create div on screen, function in dashboard
+            // create chat id in db
+            // create chat in db
+          }
+        });
+      });
+    });
+  };
+
+  createChatId = chatInfo => {
+    console.log("run");
+    chatAPI.create(chatInfo).then(created => {
+      const initialMsg = [
+        {
+          sender: created.data.messages[0].sender,
+          receiver: created.data.messages[0].receiver,
+          message: created.data.messages[0].message
+        }
+      ];
+      this.setState({
+        chatMessages: initialMsg
+      });
+
+      // save chat id in user db
+      const x = {
+        chatId: created.data._id,
+        username: chatInfo.user1
+      };
+      userAPI.addChat(x).then(done => {});
+
+      const y = {
+        chatId: created.data._id,
+        username: chatInfo.user2
+      };
+      userAPI.addChat(y).then(done => {});
+    });
   };
 
   handleChange = event => {
@@ -59,6 +126,41 @@ class RightPanel extends Component {
         sResultsFiltered: convertToArray
       });
     }
+  };
+
+  expandChatBox = () => {
+    if (this.state.chatboxExpanded === false) {
+      this.setState({
+        chatboxExpanded: true
+      });
+    } else {
+      this.setState({
+        chatboxExpanded: false
+      });
+    }
+  };
+
+  // notification
+  chatNotify = () => {
+    this.setState({
+      chatNotification: true
+    });
+  };
+
+  // receive msg
+  sendMsg = event => {
+    event.preventDefault();
+    const { socket } = this.state;
+    // change to state later
+    const msg = document.getElementById("chatInput");
+
+    socket.emit("chat message", msg.value);
+    msg.value = "";
+
+    socket.on("chat message", msg => {
+      const msgP = (document.createElement("p").text = msg);
+      document.getElementById("msgs").append(msgP);
+    });
   };
 
   gameSearch = event => {
@@ -191,6 +293,17 @@ class RightPanel extends Component {
     });
   };
 
+  startChat = event => {
+    const id = event.target.attributes.getNamedItem("data-id").value;
+    const { socket, username } = this.state;
+
+    const data = {
+      id,
+      initialUser: username
+    };
+    socket.emit("chat started", data);
+  };
+
   render() {
     // deconstructing props and state
     const { closeRightPanel, addToCollection } = this.props;
@@ -203,6 +316,15 @@ class RightPanel extends Component {
 
     return (
       <div id="mySidenav" className="sidenav">
+        {/* chat */}
+
+        <Chat
+          titleClick={this.expandChatBox}
+          chatExpanded={this.state.chatboxExpanded}
+          sendMsg={this.sendMsg}
+          titleColor={this.state.chatNotification ? "red" : ""}
+          chatMessages={this.state.chatMessages}
+        />
         <div className="d-flex right-panel-nav justify-content-between align-items-center">
           <Button text="&times;" onclick={closeRightPanel} class="closebtn" />
           <div>
@@ -255,6 +377,7 @@ class RightPanel extends Component {
             filteredResults={sResultsFiltered}
             getGamesForSale={this.getGamesForSale}
             handleChange={this.handleChange}
+            startChat={this.startChat}
           />
         ) : (
           // show search list

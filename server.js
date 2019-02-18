@@ -20,6 +20,7 @@ const sellRoutes = require('./routes/sellRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const User = require('./routes/userRoutes');
 const routes = require('./routes/apiRoutes');
+const chat = require('./routes/chatRoutes');
 
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -56,6 +57,15 @@ io.sockets.on('connection', (socket) => {
   });
   socket.on('removed from sell', (data) => {
     io.emit('removed from sell', { data, username: socket.username });
+  });
+
+  socket.on('chat started', (data) => {
+    io.emit('chat started', { data, username: socket.username });
+  });
+
+  
+  socket.on('chat notification', (data) => {
+    io.emit('chat notification', { data, username: socket.username });
   });
 });
 
@@ -102,6 +112,7 @@ app.use('/api', User);
 app.use('/api', collectionRoutes);
 app.use('/api', sellRoutes);
 app.use('/api', publicSell);
+app.use('/api', chat);
 
 // Passport use
 passport.use(new LocalStrategy(
