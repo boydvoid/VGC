@@ -1,5 +1,4 @@
 const express = require('express');
-const publicSell = require("./routes/publicSellRoutes");
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,7 +14,8 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 //socket.io
 const http = require('http')
 const socketIO = require('socket.io')
-const sellRoutes = require("./routes/sellRoutes");
+const publicSell = require("./routes/publicSellRoutes");
+const sellRoutes = require('./routes/sellRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const User = require('./routes/userRoutes');
 const routes = require('./routes/apiRoutes');
@@ -63,7 +63,7 @@ mongoose.connect(process.env.MONGOLAB_ORANGE_URI || 'mongodb://localhost/games',
 
 // store the session in mongo db
 const store = new MongoDBStore({
-  uri: process.env.MONGODB_URI || 'mongodb://localhost/games',
+  uri: process.env.MONGOLAB_ORANGE_URI || 'mongodb://localhost/games',
   collection: 'sessions',
 });
 
