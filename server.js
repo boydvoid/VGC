@@ -1,5 +1,4 @@
 const express = require('express');
-const routes = require("./routes/apiRoutes");
 const User = require("./routes/userRoutes");
 const collectionRoutes = require("./routes/collectionRoutes");
 const sellRoutes = require("./routes/sellRoutes");
@@ -19,66 +18,67 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 //socket.io
 const http = require('http')
 const socketIO = require('socket.io')
+const routes = require("./routes/apiRoutes");
 const server = http.createServer(app);
 const io = socketIO(server);
 
 // This is what the socket.io syntax is like, we will work this later
-io.on('connection', socket => {
-  console.log('User connected')
+io.on('connection', (socket) => {
+  console.log('User connected');
 
   socket.on('disconnect', () => {
-    console.log('user disconnected')
-  })
+    console.log('user disconnected');
+  });
 
   socket.on('chat message', (msg) => {
-    io.emit('chat message', msg)
-  })
-  socket.on('added to collection', data => {
-    io.emit('added to collection', data)
-  })
+    io.emit('chat message', msg);
+  });
+  socket.on('added to collection', (data) => {
+    io.emit('added to collection', data);
+  });
 
-  socket.on('removed from collection', data => {
-    io.emit('removed from collection', data)
-  })
-  socket.on('removed from sell', data => {
-    io.emit('removed from sell', data)
-  })
-})
+  socket.on('removed from collection', (data) => {
+    io.emit('removed from collection', data);
+  });
+  socket.on('removed from sell', (data) => {
+    io.emit('removed from sell', data);
+  });
+});
 
 // Define middleware here
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(expressValidator());
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static("client/build"));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
 }
 
 
 // mongo
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/games', {useNewUrlParser: true}).then(() => {
-	console.log('connected')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/games', { useNewUrlParser: true }).then(() => {
+  console.log('connected');
 });
 
-//store the session in mongo db
-var store = new MongoDBStore({
-	uri: process.env.MONGODB_URI || 'mongodb://localhost/games',
-	collection: 'sessions'
+// store the session in mongo db
+let store = new MongoDBStore({
+  uri: process.env.MONGODB_URI || 'mongodb://localhost/games',
+  collection: 'sessions',
 });
 
-store.on('error', function (error) {
+store.on('error', (error) => {
 	console.log(error);
 });
 
 
-//session
+// session
 app.use(session({
-	secret: "did you know that a platypus is a mammal that lays eggs?",
-	resave: false,
-	saveUninitialized: false,
-	store: store
+  secret: 'did you know that a platypus is a mammal that lays eggs?',
+  resave: false,
+  saveUninitialized: false,
+  store,
 }));
-//passport
+// passport
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -91,7 +91,7 @@ app.use('/api', publicSell);
 
 // Passport use
 passport.use(new LocalStrategy(
-	function (username, password, done) {
+  ((username, password, done) => {
 		// When username is sent, find match in database.
 		db.users.findOne({
 			username: username
@@ -119,14 +119,14 @@ passport.use(new LocalStrategy(
 			console.log(error);
 
 		})
-	}
+	}),
 ));
 // Send every other request to the React app
 // Define any API routes before this runs
-app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "./client/build/index.html"));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
 server.listen(PORT, () => {
-	console.log(`Listening on PORT:  ${PORT}`);
-})
+  console.log(`Listening on PORT:  ${PORT}`);
+});

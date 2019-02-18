@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+
 mongoose.set('useFindAndModify', false);
 const Schema = mongoose.Schema;
 
@@ -8,20 +9,18 @@ const publicSellSchema = new Schema({
   userID: { type: String, required: true },
   name: { type: String, required: true },
   url: { type: String, required: true },
-  gameIndex: { type: String, required: true }
+  gameIndex: { type: String, required: true },
 });
 
 // Convert UTC to PST.
 function convertTimeDate() {
-
-  let date = new Date();
-  let utcDate = new Date(date.toUTCString());
+  const date = new Date();
+  const utcDate = new Date(date.toUTCString());
   utcDate.setHours(utcDate.getHours() - 8);
-  let usDate = new Date(utcDate);
+  const usDate = new Date(utcDate);
 
-	return usDate;
-
+  return usDate;
 }
 
-const publicSell = mongoose.model("publicSell", publicSellSchema);
+const publicSell = mongoose.model('publicSell', publicSellSchema);
 module.exports = publicSell;

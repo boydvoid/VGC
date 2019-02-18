@@ -15,7 +15,31 @@ class RightPanel extends Component {
     sToggleSell: false,
     sResultsSell: [],
     sResultsFiltered: [],
-    sToggleActiveSearch: "games"
+    sToggleActiveSearch: "games",
+    socket: this.props.socket
+  };
+
+  componentWillMount = () => {
+    this.socketFunction();
+  };
+
+  socketFunction = () => {
+    const { socket } = this.state;
+
+    socket.on("removed from sell", data => {
+      console.log("removed");
+      const { sResultsSell, sResultsFiltered } = this.state;
+      const tempArray = sResultsSell.filter(array => {
+        return array.index !== data.index;
+      });
+      const x = sResultsFiltered.filter(array => {
+        return array.index !== data.index;
+      });
+      this.setState({
+        sResultsSell: tempArray,
+        sResultsFiltered: x
+      });
+    });
   };
 
   handleChange = event => {
@@ -222,11 +246,14 @@ class RightPanel extends Component {
               id="gameSearch"
               type="text"
               placeholder="Search"
-              name={sToggleSell ? "searchPublicSellInput" : "searchGamesInput"}
+              name={sToggleSell ? "sInputSell" : "sInputGames"}
               onChange={this.handleChange}
             />
             {sToggleSell ? (
-              ""
+              <Button
+                class="search-btn"
+                text={<i className="fas fa-search" />}
+              />
             ) : (
               <Button
                 class="search-btn"

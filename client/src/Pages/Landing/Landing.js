@@ -69,26 +69,23 @@ class Landing extends Component {
 
   // register user console.log
   registerUser = event => {
-    const { sUsername, sPassword, sPasswordMatch, sEmail } = this.state;
     event.preventDefault();
+    const { sUsername, sPassword, sPasswordMatch, sEmail } = this.state;
 
-    // reset the errors on button click
-    this.setState({
-      sModalErrors: ""
-    });
     const data = {
       username: sUsername,
       password: sPassword,
       passwordMatch: sPasswordMatch,
       email: sEmail
     };
-    userAPI.registerUser(data).then(data => {
+    userAPI.registerUser(data).then(user => {
       // check the return if false user wasnt created
-      if (data.data === true) {
+      console.log(user);
+      if (user.data === true) {
         this.createUserCollection();
-      } else if (data.data[0] !== true) {
+      } else if (user.data[0] !== true) {
         this.setState({
-          sModalErrors: data.data[0]
+          sModalErrors: user.data[0]
         });
       }
     });
@@ -107,7 +104,7 @@ class Landing extends Component {
   };
 
   render() {
-    const { sImages, sModalErrors } = this.state;
+    const { sImages } = this.state;
     return (
       <div className="container-fluid">
         {sImages.length === 0 ? (
@@ -122,7 +119,6 @@ class Landing extends Component {
               login={this.loginUser}
               register={this.registerUser}
               change={this.handleInputChange}
-              errors={sModalErrors}
             />
             <div className="row top-div">
               <div className="col-xl-5 landing-left">
