@@ -69,6 +69,7 @@ class Landing extends Component {
 
   // register user console.log
   registerUser = event => {
+    
     event.preventDefault();
     const { sUsername, sPassword, sPasswordMatch, sEmail } = this.state;
 
