@@ -1,5 +1,4 @@
 const express = require('express');
-const User = require("./routes/userRoutes");
 const collectionRoutes = require("./routes/collectionRoutes");
 const sellRoutes = require("./routes/sellRoutes");
 const publicSell = require("./routes/publicSellRoutes");
@@ -18,7 +17,9 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 //socket.io
 const http = require('http')
 const socketIO = require('socket.io')
-const routes = require("./routes/apiRoutes");
+const User = require("./routes/userRoutes");
+const routes = require('./routes/apiRoutes');
+
 const server = http.createServer(app);
 const io = socketIO(server);
 
@@ -56,18 +57,18 @@ if (process.env.NODE_ENV === 'production') {
 
 
 // mongo
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/games', { useNewUrlParser: true }).then(() => {
+mongoose.connect(process.env.MONGOLAB_ORANGE_URI || 'mongodb://localhost/games', { useNewUrlParser: true }).then(() => {
   console.log('connected');
 });
 
 // store the session in mongo db
-let store = new MongoDBStore({
+const store = new MongoDBStore({
   uri: process.env.MONGODB_URI || 'mongodb://localhost/games',
   collection: 'sessions',
 });
 
 store.on('error', (error) => {
-	console.log(error);
+  console.log(error);
 });
 
 
@@ -92,10 +93,10 @@ app.use('/api', publicSell);
 // Passport use
 passport.use(new LocalStrategy(
   ((username, password, done) => {
-		// When username is sent, find match in database.
-		db.users.findOne({
-			username: username
-		}).then((user) => {
+    // When username is sent, find match in database.
+    db.users.findOne({
+      username,
+    }).then((user) => {
 
 			if (user === null) {
 				// User was not found in the database.
@@ -108,18 +109,16 @@ passport.use(new LocalStrategy(
 
 				return done(null, user.id);
 
-			} else {
+			} 
 
 				return done(null, false);
 
-			}
+			
 
 		}, (error) => {
-
-			console.log(error);
-
-		})
-	}),
+      console.log(error);
+    });
+  }),
 ));
 // Send every other request to the React app
 // Define any API routes before this runs
