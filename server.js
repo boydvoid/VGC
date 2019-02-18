@@ -1,6 +1,4 @@
 const express = require('express');
-const collectionRoutes = require("./routes/collectionRoutes");
-const sellRoutes = require("./routes/sellRoutes");
 const publicSell = require("./routes/publicSellRoutes");
 const path = require('path');
 const app = express();
@@ -17,7 +15,9 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 //socket.io
 const http = require('http')
 const socketIO = require('socket.io')
-const User = require("./routes/userRoutes");
+const sellRoutes = require("./routes/sellRoutes");
+const collectionRoutes = require('./routes/collectionRoutes');
+const User = require('./routes/userRoutes');
 const routes = require('./routes/apiRoutes');
 
 const server = http.createServer(app);
@@ -97,25 +97,19 @@ passport.use(new LocalStrategy(
     db.users.findOne({
       username,
     }).then((user) => {
+      if (user === null) {
+        // User was not found in the database.
+        done(null, false);
+      }
+      const passwordCheck = bcrypt.compareSync(password, user.password);
 
-			if (user === null) {
-				// User was not found in the database.
-				done(null, false);
-			}
-			let passwordCheck = bcrypt.compareSync(password, user.password);
+      // User was found in the database.
+      if (passwordCheck === true) {
+        return done(null, user.id);
+      }
 
-			// User was found in the database.
-			if (passwordCheck === true) {
-
-				return done(null, user.id);
-
-			} 
-
-				return done(null, false);
-
-			
-
-		}, (error) => {
+      return done(null, false);
+    }, (error) => {
       console.log(error);
     });
   }),

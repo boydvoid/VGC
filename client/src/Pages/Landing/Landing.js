@@ -69,7 +69,6 @@ class Landing extends Component {
 
   // register user console.log
   registerUser = event => {
-    
     event.preventDefault();
     const { sUsername, sPassword, sPasswordMatch, sEmail } = this.state;
 
@@ -81,7 +80,7 @@ class Landing extends Component {
     };
     userAPI.registerUser(data).then(user => {
       // check the return if false user wasnt created
-      console.log(user);
+      console.log("anything");
       if (user.data === true) {
         this.createUserCollection();
       } else if (user.data[0] !== true) {
