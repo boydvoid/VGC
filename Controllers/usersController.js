@@ -40,7 +40,7 @@ module.exports = {
     },
     { $push: { chats: req.body.chatId } }).then((done) => {
       console.log(req.body);
-      res.send(insert);
+      res.send(done);
     }).catch((err) => {
       console.log(err);
     });
