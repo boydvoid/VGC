@@ -67,8 +67,8 @@ io.sockets.on('connection', (socket) => {
   });
 
   socket.on('join active', (data) => {
-    console.log(`active${data._id}`);
-    socket.join(data._id);
+    console.log(`active${data}`);
+    socket.join(data);
   });
 
   socket.on('user 1 chat setup', (data) => {

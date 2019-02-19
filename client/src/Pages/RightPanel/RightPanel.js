@@ -232,13 +232,15 @@ class RightPanel extends Component {
 
     if (sUsersChatsIds !== undefined) {
       const tempArray = [];
+      const roomsId = [];
       sUsersChatsIds.forEach(chat => {
         chatAPI.getChat(chat).then(fullChat => {
-          socket.emit("join active", fullChat.data);
+          roomsId.push(fullChat.data._id);
           tempArray.push(fullChat.data);
           this.setState({
             sUsersChats: tempArray
           });
+          socket.emit("join active", roomsId);
         });
       });
     }
