@@ -47,7 +47,7 @@ io.sockets.on('connection', (socket) => {
   });
   socket.on('chat message', (msg) => {
     console.log(msg);
-    io.emit('chat message', msg);
+    io.sockets.in(msg.chatId).emit('getting message', msg);
   });
   socket.on('added to collection', (data) => {
     io.emit('added to collection', { data, username: socket.username });
@@ -61,7 +61,14 @@ io.sockets.on('connection', (socket) => {
   });
 
   socket.on('chat started', (data) => {
+    console.log(data.id);
+    socket.join(data.id);
     io.emit('chat started', { data, username: socket.username });
+  });
+
+  socket.on('join active', (data) => {
+    console.log(`active${data._id}`);
+    socket.join(data._id);
   });
 
   socket.on('user 1 chat setup', (data) => {
