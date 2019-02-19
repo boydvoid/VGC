@@ -68,6 +68,9 @@ io.sockets.on('connection', (socket) => {
     io.emit('user 1 chat setup', data);
   });
 
+  socket.on('message added to db', (msg) => {
+    io.emit('message added to db', msg);
+  });
   socket.on('chat notification', (data) => {
     io.emit('chat notification', { data, username: socket.username });
   });

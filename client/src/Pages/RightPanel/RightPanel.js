@@ -69,9 +69,15 @@ class RightPanel extends Component {
       console.log("chat messages");
       const { username, sUserSpeakingWith } = this.state;
       console.log(msg);
-      await this.addToChat(msg);
+      if (msg.sender === username) {
+        this.addToChat(msg);
+      }
       console.log("run2");
       // add to chat
+    });
+
+    socket.on("message added to db", msg => {
+      const { username } = this.state;
       if (msg.sender === username || msg.receiver === username) {
         let tempArray = [];
         console.log("run3");
@@ -103,16 +109,12 @@ class RightPanel extends Component {
   };
 
   addToChat = msg => {
-    const { username } = this.state;
+    const { socket } = this.state;
     console.log("run");
-    const promise = new Promise((resolve, reject) => {
-      if (msg.sender === username) {
-        resolve(chatAPI.add(msg));
-      } else {
-        resolve();
-      }
+
+    chatAPI.add(msg).then(() => {
+      socket.emit("message added to db", msg);
     });
-    return promise;
   };
 
   createChatId = chatInfo => {
