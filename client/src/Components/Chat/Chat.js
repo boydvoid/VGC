@@ -2,14 +2,29 @@ import React from "react";
 import "./Chat.css";
 import ChatList from "./ChatList";
 import ChatMessages from "./ChatMessages";
+import Button from "../Button/Button";
 
 const Chat = props => (
   <div className={props.chatExpanded ? `chatbox chatExpanded` : `chatbox`}>
     <div
       className={`chat-title ${props.titleColor}`}
-      onClick={props.titleClick}
+      onClick={props.chatListDisplay ? props.titleClick : null}
     >
-      <h3>Chat</h3>
+      {props.chatListDisplay ? (
+        <h3>Chat</h3>
+      ) : (
+        <div className="titleBarDiv">
+          <Button
+            text={<i className="fas fa-arrow-left" />}
+            class="backBtn"
+            onclick={props.toggleChatDisplay}
+          />
+          <h3>{props.userSpeakingWith}</h3>
+          <div onClick={props.titleClick}>
+            <i className="fas fa-window-minimize" />
+          </div>
+        </div>
+      )}
     </div>
 
     {/* chat content either list of contacts or messages */}
@@ -28,7 +43,7 @@ const Chat = props => (
         sendMsg={props.sendMsg}
       />
     )}
-</div>
+  </div>
 );
 
 export default Chat;

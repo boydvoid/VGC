@@ -25,8 +25,22 @@
   bottom: 0;
 }
 
+.backBtn {
+  width: 20px;
+  height: 20px;
+}
+
 .red {
   background-color: red !important;
+}
+
+.titleBarDiv {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  -webkit-align-items: center;
+  align-items: center;
 }
 
 .chatDiv {

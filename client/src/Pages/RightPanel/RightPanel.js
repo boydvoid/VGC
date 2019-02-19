@@ -262,9 +262,8 @@ class RightPanel extends Component {
 
   toggleChatDisplay = event => {
     const { chatListDisplay } = this.state;
-    const chatId = event.target.attributes.getNamedItem("data-chatid").value;
-    console.log(event.target);
     if (chatListDisplay === true) {
+      const chatId = event.target.attributes.getNamedItem("data-chatid").value;
       // get the chats messages
       const tempArray = [];
       chatAPI.getChat(chatId).then(chat => {
