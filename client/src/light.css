@@ -88,3 +88,16 @@
 .light-theme .overlay-show {
   background-color: rgba(61, 61, 61, 0.397);
 }
+
+.light-theme .chatbox {
+  background-color: var(--l_secondary);
+}
+
+.light-theme .chat-title {
+  background-color: var(--primaryColor);
+  color: var(--l_titleColor);
+}
+
+.light-theme .chatDiv {
+  border-color: var(--borderColor)
+}

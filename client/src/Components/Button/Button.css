@@ -29,6 +29,12 @@
   transition: all .5s ease;
 }
 
+.sendChatBtn {
+  width: 35px;
+  font-size: 14px;
+  height: 30px;
+}
+
 .searchToggle:focus {
   border: none;
 }

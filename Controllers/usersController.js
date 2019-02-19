@@ -35,14 +35,14 @@ module.exports = {
       });
   },
   addChat: (req, res) => {
-    const insert = {
-      chatId: req.body.chatId,
-    };
-    db.userGames.findOneAndUpdate({
-      userID: req.body.username,
+    db.users.findOneAndUpdate({
+      username: req.body.username,
     },
-    { $push: { chatId: insert } }).then((done) => {
+    { $push: { chats: req.body.chatId } }).then((done) => {
+      console.log(req.body);
       res.send(insert);
+    }).catch((err) => {
+      console.log(err);
     });
   },
   createUser: (req, res) => {

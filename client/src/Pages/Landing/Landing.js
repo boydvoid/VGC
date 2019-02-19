@@ -18,7 +18,8 @@ class Landing extends Component {
     sPassword: "",
     sEmail: "",
     sPasswordMatch: "",
-    sModalErrors: ""
+    sModalErrors: "",
+    socket: this.props.socket
   };
 
   componentDidMount = () => {
@@ -99,6 +100,12 @@ class Landing extends Component {
     sellAPI.create().then(data => {
       window.location.reload();
     });
+  };
+
+  componentWillUnmount = () => {
+    const { socket } = this.state;
+
+    socket.emit("disconnect");
   };
 
   render() {

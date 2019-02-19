@@ -18,7 +18,7 @@ export default {
   update(query) {
     return axios.post(`/api/update/`, query);
   },
-  addChat(query) {
+  addChat: query => {
     return axios.post(`/api/add/chat`, query);
   }
 };

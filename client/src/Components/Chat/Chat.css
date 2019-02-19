@@ -5,6 +5,7 @@
   height: 50px;
   width: 300px;
   z-index: 9999;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.253);
   transition: all .5s ease;
 }
 
@@ -17,6 +18,7 @@
   max-height: 50px;
   height: 100%;
   cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.253);
 }
 
 .sendChatBtn {
@@ -25,6 +27,41 @@
 
 .red {
   background-color: red !important;
+}
+
+.chatDiv {
+  padding: 20px;
+  border-bottom: 1px solid;
+}
+
+.chatSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 85%;
+}
+
+.messagesSection {
+  max-height: 100%;
+  overflow: auto;
+}
+
+.messagesForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.msgNotYou {
+  font-size: 14px;
+  color: black;
+  background-color: green;
+}
+
+.msgYou {
+  font-size: 14px;
+  color: black;
+  background-color: blue;
 }
 
 #msgs {

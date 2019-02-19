@@ -17,8 +17,22 @@ class Dashboard extends Component {
     socket: this.props.socket
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    await this.initSocket();
     this.switchState();
+  };
+
+  initSocket = () => {
+    const { socket } = this.state;
+
+    const promise = new Promise((resolve, reject) => {
+      resolve(socket.on("connected"));
+    });
+
+    return promise;
+    // promise.then(() => {
+    //   this.checkLogin()
+    // })
   };
 
   logout = () => {
@@ -116,6 +130,7 @@ class Dashboard extends Component {
           addToCollection={this.addToCollection}
           socket={this.props.socket}
           username={this.props.username}
+          chatIds={this.props.chatIds}
         />
         {/* nav panel */}
         <SidePanel

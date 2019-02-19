@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./RightPanel.css";
+import { resolve } from "url";
 import Button from "../../Components/Button/Button";
 import PublicSell from "../../Components/PublicSell/PublicSell";
 import gamesAPI from "../../utils/gamesAPI";
@@ -16,6 +17,7 @@ class RightPanel extends Component {
     username: this.props.username,
     sInputGames: "",
     sInputSell: "",
+    sInputChat: "",
     sResultsGames: [],
     sToggleSell: false,
     sResultsSell: [],
@@ -23,12 +25,20 @@ class RightPanel extends Component {
     sToggleActiveSearch: "games",
     socket: this.props.socket,
     chatMessages: [],
+    sUsersChatsIds: this.props.chatIds,
+    sUsersChats: [],
+    sUserSpeakingWith: "",
     chatNotification: false,
-    chatboxExpanded: false
+    chatboxExpanded: false,
+    chatListDisplay: true
   };
 
   componentWillMount = () => {
     this.socketFunction();
+  };
+
+  componentDidMount = () => {
+    this.loadUsersChats();
   };
 
   socketFunction = () => {
@@ -36,7 +46,6 @@ class RightPanel extends Component {
 
     socket.on("chat started", data => {
       const { username } = this.state;
-      console.log(data.data.id);
 
       publicSellAPI.findGame(data.data.id).then(done => {
         // find the user who posted the game for sale
@@ -47,7 +56,22 @@ class RightPanel extends Component {
             user2: postedUser.data.username,
             gameName: done.data.name
           };
+
           if (username === postedUser.data.username) {
+            const tempArray = [];
+            const initialMsg = {
+              sender: data.username,
+              receiver: postedUser.data.username,
+              message: `Hello ${
+                postedUser.data.username
+              }, I am interested in your copy of ${done.data.name}.`
+            };
+
+            tempArray.push(initialMsg);
+
+            this.setState({
+              chatMessages: tempArray
+            });
             // create notification
             // create chat id in posted users db
             // make chat bar red
@@ -56,6 +80,21 @@ class RightPanel extends Component {
           // the inquiring user
           if (username === data.username) {
             this.createChatId(chatInfo);
+
+            const tempArray = [];
+
+            const initialMsg = {
+              sender: data.username,
+              receiver: postedUser.data.username,
+              message: `Hello ${
+                postedUser.data.username
+              }, I am interested in your copy of ${done.data.name}.`
+            };
+
+            tempArray.push(initialMsg);
+            this.setState({
+              chatMessages: tempArray
+            });
             // create div on screen, function in dashboard
             // create chat id in db
             // create chat in db
@@ -63,22 +102,40 @@ class RightPanel extends Component {
         });
       });
     });
+
+    socket.on("chat message", async msg => {
+      const { username, sUserSpeakingWith } = this.state;
+      await this.addToChat(msg);
+      console.log("run2");
+      // add to chat
+      if (msg.sender === username || msg.receiver === username) {
+        let tempArray = [];
+        console.log("run3");
+        chatAPI.getChat(msg.chatId).then(chat => {
+          tempArray = chat.data.messages;
+          this.setState({
+            chatMessages: tempArray
+          });
+        });
+      }
+    });
+  };
+
+  addToChat = msg => {
+    const { username } = this.state;
+    console.log("run");
+    const promise = new Promise((resolve, reject) => {
+      if (msg.sender === username) {
+        resolve(chatAPI.add(msg));
+      } else {
+        resolve();
+      }
+    });
+    return promise;
   };
 
   createChatId = chatInfo => {
-    console.log("run");
     chatAPI.create(chatInfo).then(created => {
-      const initialMsg = [
-        {
-          sender: created.data.messages[0].sender,
-          receiver: created.data.messages[0].receiver,
-          message: created.data.messages[0].message
-        }
-      ];
-      this.setState({
-        chatMessages: initialMsg
-      });
-
       // save chat id in user db
       const x = {
         chatId: created.data._id,
@@ -100,12 +157,15 @@ class RightPanel extends Component {
     this.setState({
       [name]: event.target.value
     });
-    if (event.target.value === "") {
-      this.setState({
-        sResultsFiltered: sResultsSell
-      });
-    } else {
-      this.fuzzysearch();
+
+    if (event.target.name === "sResultsFiltered") {
+      if (event.target.value === "") {
+        this.setState({
+          sResultsFiltered: sResultsSell
+        });
+      } else {
+        this.fuzzysearch();
+      }
     }
   };
 
@@ -147,20 +207,77 @@ class RightPanel extends Component {
     });
   };
 
+  loadUsersChats = () => {
+    const { sUsersChatsIds } = this.state;
+    if (sUsersChatsIds !== undefined) {
+      const tempArray = [];
+      sUsersChatsIds.forEach(chat => {
+        chatAPI.getChat(chat).then(fullChat => {
+          tempArray.push(fullChat.data);
+          this.setState({
+            sUsersChats: tempArray
+          });
+        });
+      });
+    }
+  };
+
+  toggleChatDisplay = event => {
+    const { chatListDisplay } = this.state;
+    const chatId = event.target.attributes.getNamedItem("data-chatid").value;
+    if (chatListDisplay === true) {
+      // get the chats messages
+      const tempArray = [];
+      chatAPI.getChat(chatId).then(chat => {
+        chat.data.messages.forEach(message => {
+          const { username } = this.state;
+          message.chatId = chatId;
+          tempArray.push(message);
+          if (chat.data.user1 !== username) {
+            this.setState({
+              chatListDisplay: false,
+              sUserSpeakingWith: chat.data.user1,
+              chatMessages: tempArray
+            });
+          } else {
+            this.setState({
+              chatListDisplay: false,
+              sUserSpeakingWith: chat.data.user2,
+              chatMessages: tempArray
+            });
+          }
+        });
+      });
+    } else {
+      this.setState({
+        sUserSpeakingWith: "",
+        chatListDisplay: true
+      });
+    }
+  };
+
   // receive msg
   sendMsg = event => {
     event.preventDefault();
-    const { socket } = this.state;
-    // change to state later
-    const msg = document.getElementById("chatInput");
+    const { socket, sInputChat } = this.state;
 
-    socket.emit("chat message", msg.value);
-    msg.value = "";
+    const chatId = document
+      .getElementById("sendChatBtn")
+      .attributes.getNamedItem("chatid").value;
+    const sender = document
+      .getElementById("sendChatBtn")
+      .attributes.getNamedItem("username").value;
+    const receiver = document
+      .getElementById("sendChatBtn")
+      .attributes.getNamedItem("userspeakingwith").value;
 
-    socket.on("chat message", msg => {
-      const msgP = (document.createElement("p").text = msg);
-      document.getElementById("msgs").append(msgP);
-    });
+    const msgData = {
+      message: sInputChat,
+      chatId,
+      sender,
+      receiver
+    };
+    socket.emit("chat message", msgData);
   };
 
   gameSearch = event => {
@@ -319,11 +436,17 @@ class RightPanel extends Component {
         {/* chat */}
 
         <Chat
+          handleChange={this.handleChange}
           titleClick={this.expandChatBox}
           chatExpanded={this.state.chatboxExpanded}
           sendMsg={this.sendMsg}
           titleColor={this.state.chatNotification ? "red" : ""}
           chatMessages={this.state.chatMessages}
+          chatListDisplay={this.state.chatListDisplay}
+          usersChats={this.state.sUsersChats}
+          username={this.props.username}
+          toggleChatDisplay={this.toggleChatDisplay}
+          userSpeakingWith={this.state.sUserSpeakingWith}
         />
         <div className="d-flex right-panel-nav justify-content-between align-items-center">
           <Button text="&times;" onclick={closeRightPanel} class="closebtn" />

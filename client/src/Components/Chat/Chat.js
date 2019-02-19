@@ -1,6 +1,7 @@
 import React from "react";
 import "./Chat.css";
-import Button from "../Button/Button";
+import ChatList from "./ChatList";
+import ChatMessages from "./ChatMessages";
 
 const Chat = props => (
   <div className={props.chatExpanded ? `chatbox chatExpanded` : `chatbox`}>
@@ -10,19 +11,23 @@ const Chat = props => (
     >
       <h3>Chat</h3>
     </div>
-    <form>
-      <input type="text" id="chatInput" />
-      <Button onclick={props.sendMsg} text="Send" class="sendChatBtn" />
-    </form>
 
-    {props.chatMessages.map(messages => {
-      return (
-        <div>
-          <h3>{messages.sender}</h3>
-          <p>{messages.message}</p>
-        </div>
-      );
-    })}
+    {/* chat content either list of contacts or messages */}
+    {props.chatListDisplay ? (
+      <ChatList
+        usersChats={props.usersChats}
+        username={props.username}
+        toggleChatDisplay={props.toggleChatDisplay}
+      />
+    ) : (
+      <ChatMessages
+        handleChange={props.handleChange}
+        chatMessages={props.chatMessages}
+        username={props.username}
+        userSpeakingWith={props.userSpeakingWith}
+        sendMsg={props.sendMsg}
+      />
+    )}
   </div>
 );
 

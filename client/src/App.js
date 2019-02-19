@@ -18,26 +18,13 @@ class App extends Component {
     email: "",
     theme: "",
     img: "",
+    chatIds: [],
     loaded: false,
     socket: socketIO()
   };
 
   componentWillMount = async () => {
-    await this.initSocket();
     this.checkLogin();
-  };
-
-  initSocket = () => {
-    const { socket } = this.state;
-
-    const promise = new Promise((resolve, reject) => {
-      resolve(socket.on("connected"));
-    });
-
-    return promise;
-    // promise.then(() => {
-    //   this.checkLogin()
-    // })
   };
 
   checkLogin = () => {
@@ -54,7 +41,8 @@ class App extends Component {
             email: data.data.email,
             theme: data.data.theme,
             img: data.data.img,
-            loaded: true
+            loaded: true,
+            chatIds: data.data.chats
           });
         });
       } else {
@@ -98,9 +86,9 @@ class App extends Component {
                       email={this.state.email}
                       profileImg={this.state.img}
                       active="profile"
+                      chatIds={this.state.chatIds}
                     >
-                      {" "}
-                      <Profile username={this.state.username}  />
+                      <Profile username={this.state.username} />
                     </Dashboard>
                   ) : (
                     <Redirect to="/" />
@@ -118,9 +106,9 @@ class App extends Component {
                       username={this.state.username}
                       email={this.state.email}
                       profileImg={this.state.img}
-                      active="collection"
+                      active="profile"
+                      chatIds={this.state.chatIds}
                     >
-                      {" "}
                       <Collection
                         socket={this.state.socket}
                         username={this.state.username}
@@ -142,10 +130,10 @@ class App extends Component {
                       username={this.state.username}
                       email={this.state.email}
                       profileImg={this.state.img}
-                      active="wishlist"
+                      active="profile"
+                      chatIds={this.state.chatIds}
                     >
-                      {" "}
-                      <Wishlist username={this.state.username}  />
+                      <Wishlist username={this.state.username} />
                     </Dashboard>
                   ) : (
                     <Redirect to="/" />
@@ -163,13 +151,13 @@ class App extends Component {
                       username={this.state.username}
                       email={this.state.email}
                       profileImg={this.state.img}
-                      active="sell"
+                      active="profile"
+                      chatIds={this.state.chatIds}
                     >
-                      {" "}
                       <Sell
                         socket={this.state.socket}
                         username={this.state.username}
-                       />
+                      />
                     </Dashboard>
                   ) : (
                     <Redirect to="/" />

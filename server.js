@@ -63,7 +63,7 @@ io.sockets.on('connection', (socket) => {
     io.emit('chat started', { data, username: socket.username });
   });
 
-  
+
   socket.on('chat notification', (data) => {
     io.emit('chat notification', { data, username: socket.username });
   });
