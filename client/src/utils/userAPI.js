@@ -20,5 +20,8 @@ export default {
   },
   addChat: query => {
     return axios.post(`/api/add/chat`, query);
+  },
+  findByUsername: username => {
+    return axios.get(`/api/users/id/${username}`);
   }
 };

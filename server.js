@@ -46,6 +46,7 @@ io.sockets.on('connection', (socket) => {
     socket.username = username;
   });
   socket.on('chat message', (msg) => {
+    console.log(msg);
     io.emit('chat message', msg);
   });
   socket.on('added to collection', (data) => {
@@ -63,6 +64,9 @@ io.sockets.on('connection', (socket) => {
     io.emit('chat started', { data, username: socket.username });
   });
 
+  socket.on('user 1 chat setup', (data) => {
+    io.emit('user 1 chat setup', data);
+  });
 
   socket.on('chat notification', (data) => {
     io.emit('chat notification', { data, username: socket.username });

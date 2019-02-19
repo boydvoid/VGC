@@ -20,6 +20,13 @@ module.exports = {
       res.send(chat);
     });
   },
+  getChatByUser2: (req, res) => {
+    db.chat.findOne({
+      user2: req.params.username,
+    }).then((chat) => {
+      res.send(chat);
+    });
+  },
   add: (req, res) => {
     console.log(req.body);
     db.chat.findOneAndUpdate({

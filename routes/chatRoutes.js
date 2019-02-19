@@ -10,6 +10,9 @@ router
   .get(chatController.getChat);
 
 router
+  .route('/chat/username/:username')
+  .get(chatController.getChatByUser2);
+router
   .route('/chat/add')
   .post(chatController.add);
 

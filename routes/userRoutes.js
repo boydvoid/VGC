@@ -10,6 +10,10 @@ router
   .route('/users/find/:id')
   .get(usersController.findById);
 
+router
+  .route('/users/id/:username')
+  .get(usersController.findByUsername);
+
 // login
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',

@@ -28,7 +28,7 @@ const Chat = props => (
         sendMsg={props.sendMsg}
       />
     )}
-  </div>
+</div>
 );
 
 export default Chat;

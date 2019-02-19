@@ -10,5 +10,8 @@ export default {
   },
   add: query => {
     return axios.post(`/api/chat/add`, query);
+  },
+  getChatByUser2: query => {
+    return axios.get(`/api/chat/username/${query}`);
   }
 };

@@ -21,6 +21,13 @@ module.exports = {
       res.send(userInfo);
     });
   },
+  findByUsername(req, res) {
+    db.users.findOne({
+      username: req.params.username,
+    }).then((userInfo) => {
+      res.send(userInfo);
+    });
+  },
   updateData: (req, res) => {
     db.users.findOneAndUpdate({
       _id: req.user,
