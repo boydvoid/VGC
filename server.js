@@ -24,6 +24,7 @@ const wishlistRoutes = require('./routes/wishlistRoutes');
 const User = require('./routes/userRoutes');
 const routes = require('./routes/apiRoutes');
 const chat = require('./routes/chatRoutes');
+const gamesDB = require('./routes/gamesRoutes');
 
 
 const users = [];
@@ -142,6 +143,7 @@ app.use('/api', collectionRoutes);
 app.use('/api', wishlistRoutes);
 app.use('/api', sellRoutes);
 app.use('/api', publicSell);
+app.use('/api', gamesDB);
 app.use('/api', chat);
 
 // Passport use

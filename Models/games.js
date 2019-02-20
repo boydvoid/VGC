@@ -4,22 +4,19 @@ mongoose.set('useFindAndModify', false);
 const Schema = mongoose.Schema;
 
 const gamesSchema = new Schema({
-  ageRating: { type: String, required: true, unique: true },
-  avgRatingScore: { type: Number, required: true, unique: true },
-  avgRatingSources: { type: Number, required: true, unique: true },
-  artworks: { type: String, required: true, unique: true },
-  companies: { type: String, required: true, unique: true },
-  cover: { type: String, required: true, unique: true },
-  gameID: { type: Number, required: true, unique: true },
-  Genres: { type: String, required: true, unique: true },
-  igdbURL: { type: String, required: true, unique: true },
-  platform: { type: String, required: true, unique: true },
-  releaseDate: { type: String, required: true, unique: true },
-  screenshots: { type: String, required: true, unique: true },
-  series: { type: String, required: true, unique: true },
-  summary: { type: String, required: true, unique: true },
-  videos: { type: String, required: true, unique: true },
-  websites: { type: String, required: true, unique: true },
+  // avgRating: { type: Number, required: false,},
+  // avgRatingSources: { type: Number, required: false,},
+  // companies: { type: String, required: false,},
+  // cover: { type: String, required: false,},
+  gameID: { type: Number, required: false,},
+  // gameModes: { type: String, required: false,},
+  // igdbURL: { type: String, required: false,},
+  // platform: { type: String, required: false,},
+  // releaseDate: { type: String, required: false,},
+  // screenshots: { type: String, required: false,},
+  // series: { type: String, required: false,},
+  // summary: { type: String, required: false,},
+  // websites: { type: String, required: false,},
 });
 
 const gamesInfo = mongoose.model('gamesInfo', gamesSchema);
