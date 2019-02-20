@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 
 const ChatMessages = props => (
   <div className="chatSection">
-    <div className="messagesSection">
+    <div className="messagesSection" id="chatMessages">
       {props.chatMessages.map(messages => {
         return (
           <div className="msgs">
@@ -35,7 +35,7 @@ const ChatMessages = props => (
           class="sendChatBtn"
           chatid={props.chatMessages[0].chatId}
           username={props.username}
-          userSpeakingWith= {props.userSpeakingWith}
+          userSpeakingWith={props.userSpeakingWith}
           id="sendChatBtn"
         />
       </form>

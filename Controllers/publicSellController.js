@@ -28,11 +28,11 @@ module.exports = {
     });
   },
   remove: (req, res) => {
+    console.log(req.body);
     db.publicSell.find({
-      _id: req.body.index,
-    }).remove().then((done) => {
+      gameIndex: req.body.index,
+    }).remove((done) => {
       res.send(done);
     });
   },
-
 };

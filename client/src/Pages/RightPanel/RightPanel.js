@@ -36,10 +36,19 @@ class RightPanel extends Component {
 
   componentWillMount = () => {
     this.socketFunction();
+    this.loadUsersChats();
   };
 
-  componentDidMount = () => {
-    this.loadUsersChats();
+  componentWillUpdate = () => {
+    if (document.getElementById("chatMessages") !== null) {
+      this.autoScrollBottom();
+    }
+  };
+
+  componentDidUpdate = () => {
+    if (document.getElementById("chatMessages") !== null) {
+      this.autoScrollBottom();
+    }
   };
 
   socketFunction = () => {
@@ -55,6 +64,7 @@ class RightPanel extends Component {
     });
 
     socket.on("getting message", async msg => {
+      console.log("getting");
       let tempArray = [];
       chatAPI.getChat(msg.chatId).then(chat => {
         tempArray = chat.data.messages;
@@ -111,14 +121,15 @@ class RightPanel extends Component {
 
   runChatSetupUser1 = async chat => {
     const { socket, sUsersChats, username } = this.state;
-    console.log(chat);
     // await create chat
+    console.log("user1");
 
     const addUser1 = await this.addChatToUser1(chat);
     const addUser2 = await this.addChatToUser2(chat);
+
     const x = sUsersChats;
     x.push(chat.chatId.data);
-
+    console.log(x);
     this.setState({
       sUsersChats: x
     });
@@ -128,8 +139,8 @@ class RightPanel extends Component {
 
   runChatSetupUser2 = async data => {
     const { socket, username } = this.state;
-    console.log(data[0]);
     if (username === data[0].user2) {
+      console.log("user2");
       const { sUsersChats } = this.state;
       const x = sUsersChats;
       x.push(data[0]);
@@ -315,13 +326,13 @@ class RightPanel extends Component {
       };
     }
 
-    // const tempArray = chatMessages;
+    const tempArray = chatMessages;
 
-    // tempArray.push(msgData);
+    tempArray.push(msgData);
 
-    // this.setState({
-    //   chatMessages: tempArray
-    // });
+    this.setState({
+      chatMessages: tempArray
+    });
 
     chatAPI.add(msgData).then(() => {
       socket.emit("chat message", msgData);
@@ -458,9 +469,14 @@ class RightPanel extends Component {
     });
   };
 
+  autoScrollBottom = () => {
+    const div = document.getElementById("chatMessages");
+    div.scrollTop = div.scrollHeight;
+  };
+
   render() {
     // deconstructing props and state
-    const { closeRightPanel, addToCollection } = this.props;
+    const { closeRightPanel, addToCollection, addToWishlist } = this.props;
     const {
       sToggleSell,
       sToggleActiveSearch,
@@ -538,6 +554,7 @@ class RightPanel extends Component {
             getGamesForSale={this.getGamesForSale}
             handleChange={this.handleChange}
             startChat={this.startChat}
+            addToWishlist={addToWishlist}
           />
         ) : (
           // show search list
@@ -563,6 +580,7 @@ class RightPanel extends Component {
                     dataId={game.id}
                     dataName={game.name}
                     dataUrl={game.imgUrl}
+                    onclick={addToWishlist}
                   />
                 </div>
               );

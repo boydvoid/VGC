@@ -5,6 +5,7 @@ import Searchbar from "../../Components/Searchbar/Searchbar";
 import "./Dashboard.css";
 import RightPanel from "../RightPanel/RightPanel";
 import collectionAPI from "../../utils/collectionAPI";
+import wishlistAPI from "../../utils/wishlistAPI";
 
 class Dashboard extends Component {
   state = {
@@ -113,7 +114,22 @@ class Dashboard extends Component {
     });
   };
 
-  addToWishlist = () => {};
+  addToWishlist = event => {
+    const id = event.target.attributes.getNamedItem("data-id").value;
+    const name = event.target.attributes.getNamedItem("data-name").value;
+    const url = event.target.attributes.getNamedItem("data-url").value;
+    const data = {
+      id,
+      name,
+      url,
+      index: ""
+    };
+    wishlistAPI.add(data).then(done => {
+      // live update with reloading page
+      const { socket } = this.state;
+      socket.emit("added to wishlist", done);
+    });
+  };
 
   render() {
     return (
@@ -128,6 +144,7 @@ class Dashboard extends Component {
           closeRightPanel={this.closeRightPanel}
           searchedGames={this.state.searchedGames}
           addToCollection={this.addToCollection}
+          addToWishlist={this.addToWishlist}
           socket={this.props.socket}
           username={this.props.username}
           chatIds={this.props.chatIds}

@@ -52,14 +52,14 @@ class Sell extends Component {
     };
 
     sellAPI.updateSell(data).then(done => {
+      const { socket } = this.state;
       this.removeFromPublicSell(data);
+      socket.emit("removed from sell", data);
     });
   };
 
   removeFromPublicSell = data => {
-    publicSellAPI.removeSell(data).then(done => {
-      const { socket } = this.state;
-    });
+    publicSellAPI.removeSell(data).then(done => {});
   };
 
   render() {

@@ -1,21 +1,21 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const collectionController = require('../Controllers/collectionController');
 
 router
-	.route('/create/collection')
-	.post(collectionController.create);
+  .route('/create/collection')
+  .post(collectionController.create);
 
 router
-	.route('/add')
-	.post(collectionController.add);
+  .route('/add')
+  .post(collectionController.add);
 
-//removes an item from the games array
+// removes an item from the games array
 router
-	.route('/remove/game')
-	.post(collectionController.updateGames);
+  .route('/remove/game')
+  .post(collectionController.updateGames);
 
 router
-	.route(`/getGames`)
-	.get(collectionController.getGames);
+  .route('/getGames')
+  .get(collectionController.getGames);
 
 module.exports = router;

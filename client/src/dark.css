@@ -102,3 +102,8 @@
 .dark-theme .overlay-show {
   background-color: rgba(148, 148, 148, 0.397);
 }
+
+.dark-theme .sellListTitle {
+  color: var(--d_primary);
+  border-bottom: 1px solid var(--d_borderColor);
+}

@@ -13,22 +13,25 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 // socket.io
 const http = require('http');
-const socketIO = require('socket.io');
+
+const server = http.createServer(app);
+const io = require('socket.io').listen(server);
 const db = require('./Models');
 const publicSell = require('./routes/publicSellRoutes');
 const sellRoutes = require('./routes/sellRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
+const wishlistRoutes = require('./routes/wishlistRoutes');
 const User = require('./routes/userRoutes');
 const routes = require('./routes/apiRoutes');
 const chat = require('./routes/chatRoutes');
 
-const server = http.createServer(app);
-const io = socketIO(server);
+
 const users = [];
 const connections = [];
 
 io.on('connection', (socket) => {
   connections.push(socket);
+  console.log('Connected: %s', connections.length);
   socket.on('USER_CONNECTED', (username) => {
     users.push(username);
     socket.username = username;
@@ -66,6 +69,19 @@ io.on('connection', (socket) => {
   socket.on('removed from collection', (data) => {
     io.emit('removed from collection', { data, username: socket.username });
   });
+
+  socket.on('added to wishlist', (data) => {
+    io.emit('added to wishlist', { data, username: socket.username });
+  });
+
+  socket.on('removed from wishlist', (data) => {
+    io.emit('removed from wishlist', { data, username: socket.username });
+  });
+
+  socket.on('added to sell', (data) => {
+    io.emit('added to sell', { data, username: socket.username });
+  });
+
   socket.on('removed from sell', (data) => {
     io.emit('removed from sell', { data, username: socket.username });
   });
@@ -123,6 +139,7 @@ app.use(passport.session());
 app.use('/api', routes);
 app.use('/api', User);
 app.use('/api', collectionRoutes);
+app.use('/api', wishlistRoutes);
 app.use('/api', sellRoutes);
 app.use('/api', publicSell);
 app.use('/api', chat);
