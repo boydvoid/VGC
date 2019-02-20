@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import collectionAPI from "../../utils/collectionAPI";
 import sellAPI from "../../utils/sellAPI";
-import "./Collection.css";
+import "./Wishlist.css";
 import Button from "../../Components/Button/Button";
 import publicSellAPI from "../../utils/publicSellAPI";
+import wishlistAPI from "../../utils/wishlistAPI";
 
 class Collection extends Component {
   state = {
     username: this.props.username,
-    collection: [],
-    latestAdditions: [],
+    wishlist: [],
     socket: this.props.socket
   };
 
@@ -21,41 +21,42 @@ class Collection extends Component {
   socketFunction = () => {
     const { socket } = this.state;
 
-    socket.on("added to collection", data => {
-      const { username, collection } = this.state;
-      const tempArray = collection;
+    socket.on("added to wishlist", data => {
+      const { username, wishlist } = this.state;
+      const tempArray = wishlist;
       tempArray.push(data.data.data);
       if (data.username === username) {
         this.setState({
-          collection: tempArray
+          wishlist: tempArray
         });
       }
     });
 
-    socket.on("removed from collection", data => {
-      const { collection } = this.state;
-      let tempArray = collection;
+    socket.on("removed from wishlist", data => {
+      console.log(data);
+      const { wishlist } = this.state;
+      let tempArray = wishlist;
       const { username } = this.state;
       tempArray = tempArray.filter(array => {
         return array.index !== data.data.index;
       });
       if (data.username === username) {
         this.setState({
-          collection: tempArray
+          wishlist: tempArray
         });
       }
     });
   };
 
   getGames = () => {
-    collectionAPI.getGames().then(data => {
+    wishlistAPI.getGames().then(data => {
       this.setState({
-        collection: data.data
+        wishlist: data.data
       });
     });
   };
 
-  removeFromCollection = event => {
+  removeFromWishlist = event => {
     const id = event.target.attributes.getNamedItem("data-id").value;
     const name = event.target.attributes.getNamedItem("data-name").value;
     const url = event.target.attributes.getNamedItem("data-url").value;
@@ -68,18 +69,9 @@ class Collection extends Component {
       index: parseInt(index) // eslint-disable-line 
     };
 
-    collectionAPI.updateGames(data).then(done => {
+    wishlistAPI.updateGames(data).then(done => {
       const { socket } = this.state;
-      this.removeFromSell(data);
-      socket.emit("removed from collection", data);
-    });
-  };
-
-  removeFromSell = data => {
-    sellAPI.updateSell(data).then(done => {
-      const { socket } = this.state;
-      this.removeFromPublicSell(data);
-      socket.emit("removed from sell", data);
+      socket.emit("removed from wishlist", data);
     });
   };
 
@@ -89,57 +81,22 @@ class Collection extends Component {
     });
   };
 
-  addToSell = event => {
-    const id = event.target.attributes.getNamedItem("data-id").value;
-    const name = event.target.attributes.getNamedItem("data-name").value;
-    const url = event.target.attributes.getNamedItem("data-url").value;
-    const index = event.target.attributes.getNamedItem("data-index").value;
-    const data = {
-      id,
-      name,
-      url,
-      index: parseInt(index) // eslint-disable-line 
-    };
-    sellAPI.add(data).then(done => {
-      // live update with reloading page
-      const { socket } = this.state;
-      socket.emit("added to sell", done);
-
-      this.addToPublicSell(data);
-    });
-  };
-
-  addToPublicSell = data => {
-    publicSellAPI.add(data).then(done => {
-      const { socket } = this.state;
-      socket.emit("added to public sell", data);
-    });
-  };
-
   render() {
-    const { collection } = this.state;
+    const { wishlist } = this.state;
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="w-100 d-flex p-20 section-title">
-            <h2 className="primaryText">Collection</h2>
+            <h2 className="primaryText">Wishlist</h2>
           </div>
-          {collection.map((game, i) => {
+          {this.state.wishlist.map((game, i) => {
             return (
               <div key={i} className="col-xl-3 collection-content">
                 <img className="collection-img" src={game.url} alt="" />
                 <p>{game.name}</p>
                 <Button
                   text="X"
-                  onclick={this.removeFromCollection}
-                  dataId={game.id}
-                  dataName={game.name}
-                  dataUrl={game.url}
-                  dataIndex={game.index}
-                />
-                <Button
-                  text="Add to Sell List"
-                  onclick={this.addToSell}
+                  onclick={this.removeFromWishlist}
                   dataId={game.id}
                   dataName={game.name}
                   dataUrl={game.url}

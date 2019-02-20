@@ -19,6 +19,9 @@
   height: 100%;
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.253);
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
 }
 
 .sendChatBtn {
@@ -77,6 +80,8 @@
   color: black;
   background-color: blue;
 }
+
+.msgs {}
 
 #msgs {
   color: #ffffff;

@@ -9,6 +9,7 @@ import LandingIcons from "../../Components/LandingIcons/LandingIcons";
 import LandingText from "../../Components/LandingText/LandingText";
 import Nav from "../../Components/Nav/Nav";
 import Modal from "../../Components/Modal/Modal";
+import wishlistAPI from "../../utils/wishlistAPI";
 
 class Landing extends Component {
   state = {
@@ -92,6 +93,13 @@ class Landing extends Component {
 
   createUserCollection = () => {
     collectionAPI.create().then(data => {
+      this.createUserWishlist();
+    });
+  };
+
+  createUserWishlist = () => {
+    wishlistAPI.create().then(data => {
+      console.log(data);
       this.createUserSell();
     });
   };

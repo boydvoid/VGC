@@ -7,17 +7,29 @@ import Landing from "./Pages/Landing/Landing";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Profile from "./Components/Profile/Profile";
 import Collection from "./Pages/Collection/Collection";
-import Wishlist from "./Components/Wishlist/Wishlist";
+import Wishlist from "./Pages/Wishlist/Wishlist";
 import Sell from "./Pages/Sell/Sell";
+import collectionAPI from "./utils/collectionAPI";
+import sellAPI from "./utils/sellAPI";
+import wishlistAPI from "./utils/wishlistAPI";
 // socket io
 
 class App extends Component {
   state = {
+    userId: "",
     loggedIn: false,
     username: "",
     email: "",
     theme: "",
     img: "",
+    collectionLength: 0,
+    popularSystem: 0,
+    value: 0,
+    wishlistLength: 0,
+    sellingLength: 0,
+    last5Collection: [],
+    last5Wishlist: [],
+    last5Selllist: [],
     chatIds: [],
     loaded: false,
     socket: socketIO()
@@ -25,6 +37,50 @@ class App extends Component {
 
   componentWillMount = async () => {
     this.checkLogin();
+    this.socketFunctions();
+  };
+
+  socketFunctions = () => {
+    const { socket } = this.state;
+    socket.on("added to collection", data => {
+      const { username } = this.state;
+      if (data.username === username) {
+        this.getCollectionLength();
+      }
+    });
+
+    socket.on("removed from collection", data => {
+      const { username } = this.state;
+      if (data.username === username) {
+        this.getCollectionLength();
+      }
+    });
+    socket.on("added to wishlist", data => {
+      const { username } = this.state;
+      if (data.username === username) {
+        this.getWIshlistLength();
+      }
+    });
+
+    socket.on("removed from wishlist", data => {
+      const { username } = this.state;
+      if (data.username === username) {
+        this.getWIshlistLength();
+      }
+    });
+    socket.on("added to sell", data => {
+      const { username } = this.state;
+      if (data.username === username) {
+        console.log("run added to sell");
+        this.getSellLength();
+      }
+    });
+    socket.on("removed from sell", data => {
+      const { username } = this.state;
+      if (data.username === username) {
+        this.getSellLength();
+      }
+    });
   };
 
   checkLogin = () => {
@@ -32,10 +88,9 @@ class App extends Component {
       if (user.data !== false) {
         userAPI.findUserById(user.data).then(data => {
           // connect socket
-          const { socket } = this.state;
-          socket.emit("USER_CONNECTED", data.data.username);
 
           this.setState({
+            userId: data.data._id,
             loggedIn: true,
             username: data.data.username,
             email: data.data.email,
@@ -44,6 +99,8 @@ class App extends Component {
             loaded: true,
             chatIds: data.data.chats
           });
+
+          this.getCollectionLength();
         });
       } else {
         this.setState({
@@ -54,7 +111,60 @@ class App extends Component {
     });
   };
 
+  // get collection length
+  getCollectionLength = () => {
+    console.log("run get collection");
+    // get games for specific user
+    collectionAPI.getGames().then(games => {
+      console.log("run get collection");
+      this.getWIshlistLength();
+      this.setState({
+        collectionLength: games.data.length,
+        last5Collection: games.data.slice(-5)
+      });
+    });
+  };
+
+  // get wishlist length and latest games added
+  getWIshlistLength = () => {
+    // get games for specific user
+    wishlistAPI.getGames().then(games => {
+      this.getSellLength();
+
+      console.log(games);
+      this.setState({
+        wishlistLength: games.data.length,
+        last5Wishlist: games.data.slice(-5)
+      });
+    });
+  };
+
+  // get selling length
+  getSellLength = () => {
+    // get games for specific user
+    sellAPI.getSell().then(games => {
+      console.log(games);
+      this.setState({
+        sellingLength: games.data.length,
+        last5Selllist: games.data.slice(-5)
+      });
+    });
+  };
+
+  componentWillUnmount = () => {
+    const { socket } = this.state;
+    socket.close();
+  };
+
   render() {
+    const {
+      collectionLength,
+      sellingLength,
+      wishlistLength,
+      last5Wishlist,
+      last5Selllist,
+      last5Collection
+    } = this.state;
     return (
       <div className="App">
         {this.state.loaded ? (
@@ -88,7 +198,15 @@ class App extends Component {
                       active="profile"
                       chatIds={this.state.chatIds}
                     >
-                      <Profile username={this.state.username} />
+                      <Profile
+                        username={this.state.username}
+                        collectionLength={collectionLength}
+                        sellingLength={sellingLength}
+                        wishlistLength={wishlistLength}
+                        last5Collection={last5Collection}
+                        last5Wishlist={last5Wishlist}
+                        last5Selllist={last5Selllist}
+                      />
                     </Dashboard>
                   ) : (
                     <Redirect to="/" />
@@ -106,7 +224,7 @@ class App extends Component {
                       username={this.state.username}
                       email={this.state.email}
                       profileImg={this.state.img}
-                      active="profile"
+                      active="collection"
                       chatIds={this.state.chatIds}
                     >
                       <Collection
@@ -130,10 +248,13 @@ class App extends Component {
                       username={this.state.username}
                       email={this.state.email}
                       profileImg={this.state.img}
-                      active="profile"
+                      active="wishlist"
                       chatIds={this.state.chatIds}
                     >
-                      <Wishlist username={this.state.username} />
+                      <Wishlist
+                        username={this.state.username}
+                        socket={this.state.socket}
+                      />
                     </Dashboard>
                   ) : (
                     <Redirect to="/" />
@@ -151,7 +272,7 @@ class App extends Component {
                       username={this.state.username}
                       email={this.state.email}
                       profileImg={this.state.img}
-                      active="profile"
+                      active="sell"
                       chatIds={this.state.chatIds}
                     >
                       <Sell

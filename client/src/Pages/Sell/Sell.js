@@ -52,15 +52,14 @@ class Sell extends Component {
     };
 
     sellAPI.updateSell(data).then(done => {
+      const { socket } = this.state;
       this.removeFromPublicSell(data);
+      socket.emit("removed from sell", data);
     });
   };
 
   removeFromPublicSell = data => {
-    publicSellAPI.removeSell(data).then(done => {
-      const { socket } = this.state;
-      socket.emit("removed from sell", data);
-    });
+    publicSellAPI.removeSell(data).then(done => {});
   };
 
   render() {
@@ -70,6 +69,7 @@ class Sell extends Component {
         <div className="row">
           <div className="col-xl-12 d-flex" id="collection-wrapper">
             {sSell.map(game => {
+              console.log(game);
               return (
                 <div key={game.index} className="collection-content">
                   <img className="collection-img" src={game.url} alt="" />
