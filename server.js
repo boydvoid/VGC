@@ -27,10 +27,12 @@ const io = socketIO(server);
 const users = [];
 const connections = [];
 
-io.sockets.on('connection', (socket) => {
+io.on('connection', (socket) => {
   connections.push(socket);
-  console.log('connected: %s connected', connections.length);
-
+  socket.on('USER_CONNECTED', (username) => {
+    users.push(username);
+    socket.username = username;
+  });
   // disconnect
   socket.on('disconnect', () => {
     if (!socket.username) return;
@@ -40,15 +42,23 @@ io.sockets.on('connection', (socket) => {
     console.log('Disconnected: %s sockets connected', connections.length);
   });
 
-  socket.on('USER_CONNECTED', (username) => {
-    console.log(username);
-    users.push(username);
-    socket.username = username;
+
+  socket.on('chat started', (chatId) => {
+    console.log(`chat started ${chatId.data._id}`);
+    socket.join(chatId.data._id);
+    io.emit('chat started', { chatId, username: socket.username });
   });
+
   socket.on('chat message', (msg) => {
     console.log(msg);
-    io.sockets.in(msg.chatId).emit('getting message', msg);
+    io.in(msg.chatId).emit('getting message', msg);
   });
+
+  socket.on('join active', (roomId) => {
+    console.log(`joined active ${roomId}`);
+    socket.join(roomId);
+  });
+
   socket.on('added to collection', (data) => {
     io.emit('added to collection', { data, username: socket.username });
   });
@@ -60,16 +70,6 @@ io.sockets.on('connection', (socket) => {
     io.emit('removed from sell', { data, username: socket.username });
   });
 
-  socket.on('chat started', (data) => {
-    console.log(data.id);
-    socket.join(data.id);
-    io.emit('chat started', { data, username: socket.username });
-  });
-
-  socket.on('join active', (data) => {
-    console.log(`active${data}`);
-    socket.join(data);
-  });
 
   socket.on('user 1 chat setup', (data) => {
     io.emit('user 1 chat setup', data);
@@ -95,7 +95,6 @@ if (process.env.NODE_ENV === 'production') {
 
 // mongo
 mongoose.connect(process.env.MONGOLAB_ORANGE_URI || 'mongodb://localhost/games', { useNewUrlParser: true }).then(() => {
-  console.log('connected');
 });
 
 // store the session in mongo db

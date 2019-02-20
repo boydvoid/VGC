@@ -43,22 +43,10 @@ class RightPanel extends Component {
   };
 
   socketFunction = () => {
-    const { socket } = this.state;
-
+    const { socket, username } = this.state;
     socket.on("chat started", async data => {
-      console.log(data);
-      const { username } = this.state;
-      const game = await this.findGameById(data.data.id);
-      const postedUser = await this.findUser(game.data.userID);
-      const chatInfo = {
-        gameId: game.data._id,
-        user1: data.username,
-        user2: postedUser.data.username,
-        gameName: game.data.name
-      };
-
-      if (username === data.username) {
-        this.runChatSetupUser1(data, chatInfo);
+      if (username === data.chatId.data.user1) {
+        this.runChatSetupUser1(data);
       }
     });
 
@@ -67,10 +55,7 @@ class RightPanel extends Component {
     });
 
     socket.on("getting message", async msg => {
-      console.log(msg);
-
       let tempArray = [];
-      console.log("run3");
       chatAPI.getChat(msg.chatId).then(chat => {
         tempArray = chat.data.messages;
         this.setState({
@@ -80,7 +65,25 @@ class RightPanel extends Component {
     });
   };
 
-  joinActiveRooms = () => {};
+  startChat = async event => {
+    const id = event.target.attributes.getNamedItem("data-id").value;
+    const { socket, username } = this.state;
+    // get the game your chatting about
+    const game = await this.findGameById(id);
+    // get the posted user
+    const postedUser = await this.findUser(game.data.userID);
+
+    const chatInfo = {
+      gameId: game.data._id,
+      user1: username,
+      user2: postedUser.data.username,
+      gameName: game.data.name
+    };
+
+    // create chat
+    const chat = await this.createChatId(chatInfo);
+    socket.emit("chat started", chat);
+  };
 
   findUser = gameId => {
     console.log("find user");
@@ -106,11 +109,45 @@ class RightPanel extends Component {
     return promise;
   };
 
-  addChatToUser1 = (chat, chatInfo) => {
+  runChatSetupUser1 = async chat => {
+    const { socket, sUsersChats, username } = this.state;
+    console.log(chat);
+    // await create chat
+
+    const addUser1 = await this.addChatToUser1(chat);
+    const addUser2 = await this.addChatToUser2(chat);
+    const x = sUsersChats;
+    x.push(chat.chatId.data);
+
+    this.setState({
+      sUsersChats: x
+    });
+    this.chatNotify();
+    socket.emit("user 1 chat setup", x);
+  };
+
+  runChatSetupUser2 = async data => {
+    const { socket, username } = this.state;
+    console.log(data[0]);
+    if (username === data[0].user2) {
+      const { sUsersChats } = this.state;
+      const x = sUsersChats;
+      x.push(data[0]);
+      console.log(x);
+
+      this.setState({
+        sUsersChats: x
+      });
+      socket.emit("join active", data[0].gameID);
+      this.chatNotify();
+    }
+  };
+
+  addChatToUser1 = chat => {
     const promise = new Promise((resolve, reject) => {
       const x = {
-        chatId: chat.data._id,
-        username: chatInfo.user1
+        chatId: chat.chatId.data._id,
+        username: chat.chatId.data.user1
       };
 
       resolve(userAPI.addChat(x));
@@ -118,11 +155,11 @@ class RightPanel extends Component {
     return promise;
   };
 
-  addChatToUser2 = (chat, chatInfo) => {
+  addChatToUser2 = chat => {
     const promise = new Promise((resolve, reject) => {
       const x = {
-        chatId: chat.data._id,
-        username: chatInfo.user2
+        chatId: chat.chatId.data._id,
+        username: chat.chatId.data.user2
       };
 
       resolve(userAPI.addChat(x));
@@ -135,40 +172,6 @@ class RightPanel extends Component {
       resolve(chatAPI.getChatByUser2(username));
     });
     return promise;
-  };
-
-  runChatSetupUser1 = async (data, chatInfo) => {
-    const { socket, sUsersChats, username } = this.state;
-
-    // await create chat
-    const chat = await this.createChatId(chatInfo);
-    const addUser1 = await this.addChatToUser1(chat, chatInfo);
-    const addUser2 = await this.addChatToUser2(chat, chatInfo);
-    const x = sUsersChats;
-    x.push(chat.data);
-
-    this.setState({
-      sUsersChats: x
-    });
-    this.chatNotify();
-    socket.emit("user 1 chat setup", x);
-  };
-
-  runChatSetupUser2 = async data => {
-    const { username } = this.state;
-    console.log(data[0].user2);
-    if (username === data[0].user2) {
-      const { sUsersChats } = this.state;
-      const x = sUsersChats;
-      x.push(data[0]);
-      console.log(x);
-
-      this.setState({
-        sUsersChats: x
-      });
-
-      this.chatNotify();
-    }
   };
 
   handleChange = event => {
@@ -285,6 +288,8 @@ class RightPanel extends Component {
   // receive msg
   sendMsg = event => {
     event.preventDefault();
+
+    console.log("sendmsg");
     const { socket, sInputChat, sChatId, chatMessages } = this.state;
     const chatId = sChatId;
     const sender = document
@@ -310,13 +315,13 @@ class RightPanel extends Component {
       };
     }
 
-    const tempArray = chatMessages;
+    // const tempArray = chatMessages;
 
-    tempArray.push(msgData);
+    // tempArray.push(msgData);
 
-    this.setState({
-      chatMessages: tempArray
-    });
+    // this.setState({
+    //   chatMessages: tempArray
+    // });
 
     chatAPI.add(msgData).then(() => {
       socket.emit("chat message", msgData);
@@ -451,17 +456,6 @@ class RightPanel extends Component {
         sToggleSell: true
       });
     });
-  };
-
-  startChat = event => {
-    const id = event.target.attributes.getNamedItem("data-id").value;
-    const { socket, username } = this.state;
-
-    const data = {
-      id,
-      initialUser: username
-    };
-    socket.emit("chat started", data);
   };
 
   render() {

@@ -23,16 +23,16 @@ class Dashboard extends Component {
   };
 
   initSocket = () => {
-    const { socket } = this.state;
+    const { socket, username } = this.state;
 
     const promise = new Promise((resolve, reject) => {
-      resolve(socket.on("connected"));
+      resolve(socket.emit("USER_CONNECTED", username));
     });
 
+    socket.on("on connection", msg => {
+      console.log(msg);
+    });
     return promise;
-    // promise.then(() => {
-    //   this.checkLogin()
-    // })
   };
 
   logout = () => {

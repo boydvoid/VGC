@@ -22,14 +22,14 @@ module.exports = {
   },
   findGame: (req, res) => {
     db.publicSell.findOne({
-      gameIndex: req.params.id,
+      _id: req.params.id,
     }).then((results) => {
       res.send(results);
     });
   },
   remove: (req, res) => {
     db.publicSell.find({
-      gameIndex: req.body.index,
+      _id: req.body.index,
     }).remove().then((done) => {
       res.send(done);
     });

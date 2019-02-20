@@ -33,7 +33,6 @@ class App extends Component {
         userAPI.findUserById(user.data).then(data => {
           // connect socket
           const { socket } = this.state;
-          socket.emit("USER_CONNECTED", data.data.username);
 
           this.setState({
             loggedIn: true,
@@ -52,6 +51,11 @@ class App extends Component {
         });
       }
     });
+  };
+
+  componentWillUnmount = () => {
+    const { socket } = this.state;
+    socket.close();
   };
 
   render() {

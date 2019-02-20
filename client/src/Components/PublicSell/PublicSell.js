@@ -8,7 +8,7 @@ const PublicSell = ({ filteredResults, startChat }) => (
         <div key={game.gameIndex}>
           <img className="search-img" src={game.url} alt="" />
           <p>{game.name}</p>
-          <Button text="Inquiry" onclick={startChat} dataId={game.gameIndex} />
+          <Button text="Inquiry" onclick={startChat} dataId={game._id} />
         </div>
       );
     })}
