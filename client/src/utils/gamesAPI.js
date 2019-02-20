@@ -4,6 +4,9 @@ export default {
 	getPopular: function () {
 		return axios.get(`/api/popular`);
 	},
+	addGames: query => {
+		return axios.post(`/api/games/add`, query);
+	},
 	gameSearch: function (query) {
 		return axios.get(`/api/search/${query}`);
 	},

@@ -9,6 +9,7 @@ import userAPI from "../../utils/userAPI";
 import chatAPI from "../../utils/chatAPI";
 
 import Chat from "../../Components/Chat/Chat";
+import sellAPI from "../../utils/sellAPI";
 
 const fuzzysort = require("fuzzysort");
 
@@ -332,7 +333,9 @@ class RightPanel extends Component {
     const query = sInputGames;
 
     gamesAPI.gameSearch(query).then(data => {
+
       const tempArray = [];
+
       data.data.forEach(game => {
         let gameSeries;
         const gameModes = [];
@@ -407,19 +410,19 @@ class RightPanel extends Component {
           }
 
           tempArray.push({
+            averageRating: game.rating,
+            averageRatingSources: game.rating_count,
+            companies: gameCompanies,
+            gameModes: gameModes,
             id: game.id,
-            name: game.name,
-            series: gameSeries,
+            igdbLink: game.url,
             imgUrl: cover,
-            gameModes,
-            company: gameCompanies,
+            name: game.name,
             platform: gamePlatforms,
             releaseDate: gameReleaseDate,
-            averageRating: game.aggregated_rating,
-            averageRatingSources: game.aggregated_rating_count,
             screenshots: gameScreenshots,
+            series: gameSeries,
             summary: game.summary,
-            igdbLink: game.url,
             websites: gameWebsites
           });
 
@@ -428,7 +431,25 @@ class RightPanel extends Component {
           });
         }
       });
+
+      this.addGamesToDatabase();
+      console.log(this.state.sResultsGames)
+
     });
+  };
+
+  addGamesToDatabase = () => {
+
+    let gameData = this.state.sResultsGames;
+
+    gamesAPI.addGames(gameData).then(done => {
+
+      // live update with reloading page
+      const { socket } = this.state;
+      socket.emit("Games added to DB.", done);
+
+    });
+
   };
 
   togglePublicSell = () => {
