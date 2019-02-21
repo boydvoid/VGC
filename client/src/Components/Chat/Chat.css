@@ -81,6 +81,12 @@
   background-color: blue;
 }
 
+.chatList {
+  height: 450px;
+  overflow: auto;
+  ;
+}
+
 .msgs {}
 
 #msgs {

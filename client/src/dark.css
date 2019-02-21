@@ -73,6 +73,10 @@
   background-color: var(--d_secondary);
 }
 
+.dark-theme .chatbox h2 {
+  color: var(--d_titleColor);
+}
+
 .dark-theme .chat-title {
   background-color: var(--primaryColor);
   color: var(--d_titleColor);

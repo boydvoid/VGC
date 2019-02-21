@@ -24,7 +24,7 @@ const Profile = props => (
           data={props.wishlistLength}
           category="Wishlist"
         />
-        <ProfileData
+      <ProfileData
           borderColor="#EE8E4E"
           data={props.sellingLength}
           category="Selling"
@@ -39,12 +39,9 @@ const Profile = props => (
         {props.last5Collection.map(games => {
           const name = truncate(games.name);
           return (
-            <div
-              gameid={games.id}
-              onClick={props.getGameInfo}
-              className="gameParent"
-            >
+            <div gameid={games.id} className="gameParent">
               <img
+                onClick={props.getGameInfo}
                 gameid={games.id}
                 className="collection-img"
                 src={games.url}

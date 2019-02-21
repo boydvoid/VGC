@@ -9,7 +9,7 @@ import userAPI from "../../utils/userAPI";
 import chatAPI from "../../utils/chatAPI";
 
 import Chat from "../../Components/Chat/Chat";
-import sellAPI from "../../utils/sellAPI";
+import collectionAPI from "../../utils/collectionAPI";
 
 const fuzzysort = require("fuzzysort");
 
@@ -54,7 +54,9 @@ class RightPanel extends Component {
 
   socketFunction = () => {
     const { socket, username } = this.state;
+
     socket.on("chat started", async data => {
+      console.log(data)
       if (username === data.chatId.data.user1) {
         this.runChatSetupUser1(data);
       }
@@ -65,7 +67,6 @@ class RightPanel extends Component {
     });
 
     socket.on("getting message", async msg => {
-      console.log("getting");
       let tempArray = [];
       chatAPI.getChat(msg.chatId).then(chat => {
         tempArray = chat.data.messages;
@@ -97,8 +98,6 @@ class RightPanel extends Component {
   };
 
   findUser = gameId => {
-    console.log("find user");
-    console.log(gameId);
     const promise = new Promise((resolve, reject) => {
       resolve(userAPI.findUserById(gameId));
     });
@@ -106,7 +105,6 @@ class RightPanel extends Component {
   };
 
   findGameById = chatId => {
-    console.log("find game");
     const promise = new Promise((resolve, reject) => {
       resolve(publicSellAPI.findGame(chatId));
     });
@@ -123,35 +121,56 @@ class RightPanel extends Component {
   runChatSetupUser1 = async chat => {
     const { socket, sUsersChats, username } = this.state;
     // await create chat
-    console.log("user1");
-
+    console.log(chat.chatId);
     const addUser1 = await this.addChatToUser1(chat);
     const addUser2 = await this.addChatToUser2(chat);
 
-    const x = sUsersChats;
-    x.push(chat.chatId.data);
-    console.log(x);
-    this.setState({
-      sUsersChats: x
-    });
-    this.chatNotify();
-    socket.emit("user 1 chat setup", x);
+    const x = await sUsersChats;
+
+    const findId = x.findIndex(x => x._id === chat.chatId.data._id);
+    if (findId === -1) {
+      console.log(findId);
+      publicSellAPI.findGame(chat.chatId.data.gameID).then(game => {
+       chat.chatId.data.gameName = game.data.name; 
+       console.log(x);
+       
+         x.push(chat.chatId.data);
+
+         this.setState({
+          sUsersChats: []
+        });
+         this.setState({
+          sUsersChats: x
+        });
+        socket.emit("user 1 chat setup", x.slice(-1)[0])
+        this.chatNotify();
+        })
+      }
+
   };
 
   runChatSetupUser2 = async data => {
     const { socket, username } = this.state;
-    if (username === data[0].user2) {
-      console.log("user2");
+    if (username === data.user2) {
       const { sUsersChats } = this.state;
       const x = sUsersChats;
-      x.push(data[0]);
-      console.log(x);
-
-      this.setState({
-        sUsersChats: x
-      });
-      socket.emit("join active", data[0].gameID);
-      this.chatNotify();
+      
+      const findId = x.findIndex(x => x._id === data._id);
+      if (findId === -1) {
+        publicSellAPI.findGame(data.gameID).then(game => {
+          data.gameName = game.data.name; 
+          x.push(data);
+          
+              this.setState({
+                sUsersChats: [] 
+              })
+              this.setState({
+                sUsersChats: x
+              });
+              socket.emit("join active", data._id);
+              this.chatNotify();
+        })
+      }
     }
   };
 
@@ -226,11 +245,13 @@ class RightPanel extends Component {
   expandChatBox = () => {
     if (this.state.chatboxExpanded === false) {
       this.setState({
-        chatboxExpanded: true
+        chatboxExpanded: true,
+        chatNotification: false
       });
     } else {
       this.setState({
-        chatboxExpanded: false
+        chatboxExpanded: false,
+        chatNotification: false
       });
     }
   };
@@ -249,13 +270,19 @@ class RightPanel extends Component {
       const tempArray = [];
       const roomsId = [];
       sUsersChatsIds.forEach(chat => {
+        console.log(chat)
         chatAPI.getChat(chat).then(fullChat => {
-          roomsId.push(fullChat.data._id);
-          tempArray.push(fullChat.data);
-          this.setState({
-            sUsersChats: tempArray
+          console.log(fullChat)
+          publicSellAPI.findGame(fullChat.data.gameID).then(game => {
+            fullChat.data.gameName = game.data.name;
+            roomsId.push(fullChat.data._id);
+            console.log(roomsId)
+            tempArray.push(fullChat.data);
+            this.setState({
+              sUsersChats: tempArray
+            });
+            socket.emit("join active", roomsId);
           });
-          socket.emit("join active", roomsId);
         });
       });
     }
@@ -301,7 +328,6 @@ class RightPanel extends Component {
   sendMsg = event => {
     event.preventDefault();
 
-    console.log("sendmsg");
     const { socket, sInputChat, sChatId, chatMessages } = this.state;
     const chatId = sChatId;
     const sender = document

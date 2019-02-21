@@ -4,7 +4,7 @@ export default {
   create: () => {
     return axios.post(`/api/create/collection`);
   },
-  add: function(query) {
+  add(query) {
     return axios.post(`/api/add/`, query);
   },
   // removes an item from the games array
@@ -13,5 +13,8 @@ export default {
   },
   getGames: () => {
     return axios.get(`/api/getGames`);
+  },
+  getGameById: id => {
+    return axios.get(`/api/collection/game/${id}`);
   }
 };

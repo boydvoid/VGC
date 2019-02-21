@@ -18,4 +18,7 @@ router
   .route('/getGames')
   .get(collectionController.getGames);
 
+router
+  .route('/collection/game/:id')
+  .get(collectionController.getGameById);
 module.exports = router;

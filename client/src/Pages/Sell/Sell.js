@@ -78,9 +78,9 @@ class Sell extends Component {
                   key={game.index}
                   className="collection-content text-center"
                   gameid={game.id}
-                  onClick={this.props.getGameInfo}
                 >
                   <img
+                      onClick={this.props.getGameInfo}
                     className="collection-img"
                     src={game.url}
                     alt=""

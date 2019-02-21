@@ -9,6 +9,7 @@ module.exports = {
       messages: [{ sender: req.body.user1, reciever: req.body.user2, message: `Hello ${req.body.user2}, I am interested in your copy of ${req.body.gameName}.` }],
       user1: req.body.user1,
       user2: req.body.user2,
+      read: false
     }).then((data) => {
       res.send(data);
     });
@@ -38,4 +39,12 @@ module.exports = {
       console.log(err);
     });
   },
+  updateReadTrue: (req, res )=>{
+    db.chat.findOneAndUpdate({
+      _id: req.body.chatId
+    },
+    {read: true}).then(done => {
+      res.send(done);
+    })
+  }
 };

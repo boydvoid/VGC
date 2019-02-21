@@ -9,6 +9,7 @@ const chatSchema = new Schema({
   messages: { type: Array, required: true },
   user1: { type: String, required: true },
   user2: { type: String, required: true },
+  read: {type: Boolean}
 });
 
 // Convert UTC to PST.

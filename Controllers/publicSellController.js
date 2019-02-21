@@ -21,6 +21,7 @@ module.exports = {
     });
   },
   findGame: (req, res) => {
+    console.log("id " + req.params.id)
     db.publicSell.findOne({
       _id: req.params.id,
     }).then((results) => {

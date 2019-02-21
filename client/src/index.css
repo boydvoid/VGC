@@ -19,6 +19,14 @@ Global ( ALl Pages )
 	box-sizing: border-box;
 }
 
+html,
+body,
+#root,
+.App,
+#theme-div {
+	min-height: 100vh;
+}
+
 body {
 	width: 100%;
 	height: 100%;
@@ -172,14 +180,17 @@ Bottom Div
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0);
 	transition: all .5s ease;
-	cursor: pointer;
+
 	right: 0;
+
 }
+
 
 .overlay-show {
 	background-color: rgba(148, 148, 148, 0.397);
 	right: 0;
 	z-index: 2;
+	cursor: pointer;
 }
 
 .gameName {

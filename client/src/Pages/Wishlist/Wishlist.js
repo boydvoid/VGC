@@ -95,9 +95,9 @@ class Collection extends Component {
                 key={i}
                 gameid={game.id}
                 className="col-xl-3 collection-content text-center"
-                onClick={this.props.getGameInfo}
               >
                 <img
+                    onClick={this.props.getGameInfo}
                   className="collection-img"
                   gameid={game.id}
                   src={game.url}

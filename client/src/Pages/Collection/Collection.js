@@ -128,35 +128,41 @@ class Collection extends Component {
             return (
               <div
                 key={i}
-                className="col-xl-3 collection-content text-center"
+                className="col-xl-3 collection-content text-center d-flex"
                 gameid={game.id}
-                onClick={this.props.getGameInfo}
               >
-                <img
-                  className="collection-img"
-                  src={game.url}
-                  alt=""
-                  gameid={game.id}
-                 />
-                <h2 gameid={game.id} className="gameName">
-                  {game.name}
-                </h2>
-                <Button
-                  text="X"
-                  onclick={this.removeFromCollection}
-                  dataId={game.id}
-                  dataName={game.name}
-                  dataUrl={game.url}
-                  dataIndex={game.index}
-                />
-                <Button
-                  text="Add to Sell List"
-                  onclick={this.addToSell}
-                  dataId={game.id}
-                  dataName={game.name}
-                  dataUrl={game.url}
-                  dataIndex={game.index}
-                />
+                <div>
+                  <img
+                    onClick={this.props.getGameInfo}
+                    className="collection-img"
+                    src={game.url}
+                    alt=""
+                    gameid={game.id}
+                  />
+                  <h2 gameid={game.id} className="gameName">
+                    {game.name}
+                  </h2>
+                </div>
+                <div>
+                  <Button
+                      text="X"
+                      onclick={this.removeFromCollection}
+                      dataId={game.id}
+                      dataName={game.name}
+                      dataUrl={game.url}
+                      dataIndex={game.index}
+                      class="collection-btn"
+                  />
+                  <Button
+                      text="Add to Sell List"
+                      onclick={this.addToSell}
+                      dataId={game.id}
+                      dataName={game.name}
+                      dataUrl={game.url}
+                      dataIndex={game.index}
+                      class="collection-btn"
+                    />
+                </div>
               </div>
             );
           })}

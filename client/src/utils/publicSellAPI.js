@@ -12,6 +12,6 @@ export default {
     return axios.get(`/api/getPublicSell`);
   },
   findGame: query => {
-    return axios.get(`/api/find/game/${query}`);
+    return axios.get(`/api/public/sell/find/game/${query}`);
   }
 };

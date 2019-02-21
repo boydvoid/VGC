@@ -55,12 +55,13 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (msg) => {
     console.log(msg);
-    io.in(msg.chatId).emit('getting message', msg);
+    io.sockets.in(msg.chatId).emit('getting message', msg);
   });
 
   socket.on('join active', (roomId) => {
     console.log(`joined active ${roomId}`);
     socket.join(roomId);
+    io.sockets.in(roomId).emit("joined", roomId);
   });
 
   socket.on('added to collection', (data) => {

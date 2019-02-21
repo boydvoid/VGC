@@ -53,4 +53,11 @@ module.exports = {
       res.send(data.data);
     });
   },
+  getGameById: (req, res) => {
+    db.userGames.findOne({
+      _id: req.params.id,
+    }).then((game) => {
+      res.send(game);
+    });
+  },
 };
