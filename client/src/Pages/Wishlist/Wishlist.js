@@ -91,9 +91,21 @@ class Collection extends Component {
           </div>
           {this.state.wishlist.map((game, i) => {
             return (
-              <div key={i} className="col-xl-3 collection-content">
-                <img className="collection-img" src={game.url} alt="" />
-                <p>{game.name}</p>
+              <div
+                key={i}
+                gameid={game.id}
+                className="col-xl-3 collection-content text-center"
+                onClick={this.props.getGameInfo}
+              >
+                <img
+                  className="collection-img"
+                  gameid={game.id}
+                  src={game.url}
+                  alt=""
+                />
+                <h2 gameid={game.id} className="gameName">
+                  {game.name}
+                </h2>
                 <Button
                   text="X"
                   onclick={this.removeFromWishlist}

@@ -302,6 +302,7 @@ class App extends Component {
                     >
                       <Collection
                         socket={this.state.socket}
+                        getGameInfo={this.getGameInfo}
                         username={this.state.username}
                       />
                     </Dashboard>
@@ -330,6 +331,7 @@ class App extends Component {
                     >
                       <Wishlist
                         username={this.state.username}
+                        getGameInfo={this.getGameInfo}
                         socket={this.state.socket}
                       />
                     </Dashboard>
@@ -358,6 +360,7 @@ class App extends Component {
                     >
                       <Sell
                         socket={this.state.socket}
+                        getGameInfo={this.getGameInfo}
                         username={this.state.username}
                       />
                     </Dashboard>

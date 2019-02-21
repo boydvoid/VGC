@@ -39,10 +39,14 @@ const Profile = props => (
         {props.last5Collection.map(games => {
           const name = truncate(games.name);
           return (
-            <div gameid={games.id} onClick={props.getGameInfo}>
+            <div
+              gameid={games.id}
+              onClick={props.getGameInfo}
+              className="gameParent"
+            >
               <img
                 gameid={games.id}
-                className="search-img"
+                className="collection-img"
                 src={games.url}
                 alt={games.name}
               />

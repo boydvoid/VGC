@@ -126,9 +126,21 @@ class Collection extends Component {
           </div>
           {collection.map((game, i) => {
             return (
-              <div key={i} className="col-xl-3 collection-content">
-                <img className="collection-img" src={game.url} alt="" />
-                <p>{game.name}</p>
+              <div
+                key={i}
+                className="col-xl-3 collection-content text-center"
+                gameid={game.id}
+                onClick={this.props.getGameInfo}
+              >
+                <img
+                  className="collection-img"
+                  src={game.url}
+                  alt=""
+                  gameid={game.id}
+                 />
+                <h2 gameid={game.id} className="gameName">
+                  {game.name}
+                </h2>
                 <Button
                   text="X"
                   onclick={this.removeFromCollection}
