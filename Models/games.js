@@ -4,19 +4,23 @@ mongoose.set('useFindAndModify', false);
 const Schema = mongoose.Schema;
 
 const gamesSchema = new Schema({
-  // avgRating: { type: Number, required: false,},
-  // avgRatingSources: { type: Number, required: false,},
-  // companies: { type: String, required: false,},
-  // cover: { type: String, required: false,},
-  gameID: { type: Number, required: false,},
-  // gameModes: { type: String, required: false,},
-  // igdbURL: { type: String, required: false,},
-  // platform: { type: String, required: false,},
-  // releaseDate: { type: String, required: false,},
-  // screenshots: { type: String, required: false,},
-  // series: { type: String, required: false,},
-  // summary: { type: String, required: false,},
-  // websites: { type: String, required: false,},
+  gameName: { type: String },
+  ageRating: { type: String },
+  avgRating: { type: Number },
+  avgRatingSources: { type: Number },
+  companies: { type: Array },
+  cover: { type: String },
+  gameID: { type: Number },
+  gameModes: { type: Array },
+  igdbURL: { type: String },
+  genres: { type: Array },
+  videos: { type: Array },
+  platform: { type: Array },
+  releaseDate: { type: Array },
+  screenshots: { type: String },
+  series: { type: Array },
+  summary: { type: String },
+  websites: { type: Array },
 });
 
 const gamesInfo = mongoose.model('gamesInfo', gamesSchema);

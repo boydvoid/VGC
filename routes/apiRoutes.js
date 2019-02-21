@@ -1,75 +1,72 @@
-const axios = require("axios");
-const router = require("express").Router();
+const axios = require('axios');
+const router = require('express').Router();
 require('dotenv').config();
 
 
 // Search games using inputted text.
 
-router.get("/search/:id", (req, res) => {
+router.get('/search/:id', (req, res) => {
+  const userSearch = req.params.id;
+  const searchFields = '*,collection.name,cover.url,game_modes.name,involved_companies.company.name,platforms.name,genres.name,videos.video_id,release_dates.human,screenshots.url,websites.url';
+  const searchURL = `https://api-v3.igdb.com/games/?search=${userSearch}&fields=${searchFields}&limit=50`;
 
-	let userSearch = req.params.id;
-	let searchFields = "*,collection.name,cover.url,game_modes.name,involved_companies.company.name,platforms.name,release_dates.human,screenshots.url,websites.url";
-	let searchURL = `https://api-v3.igdb.com/games/?search=${userSearch}&fields=${searchFields}&limit=50`;
+  axios({
+    url: searchURL,
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'user-key': process.env.GAMESUSERKEY,
+    },
 
-	axios({
-		url: searchURL,
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'user-key': process.env.GAMESUSERKEY
-		},
-
-		// data: `fields game.*; search "${req.params.id}"; limit 30;`
-	})
-		.then(response => {
-			res.send(response.data);
-		})
-		.catch(err => {
-			console.error(err);
-			res.send(err)
-		});
-
+    // data: `fields game.*; search "${req.params.id}"; limit 30;`
+  })
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.send(err);
+    });
 });
 
 router.get('/popular', (req, res) => {
-	axios({
-		url: "https://api-v3.igdb.com/games/?fields=*&order=popularity:desc&limit=8",
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'user-key': process.env.GAMESUSERKEY
-		},
-		// data: `fields *; where platform = 48 ;`
-	})
-		.then(response => {
-			res.send(response.data)
-		})
-		.catch(err => {
-			console.error(err);
-		});
+  axios({
+    url: 'https://api-v3.igdb.com/games/?fields=*&order=popularity:desc&limit=8',
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'user-key': process.env.GAMESUSERKEY,
+    },
+    // data: `fields *; where platform = 48 ;`
+  })
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 // Get the game cover for a specific cover ID. This ID
 // is returned from the info provided by the Search API call.
 
-router.get("/games/covers/:id", (req, res) => {
-	axios({
-		url: "https://api-v3.igdb.com/covers",
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'user-key': process.env.GAMESUSERKEY
-		},
-		data: `fields url; where id = ${req.params.id};`
-	})
-		.then(response => {
-			res.send(response.data)
-		})
-		.catch(err => {
-			console.error(err);
-			res.send(err)
-		});
-
+router.get('/games/covers/:id', (req, res) => {
+  axios({
+    url: 'https://api-v3.igdb.com/covers',
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'user-key': process.env.GAMESUSERKEY,
+    },
+    data: `fields url; where id = ${req.params.id};`,
+  })
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.send(err);
+    });
 });
 
 // ------------------------------------------------------------------

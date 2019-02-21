@@ -6,6 +6,7 @@ import "./Dashboard.css";
 import RightPanel from "../RightPanel/RightPanel";
 import collectionAPI from "../../utils/collectionAPI";
 import wishlistAPI from "../../utils/wishlistAPI";
+import GamePanel from "../../Components/GamePanel/GamePanel";
 
 class Dashboard extends Component {
   state = {
@@ -79,22 +80,6 @@ class Dashboard extends Component {
     }
   };
 
-  openRightPanel = () => {
-    document.getElementById("mySidenav").style.right = "0px";
-    this.setState({
-      rightPanelOpen: true,
-      overlayShow: "overlay-show"
-    });
-  };
-
-  closeRightPanel = () => {
-    document.getElementById("mySidenav").style.right = "-900px";
-    this.setState({
-      rightPanelOpen: false,
-      overlayShow: ""
-    });
-  };
-
   // chat stuffs
 
   addToCollection = event => {
@@ -135,13 +120,16 @@ class Dashboard extends Component {
     return (
       <div>
         <div
-          className={`overlay ${this.state.overlayShow}`}
-          onClick={this.closeRightPanel}
+          className={`overlay ${this.props.overlayShow}`}
+          onClick={this.props.closeRightPanel}
         />
+
+        {/* Game Panel */}
+        <GamePanel game={this.props.game} />
 
         {/* right panel */}
         <RightPanel
-          closeRightPanel={this.closeRightPanel}
+          closeRightPanel={this.props.closeRightPanel}
           searchedGames={this.state.searchedGames}
           addToCollection={this.addToCollection}
           addToWishlist={this.addToWishlist}
@@ -162,8 +150,8 @@ class Dashboard extends Component {
           <Searchbar
             themeChecked={this.props.themeChecked}
             toggleTheme={this.toggleTheme}
-            openRightPanel={this.openRightPanel}
-            closeRightPanel={this.closeRightPanel}
+            openRightPanel={this.props.openRightPanel}
+            closeRightPanel={this.props.closeRightPanel}
           />
           {this.props.children}
         </div>

@@ -2,49 +2,43 @@ const db = require('../Models');
 
 module.exports = {
 
-	add: (req, res) => {
+  gameID: (req, res) => {
+    db.games.findOne({
+      gameID: req.params.id,
+    }).then((game) => {
+      res.send(game);
+    });
+  },
 
-		let gamesID = [];
-
-		db.games.find().then(function (count) {
-
-			for (let j = 0; j < count.length; j++) {
-
-				gamesID.push(count[j].gameID)
-
-			}
-
-			console.log(gamesID);
-
-			for (let i = 0; i < req.body.length; i++) {
-
-				if (gamesID.indexOf(req.body[i].id) > -1) {
-
-					console.log(`${req.body[i].id} Already Exists in DB.`)
-
-				} else {
-
-					db.games.create({
-						// avgRating: req.user,
-						// avgRatingSources: req.body.name,
-						// artworks: req.body.url,
-						// companies: req.body.index,
-						// cover: req.body.index,
-						gameID: req.body[i].id,
-						// Genres: req.body.index,
-						// igdbURL: req.body.index,
-						// platform: req.body.index,
-						// releaseDate: req.body.index,
-						// screenshots: req.body.index,
-						// series: req.body.index,
-						// summary: req.body.index,
-						// videos: req.body.index,
-						// websites: req.body.index,
-					})
-				}
-			}
-
-		});
-
-	}
+  add: (req, res) => {
+    db.games.find({
+      gameID: req.body.id,
+    }).then((game) => {
+      if (game) {
+        db.games.create({
+          gameName: req.body.name,
+      		avgRating: req.body.averageRating,
+      		avgRatingSources: req.body.averageRatingSources,
+      		companies: req.body.companies,
+      		cover: req.body.imgUrl,
+          gameID: req.body.id,
+          gameModes: req.body.gameModes,
+          genres: req.body.genres,
+          videos: req.body.videos,
+      		igdbURL: req.body.igdbLink,
+      		platform: req.body.platform,
+      		releaseDate: req.body.releaseDate,
+      		screenshots: req.body.screenshots,
+      		series: req.body.series,
+      		summary: req.body.summary,
+      		websites: req.body.websites,
+      	}).then(() => {
+          res.send(true);// game was added
+        });
+			 } // false for game wasnt added
+      else {
+        res.send(false);
+      }
+    });
+  },
 };

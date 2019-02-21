@@ -12,6 +12,7 @@ import Sell from "./Pages/Sell/Sell";
 import collectionAPI from "./utils/collectionAPI";
 import sellAPI from "./utils/sellAPI";
 import wishlistAPI from "./utils/wishlistAPI";
+import gamesAPI from "./utils/gamesAPI";
 // socket io
 
 class App extends Component {
@@ -32,6 +33,27 @@ class App extends Component {
     last5Selllist: [],
     chatIds: [],
     loaded: false,
+    game: {
+      data: {
+        cover: "",
+        avgRating: "",
+        avgRatingSources: "",
+        companies: [],
+        cover: "",
+        gameID: "",
+        gameModes: [],
+        genres: [],
+        igdbURL: "",
+        platform: [],
+        releaseDate: [],
+        screenshots: [],
+        series: [],
+        summary: "",
+        videos: [{}],
+        websites: []
+      }
+    },
+    overlayShow: false,
     socket: socketIO()
   };
 
@@ -113,10 +135,8 @@ class App extends Component {
 
   // get collection length
   getCollectionLength = () => {
-    console.log("run get collection");
     // get games for specific user
     collectionAPI.getGames().then(games => {
-      console.log("run get collection");
       this.getWIshlistLength();
       this.setState({
         collectionLength: games.data.length,
@@ -147,6 +167,50 @@ class App extends Component {
       this.setState({
         sellingLength: games.data.length,
         last5Selllist: games.data.slice(-5)
+      });
+    });
+  };
+
+  // search panel
+  openRightPanel = () => {
+    document.getElementById("mySidenav").style.right = "0px";
+    this.setState({
+      rightPanelOpen: true,
+      overlayShow: "overlay-show"
+    });
+  };
+
+  // search panel
+  closeRightPanel = () => {
+    if (document.getElementById("mySidenav").style.right === "0px") {
+      document.getElementById("mySidenav").style.right = "-900px";
+    }
+    if (document.getElementById("gamePanel").style.right === "0px") {
+      document.getElementById("gamePanel").style.right = "-900px";
+    }
+    this.setState({
+      rightPanelOpen: false,
+      overlayShow: ""
+    });
+  };
+
+  // gamepanel
+  closeGamePanel = () => {
+    this.setState({
+      game: [],
+      overlayShow: ""
+    });
+  };
+
+  getGameInfo = event => {
+    console.log(event.target);
+    const id = event.target.attributes.getNamedItem("gameid").value;
+    console.log(id);
+    gamesAPI.gameID(id).then(game => {
+      document.getElementById("gamePanel").style.right = "0px";
+      this.setState({
+        game,
+        overlayShow: "overlay-show"
       });
     });
   };
@@ -197,6 +261,10 @@ class App extends Component {
                       profileImg={this.state.img}
                       active="profile"
                       chatIds={this.state.chatIds}
+                      openRightPanel={this.openRightPanel}
+                      closeRightPanel={this.closeRightPanel}
+                      overlayShow={this.state.overlayShow}
+                      game={this.state.game}
                     >
                       <Profile
                         username={this.state.username}
@@ -206,6 +274,7 @@ class App extends Component {
                         last5Collection={last5Collection}
                         last5Wishlist={last5Wishlist}
                         last5Selllist={last5Selllist}
+                        getGameInfo={this.getGameInfo}
                       />
                     </Dashboard>
                   ) : (
@@ -226,6 +295,10 @@ class App extends Component {
                       profileImg={this.state.img}
                       active="collection"
                       chatIds={this.state.chatIds}
+                      openRightPanel={this.openRightPanel}
+                      closeRightPanel={this.closeRightPanel}
+                      overlayShow={this.state.overlayShow}
+                      game={this.state.game}
                     >
                       <Collection
                         socket={this.state.socket}
@@ -250,6 +323,10 @@ class App extends Component {
                       profileImg={this.state.img}
                       active="wishlist"
                       chatIds={this.state.chatIds}
+                      openRightPanel={this.openRightPanel}
+                      closeRightPanel={this.closeRightPanel}
+                      overlayShow={this.state.overlayShow}
+                      game={this.state.game}
                     >
                       <Wishlist
                         username={this.state.username}
@@ -274,6 +351,10 @@ class App extends Component {
                       profileImg={this.state.img}
                       active="sell"
                       chatIds={this.state.chatIds}
+                      openRightPanel={this.openRightPanel}
+                      closeRightPanel={this.closeRightPanel}
+                      overlayShow={this.state.overlayShow}
+                      game={this.state.game}
                     >
                       <Sell
                         socket={this.state.socket}

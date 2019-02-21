@@ -63,23 +63,23 @@ Global ( Landing )
 */
 
 
-.text-dark > h1 {
+.text-dark>h1 {
 	font-size: 4.2em;
 	text-align: left;
 }
 
-.text-dark > p {
+.text-dark>p {
 	font-size: 1.3em;
 	font-weight: 400;
 	max-width: 590px;
 	margin: 2em 0;
 }
 
-.text-light > h1 {
+.text-light>h1 {
 	font-size: 4.2rem;
 }
 
-.text-light > p {
+.text-light>p {
 	font-size: 1.3em;
 	font-weight: 400;
 	max-width: 590px;
@@ -180,4 +180,10 @@ Bottom Div
 	background-color: rgba(148, 148, 148, 0.397);
 	right: 0;
 	z-index: 2;
+}
+
+.gameName {
+	font-size: 20px;
+	text-align: center;
+	padding: 20px;
 }

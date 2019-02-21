@@ -346,13 +346,15 @@ class RightPanel extends Component {
     const query = sInputGames;
 
     gamesAPI.gameSearch(query).then(data => {
-
       const tempArray = [];
 
       data.data.forEach(game => {
+        console.log(game);
         let gameSeries;
         const gameModes = [];
         const gameCompanies = [];
+        const genres = [];
+        const videos = [];
         const gamePlatforms = [];
         const gameReleaseDate = [];
         const gameScreenshots = [];
@@ -386,6 +388,23 @@ class RightPanel extends Component {
             }
           }
 
+          // Check if Game has Genres listed.
+          if (game.genres === undefined) {
+            genres.push("Not Available");
+          } else {
+            for (let j = 0; j < game.genres.length; j++) {
+              genres.push(game.genres[j].name);
+            }
+          }
+
+          // Check if Game has videos listed.
+          if (game.videos === undefined) {
+            videos.push("Not Available");
+          } else {
+            for (let j = 0; j < game.videos.length; j++) {
+              videos.push(game.videos[j]);
+            }
+          }
           // Check if Game has platforms listed.
           if (game.platforms === undefined) {
             gamePlatforms.push("Not Available");
@@ -426,11 +445,13 @@ class RightPanel extends Component {
             averageRating: game.rating,
             averageRatingSources: game.rating_count,
             companies: gameCompanies,
-            gameModes: gameModes,
+            gameModes,
             id: game.id,
             igdbLink: game.url,
             imgUrl: cover,
             name: game.name,
+            genres,
+            videos,
             platform: gamePlatforms,
             releaseDate: gameReleaseDate,
             screenshots: gameScreenshots,
@@ -446,23 +467,20 @@ class RightPanel extends Component {
       });
 
       this.addGamesToDatabase();
-      console.log(this.state.sResultsGames)
-
+      console.log(this.state.sResultsGames);
     });
   };
 
   addGamesToDatabase = () => {
+    const gameData = this.state.sResultsGames;
 
-    let gameData = this.state.sResultsGames;
-
-    gamesAPI.addGames(gameData).then(done => {
-
-      // live update with reloading page
-      const { socket } = this.state;
-      socket.emit("Games added to DB.", done);
-
+    gameData.forEach(game => {
+      gamesAPI.addGames(game).then(done => {
+        // live update with reloading page
+        const { socket } = this.state;
+        console.log(done);
+      });
     });
-
   };
 
   togglePublicSell = () => {
