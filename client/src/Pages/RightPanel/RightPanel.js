@@ -10,6 +10,7 @@ import chatAPI from "../../utils/chatAPI";
 
 import Chat from "../../Components/Chat/Chat";
 import collectionAPI from "../../utils/collectionAPI";
+import messageAPI from "../../utils/messageAPI";
 
 const fuzzysort = require("fuzzysort");
 
@@ -67,13 +68,32 @@ class RightPanel extends Component {
     });
 
     socket.on("getting message", async msg => {
+      const {username} =this.state;
+      console.log(msg)
       let tempArray = [];
-      chatAPI.getChat(msg.chatId).then(chat => {
-        tempArray = chat.data.messages;
+      if(username === msg.receiver){
+
+        // chatAPI.getChat(msg.chatId).then(chat => {
+        //   chat.data.messages.forEach(message => {
+        //     messageAPI.getMessage(message).then(theMessage => {
+        //       tempArray.push(theMessage.data)
+        //       tempArray.sort(function(a,b){
+        //         // Turn your strings into dates, and then subtract them
+        //         // to get a value that is either negative, positive, or zero.
+        //         return new Date(b.date) - new Date(a.date);
+        //       });
+        //       this.setState({
+        //         chatMessages: tempArray.reverse()
+        //       });
+        //     })
+        //   })
+        // });
+        tempArray = this.state.chatMessages
+        tempArray.push(msg)
         this.setState({
           chatMessages: tempArray
-        });
-      });
+        })
+      }
     });
   };
 
@@ -94,6 +114,20 @@ class RightPanel extends Component {
 
     // create chat
     const chat = await this.createChatId(chatInfo);
+    console.log(chat)
+    const firstMessage = {
+      chatId: chat.data._id,
+      message: `Hello ${chatInfo.user2}, I am interested in your copy of ${chatInfo.gameName}.`,
+      sender: chatInfo.user1,
+      receiver: chatInfo.user2
+    }
+    console.log(firstMessage)
+    messageAPI.create(firstMessage).then(message =>{
+      console.log(message)
+      chatAPI.addMessage(message.data);
+    });
+
+
     socket.emit("chat started", chat);
   };
 
@@ -295,25 +329,35 @@ class RightPanel extends Component {
       // get the chats messages
       const tempArray = [];
       chatAPI.getChat(chatId).then(chat => {
+        console.log(chat)
         chat.data.messages.forEach(message => {
-          const { username } = this.state;
-          message.chatId = chatId;
-          tempArray.push(message);
-          if (chat.data.user1 !== username) {
-            this.setState({
-              chatListDisplay: false,
-              sUserSpeakingWith: chat.data.user1,
-              sChatId: message.chatId,
-              chatMessages: tempArray
+          console.log(message)
+          messageAPI.getMessage(message).then(theMessage =>{
+            console.log(theMessage)
+            const { username } = this.state;
+            theMessage.chatId = chatId;
+            tempArray.push(theMessage.data);
+            tempArray.sort(function(a,b){
+              // Turn your strings into dates, and then subtract them
+              // to get a value that is either negative, positive, or zero.
+              return new Date(b.date) - new Date(a.date);
             });
-          } else if (chat.data.user2 !== username) {
-            this.setState({
-              chatListDisplay: false,
-              sUserSpeakingWith: chat.data.user2,
-              sChatId: message.chatId,
-              chatMessages: tempArray
-            });
-          }
+            if (chat.data.user1 !== username) {
+              this.setState({
+                chatListDisplay: false,
+                sUserSpeakingWith: chat.data.user1,
+                sChatId: theMessage.chatId,
+                chatMessages: tempArray.reverse()
+              });
+            } else if (chat.data.user2 !== username) {
+              this.setState({
+                chatListDisplay: false,
+                sUserSpeakingWith: chat.data.user2,
+                sChatId: theMessage.chatId,
+                chatMessages: tempArray.reverse()
+              });
+            }
+          });
         });
       });
     } else {
@@ -342,14 +386,14 @@ class RightPanel extends Component {
         message: "",
         chatId,
         sender,
-        receiver
+        receiver,
       };
     } else {
       msgData = {
         message: sInputChat,
         chatId,
         sender,
-        receiver
+        receiver,
       };
     }
 
@@ -361,7 +405,8 @@ class RightPanel extends Component {
       chatMessages: tempArray
     });
 
-    chatAPI.add(msgData).then(() => {
+    messageAPI.create(msgData).then((message) => {
+      chatAPI.addMessage(message.data);
       socket.emit("chat message", msgData);
     });
   };

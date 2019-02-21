@@ -6,7 +6,7 @@ module.exports = {
   create: (req, res) => {
     db.chat.create({
       gameID: req.body.gameId,
-      messages: [{ sender: req.body.user1, reciever: req.body.user2, message: `Hello ${req.body.user2}, I am interested in your copy of ${req.body.gameName}.` }],
+      messages: [],
       user1: req.body.user1,
       user2: req.body.user2,
       read: false
@@ -39,11 +39,12 @@ module.exports = {
       console.log(err);
     });
   },
-  updateReadTrue: (req, res )=>{
+  update: (req, res )=>{
+    console.log("message" + req.body);
     db.chat.findOneAndUpdate({
       _id: req.body.chatId
     },
-    {read: true}).then(done => {
+    {$push: {messages: req.body._id}}).then(done => {
       res.send(done);
     })
   }

@@ -15,5 +15,8 @@ router
 router
   .route('/chat/add')
   .post(chatController.add);
+router
+  .route('/chat/message')
+  .post(chatController.update);
 
 module.exports = router;

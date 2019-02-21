@@ -21,6 +21,7 @@ const publicSell = require('./routes/publicSellRoutes');
 const sellRoutes = require('./routes/sellRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 const User = require('./routes/userRoutes');
 const routes = require('./routes/apiRoutes');
 const chat = require('./routes/chatRoutes');
@@ -146,6 +147,7 @@ app.use('/api', sellRoutes);
 app.use('/api', publicSell);
 app.use('/api', gamesDB);
 app.use('/api', chat);
+app.use('/api', messageRoutes);
 
 // Passport use
 passport.use(new LocalStrategy(

@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 const Schema = mongoose.Schema;
 
-const chatSchema = new Schema({
+const messageSchema = new Schema({
   date: { type: Date, default: convertTimeDate() },
-  gameID: { type: String, required: true },
-  messages: { type: Array, required: true },
-  user1: { type: String, required: true },
-  user2: { type: String, required: true },
+  chatId: { type: String, required: true },
+  message: { type: String, required: true },
+  sender: { type: String, required: true },
+  receiver: { type: String, required: true },
+  read: {type: Boolean}
 });
 
 // Convert UTC to PST.
@@ -21,5 +22,5 @@ function convertTimeDate() {
   return usDate;
 }
 
-const chat = mongoose.model('chat', chatSchema);
-module.exports = chat;
+const message = mongoose.model('message', messageSchema);
+module.exports = message;
