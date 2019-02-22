@@ -8,13 +8,12 @@ import publicSellAPI from "../../utils/publicSellAPI";
 class Collection extends Component {
   state = {
     username: this.props.username,
-    collection: [],
+    collection: this.props.collection,
     latestAdditions: [],
     socket: this.props.socket
   };
 
   componentWillMount = () => {
-    this.getGames();
     this.socketFunction();
   };
 
@@ -47,13 +46,7 @@ class Collection extends Component {
     });
   };
 
-  getGames = () => {
-    collectionAPI.getGames().then(data => {
-      this.setState({
-        collection: data.data
-      });
-    });
-  };
+ 
 
   removeFromCollection = event => {
     const id = event.target.attributes.getNamedItem("data-id").value;
@@ -120,7 +113,7 @@ class Collection extends Component {
     const { collection } = this.state;
     return (
       <div className="container-fluid">
-        <div className="row">
+        <div className="row" style={{padding: "25px"}}>
           <div className="w-100 d-flex p-20 section-title">
             <h2 className="primaryText">Collection</h2>
           </div>

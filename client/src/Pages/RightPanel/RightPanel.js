@@ -28,7 +28,7 @@ class RightPanel extends Component {
     socket: this.props.socket,
     chatMessages: [],
     sUsersChatsIds: this.props.chatIds,
-    sUsersChats: [],
+    sUsersChats: this.props.sUsersChats,
     sUserSpeakingWith: "",
     sChatId: "",
     chatNotification: false,
@@ -38,7 +38,6 @@ class RightPanel extends Component {
 
   componentWillMount = () => {
     this.socketFunction();
-    this.loadUsersChats();
   };
 
   componentWillUpdate = () => {
@@ -73,21 +72,7 @@ class RightPanel extends Component {
       let tempArray = [];
       if(username === msg.receiver){
 
-        // chatAPI.getChat(msg.chatId).then(chat => {
-        //   chat.data.messages.forEach(message => {
-        //     messageAPI.getMessage(message).then(theMessage => {
-        //       tempArray.push(theMessage.data)
-        //       tempArray.sort(function(a,b){
-        //         // Turn your strings into dates, and then subtract them
-        //         // to get a value that is either negative, positive, or zero.
-        //         return new Date(b.date) - new Date(a.date);
-        //       });
-        //       this.setState({
-        //         chatMessages: tempArray.reverse()
-        //       });
-        //     })
-        //   })
-        // });
+     
         tempArray = this.state.chatMessages
         tempArray.push(msg)
         this.setState({
@@ -246,7 +231,7 @@ class RightPanel extends Component {
       [name]: event.target.value
     });
 
-    if (event.target.name === "sResultsFiltered") {
+    if (event.target.name === "sInputSell") {
       if (event.target.value === "") {
         this.setState({
           sResultsFiltered: sResultsSell
@@ -297,31 +282,6 @@ class RightPanel extends Component {
     });
   };
 
-  loadUsersChats = () => {
-    const { socket, sUsersChatsIds } = this.state;
-
-    if (sUsersChatsIds !== undefined) {
-      const tempArray = [];
-      const roomsId = [];
-      sUsersChatsIds.forEach(chat => {
-        console.log(chat)
-        chatAPI.getChat(chat).then(fullChat => {
-          console.log(fullChat)
-          publicSellAPI.findGame(fullChat.data.gameID).then(game => {
-            fullChat.data.gameName = game.data.name;
-            roomsId.push(fullChat.data._id);
-            console.log(roomsId)
-            tempArray.push(fullChat.data);
-            this.setState({
-              sUsersChats: tempArray
-            });
-            socket.emit("join active", roomsId);
-          });
-        });
-      });
-    }
-  };
-
   toggleChatDisplay = event => {
     const { chatListDisplay } = this.state;
     if (chatListDisplay === true) {
@@ -338,8 +298,6 @@ class RightPanel extends Component {
             theMessage.chatId = chatId;
             tempArray.push(theMessage.data);
             tempArray.sort(function(a,b){
-              // Turn your strings into dates, and then subtract them
-              // to get a value that is either negative, positive, or zero.
               return new Date(b.date) - new Date(a.date);
             });
             if (chat.data.user1 !== username) {
@@ -606,7 +564,7 @@ class RightPanel extends Component {
           titleColor={this.state.chatNotification ? "red" : ""}
           chatMessages={this.state.chatMessages}
           chatListDisplay={this.state.chatListDisplay}
-          usersChats={this.state.sUsersChats}
+          usersChats={this.props.sUserChats}
           username={this.props.username}
           toggleChatDisplay={this.toggleChatDisplay}
           userSpeakingWith={this.state.sUserSpeakingWith}
@@ -671,27 +629,32 @@ class RightPanel extends Component {
           <div className="searchResults">
             {sResultsGames.map(game => {
               return (
-                <div key={game.index}>
+                <div key={game.index} class="d-flex" style={{padding: "30px"}}>
                   <img
                     className="search-img"
                     src={game.imgUrl}
                     alt={game.name}
                   />
-                  <p>{game.name}</p>
+                  <div>
+
+                  <h2 className="secondaryText">{game.name}</h2>
                   <Button
+                  class="rightPanelBtn"
                     text="Add to Collection"
                     dataId={game.id}
                     dataName={game.name}
                     dataUrl={game.imgUrl}
                     onclick={addToCollection}
-                  />
+                    />
                   <Button
+                  class="rightPanelBtn"
                     text="Add to Wishlist"
                     dataId={game.id}
                     dataName={game.name}
                     dataUrl={game.imgUrl}
                     onclick={addToWishlist}
-                  />
+                    />
+                    </div>
                 </div>
               );
             })}

@@ -6,12 +6,11 @@ import publicSellAPI from "../../utils/publicSellAPI";
 class Sell extends Component {
   state = {
     username: this.props.username,
-    sSell: [],
+    sSell: this.props.sSell,
     socket: this.props.socket
   };
 
   componentWillMount = () => {
-    this.getGames();
     this.socketFunction();
   };
 
@@ -30,13 +29,6 @@ class Sell extends Component {
     });
   };
 
-  getGames = () => {
-    sellAPI.getSell().then(data => {
-      this.setState({
-        sSell: data.data
-      });
-    });
-  };
 
   removeFromSellPage = event => {
     const id = event.target.attributes.getNamedItem("data-id").value;
@@ -66,7 +58,7 @@ class Sell extends Component {
     const { sSell } = this.state;
     return (
       <div className="container-fluid">
-        <div className="row">
+        <div className="row" style={{padding: "25px"}}>
           <div className="w-100 d-flex p-20 section-title">
             <h2 className="primaryText">Selling</h2>
           </div>

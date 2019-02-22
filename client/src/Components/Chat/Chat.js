@@ -20,7 +20,7 @@ const Chat = props => (
             onclick={props.toggleChatDisplay}
           />
           <h3>{props.userSpeakingWith}</h3>
-          <div onClick={props.titleClick}>
+          <div className="minimizeBtn" onClick={props.titleClick}>
             <i className="fas fa-window-minimize" />
           </div>
         </div>

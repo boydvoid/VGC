@@ -1,20 +1,32 @@
 import React from "react";
 import "./Chat.css";
+const truncate = string => {
+  if (string.length > 10) return `${string.substring(0, 10)}...`;
+  return string;
+};
 
 const ChatList = props => (
-  <div  className="chatList">
-    {props.usersChats.map(chatBox => {
+  <div  className="chatList"  onClick={props.toggleChatDisplay}>
+   
+    {
+      props.usersChats.map(chatBox => {
       return (
         <div
           className="chatDiv"
-          onClick={props.toggleChatDisplay}
+         
           data-chatid={chatBox._id}
         >
+        <div>
+
           <h2 data-chatid={chatBox._id}>
-            {/* on the list show the name of the person you are talking to */}
             {chatBox.user1 === props.username ? chatBox.user2 : chatBox.user1}
-            <p data-chatid={chatBox._id}>{chatBox.gameName}</p>
           </h2>
+        </div>
+            {/* on the list show the name of the person you are talking to */}
+            <div>
+
+            <p data-chatid={chatBox._id}>{truncate(chatBox.gameName)}</p>
+            </div>
         </div>
       );
     })}

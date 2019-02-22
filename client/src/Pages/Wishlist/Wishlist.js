@@ -9,12 +9,11 @@ import wishlistAPI from "../../utils/wishlistAPI";
 class Collection extends Component {
   state = {
     username: this.props.username,
-    wishlist: [],
+    wishlist: this.props.wishlist,
     socket: this.props.socket
   };
 
   componentWillMount = () => {
-    this.getGames();
     this.socketFunction();
   };
 
@@ -47,15 +46,6 @@ class Collection extends Component {
       }
     });
   };
-
-  getGames = () => {
-    wishlistAPI.getGames().then(data => {
-      this.setState({
-        wishlist: data.data
-      });
-    });
-  };
-
   removeFromWishlist = event => {
     const id = event.target.attributes.getNamedItem("data-id").value;
     const name = event.target.attributes.getNamedItem("data-name").value;
@@ -85,7 +75,7 @@ class Collection extends Component {
     const { wishlist } = this.state;
     return (
       <div className="container-fluid">
-        <div className="row">
+        <div className="row" style={{padding: "25px"}}>
           <div className="w-100 d-flex p-20 section-title">
             <h2 className="primaryText">Wishlist</h2>
           </div>

@@ -9,7 +9,7 @@ const Searchbar = (props) => (
     <span className="ml-auto">
       <ul>
         <li>
-      <Button text={<i className="fas fa-search"></i>} class="search-btn" onclick={props.openRightPanel}/>
+      <Button text={<i className="fas fa-search"></i>} class="search-btn dashboardSearchBtn" onclick={props.openRightPanel}/>
         </li>
         <li>
           <p>Night Mode</p>

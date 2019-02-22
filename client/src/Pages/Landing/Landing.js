@@ -110,11 +110,7 @@ class Landing extends Component {
     });
   };
 
-  componentWillUnmount = () => {
-    const { socket } = this.state;
 
-    socket.emit("disconnect");
-  };
 
   render() {
     const { sImages } = this.state;

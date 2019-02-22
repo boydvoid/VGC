@@ -13,6 +13,9 @@ import collectionAPI from "./utils/collectionAPI";
 import sellAPI from "./utils/sellAPI";
 import wishlistAPI from "./utils/wishlistAPI";
 import gamesAPI from "./utils/gamesAPI";
+import Loading from "./Components/loading/Loading";
+import publicSellAPI from './utils/publicSellAPI'
+import chatAPI from './utils/chatAPI'
 // socket io
 
 class App extends Component {
@@ -32,6 +35,10 @@ class App extends Component {
     last5Wishlist: [],
     last5Selllist: [],
     chatIds: [],
+    collection: [],
+    wishlist: [],
+    sSell: [],
+    sUserChats: [],
     loaded: false,
     game: {
       data: {
@@ -118,16 +125,15 @@ class App extends Component {
             email: data.data.email,
             theme: data.data.theme,
             img: data.data.img,
-            loaded: true,
             chatIds: data.data.chats
           });
 
           this.getCollectionLength();
         });
+        this.getGames();
       } else {
         this.setState({
-          loggedIn: false,
-          loaded: true
+          loggedIn: false
         });
       }
     });
@@ -170,6 +176,14 @@ class App extends Component {
       });
     });
   };
+
+ setLoadedTrue = () => {
+  
+     this.setState({
+       loaded: true
+     })
+
+ }
 
   // search panel
   openRightPanel = () => {
@@ -214,6 +228,55 @@ class App extends Component {
       });
     });
   };
+  getGames = () => {
+    collectionAPI.getGames().then(data => {
+      this.setState({
+        collection: data.data,
+      });
+      
+      wishlistAPI.getGames().then(data => {
+        this.setState({
+          wishlist: data.data
+        });
+
+        sellAPI.getSell().then(data => {
+        this.setLoadedTrue();
+        this.loadUsersChats();
+          this.setState({
+            sSell: data.data
+          });
+        });
+
+      });
+    });
+  };
+
+
+  loadUsersChats = () => {
+    const { socket, chatIds } = this.state;
+    console.log(chatIds)
+    if (chatIds !== undefined) {
+      const tempArray = [];
+      const roomsId = [];
+      chatIds.forEach(chat => {
+        console.log(chat)
+        chatAPI.getChat(chat).then(fullChat => {
+          console.log(fullChat)
+          publicSellAPI.findGame(fullChat.data.gameID).then(game => {
+            fullChat.data.gameName = game.data.name;
+            roomsId.push(fullChat.data._id);
+            console.log(roomsId)
+            tempArray.push(fullChat.data);
+            this.setState({
+              sUserChats: tempArray
+            });
+            socket.emit("join active", roomsId);
+          });
+        });
+      });
+    }
+  };
+
 
   componentWillUnmount = () => {
     const { socket } = this.state;
@@ -265,6 +328,7 @@ class App extends Component {
                       closeRightPanel={this.closeRightPanel}
                       overlayShow={this.state.overlayShow}
                       game={this.state.game}
+                      sUserChats={this.state.sUserChats}
                     >
                       <Profile
                         username={this.state.username}
@@ -299,11 +363,13 @@ class App extends Component {
                       closeRightPanel={this.closeRightPanel}
                       overlayShow={this.state.overlayShow}
                       game={this.state.game}
+                      sUserChats={this.state.sUserChats}
                     >
                       <Collection
                         socket={this.state.socket}
                         getGameInfo={this.getGameInfo}
                         username={this.state.username}
+                        collection={this.state.collection}
                       />
                     </Dashboard>
                   ) : (
@@ -328,11 +394,13 @@ class App extends Component {
                       closeRightPanel={this.closeRightPanel}
                       overlayShow={this.state.overlayShow}
                       game={this.state.game}
+                      sUserChats={this.state.sUserChats}
                     >
                       <Wishlist
                         username={this.state.username}
                         getGameInfo={this.getGameInfo}
                         socket={this.state.socket}
+                        wishlist={this.state.wishlist}
                       />
                     </Dashboard>
                   ) : (
@@ -357,11 +425,13 @@ class App extends Component {
                       closeRightPanel={this.closeRightPanel}
                       overlayShow={this.state.overlayShow}
                       game={this.state.game}
+                      sUserChats={this.state.sUserChats}
                     >
                       <Sell
                         socket={this.state.socket}
                         getGameInfo={this.getGameInfo}
                         username={this.state.username}
+                        sSell={this.state.sSell}
                       />
                     </Dashboard>
                   ) : (
@@ -372,7 +442,7 @@ class App extends Component {
             </Switch>
           </div>
         ) : (
-          <div />
+          <Loading />
         )}
       </div>
     );

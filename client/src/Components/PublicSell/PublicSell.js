@@ -7,12 +7,13 @@ const PublicSell = ({ filteredResults, startChat, addToWishlist }) => (
     <h2 className="primaryText sellListTitle">Games for Sale</h2>
     {filteredResults.map(game => {
       return (
-        <div key={game.gameIndex}>
+        <div key={game.gameIndex} className="d-flex">
           <img className="search-img" src={game.url} alt="" />
-          <div className="d-flex justify-content-center">
+          <div className="">
             <h2 className="secondaryText">{game.name}</h2>
-            <Button text="Inquiry" onclick={startChat} dataId={game._id} />
+            <Button text="Inquiry" onclick={startChat} dataId={game._id} class="rightPanelBtn" />
             <Button
+            class="rightPanelBtn"
                 text="Add to Wishlist"
                 dataId={game._id}
                 dataName={game.name}

@@ -17,8 +17,6 @@ const Profile = props => (
           data={props.collectionLength}
           category="Collection"
         />
-        <ProfileData borderColor="#4EA3EE" data="100" category="System" />
-        <ProfileData borderColor="#4EEE59" data="100" category="Value" />
         <ProfileData
           borderColor="#CF4EEE"
           data={props.wishlistLength}
@@ -36,7 +34,11 @@ const Profile = props => (
         <h2 className="primaryText">Latest Additions to Collection</h2>
       </div>
       <div className="w-100 d-flex justify-content-sm-around align-items-center flex-wrap">
-        {props.last5Collection.map(games => {
+        {
+         props.last5Collection.length === 0 ? 
+         <h1 className="primaryText" style={{padding: "30px"}}>Add to your Collection!</h1>
+         :  
+          props.last5Collection.map(games => {
           const name = truncate(games.name);
           return (
             <div gameid={games.id} className="gameParent">
@@ -60,7 +62,11 @@ const Profile = props => (
         <h2 className="primaryText">Latest Additions To Wishlist</h2>
       </div>
       <div className="w-100 d-flex justify-content-sm-around align-items-center flex-wrap">
-        {props.last5Wishlist.map(games => {
+        {props.last5Wishlist.length === 0 ?
+
+            <h1 className="primaryText" style={{padding: "30px"}}>Add to your Wishlist!</h1>
+        
+        : props.last5Wishlist.map(games => {
           const name = truncate(games.name);
           return (
             <div>
@@ -76,7 +82,9 @@ const Profile = props => (
         <h2 className="primaryText">Latest Additions To Sell List</h2>
       </div>
       <div className="w-100 d-flex justify-content-sm-around align-items-center flex-wrap">
-        {props.last5Selllist.map(games => {
+        {props.last5Selllist.length === 0 ?
+            <h1 className="primaryText" style={{padding: "30px"}}>Add to your Sell list!</h1>
+        : props.last5Selllist.map(games => {
           const name = truncate(games.name);
           return (
             <div>

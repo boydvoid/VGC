@@ -108,6 +108,27 @@
 }
 
 .dark-theme .sellListTitle {
-  color: var(--d_primary);
+  color: var(--d_titleColor);
   border-bottom: 1px solid var(--d_borderColor);
+}
+
+.dark-theme .loadingDiv {
+  background-color: var(--d_primary);
+}
+
+.dark-theme .msgNotYou {
+  background-color: var(--d_primary);
+  color: var(--d_titleColor);
+}
+
+.dark-theme .chatDiv p {
+  color: var(--d_titleColor);
+}
+
+.dark-theme .msgNotYou:after {
+  border-bottom: 20px solid var(--d_primary);
+}
+
+.dark-theme .gameName {
+  color: var(--d_titleColor)
 }

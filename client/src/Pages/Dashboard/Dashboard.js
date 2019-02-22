@@ -136,6 +136,7 @@ class Dashboard extends Component {
           socket={this.props.socket}
           username={this.props.username}
           chatIds={this.props.chatIds}
+          sUserChats={this.props.sUserChats}
         />
         {/* nav panel */}
         <SidePanel
