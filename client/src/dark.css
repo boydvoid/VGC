@@ -132,3 +132,7 @@
 .dark-theme .gameName {
   color: var(--d_titleColor)
 }
+
+.dark-theme #gamePanel p{
+  color: var(--d_titleColor);
+}

@@ -16,48 +16,61 @@ const Modal = props => (
   
     <Register /> 
   } */}
+
+
     <div className="modal-dialog" role="document">
       <div className="modal-content">
         <div className="modal-body">
-          <label>Username</label>
-          <input
-            type="username"
-            placeholder="JohnDoe"
-            name="sUsername"
-            onChange={props.change}
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="********"
-            name="sPassword"
-            onChange={props.change}
-          />
-          <input
-            type="password"
-            placeholder="********"
-            name="sPasswordMatch"
-            onChange={props.change}
-          />
-          <input
-            type="email"
-            placeholder="email"
-            name="sEmail"
-            onChange={props.change}
-          />
-          <Button text="Register" id="btnRegister" onclick={props.register} />
+          <form >
 
-          <form action="/api/login" method="POST">
             <label>Username</label>
-            <input type="username" placeholder="JohnDoe" name="username" />
-            <label>Password</label>
-            <input type="password" placeholder="********" name="password" />
-            <Button
-              type="submit"
-              text="Login"
-              id="btnLogin"
-              onclick={props.login}
+            <input
+              class="form-control"
+              type="username"
+              placeholder="JohnDoe"
+              name="sUsername"
+              onChange={props.change}
             />
+            <label>Password</label>
+            <input
+              class="form-control"
+              type="password"
+              placeholder="********"
+              name="sPassword"
+              onChange={props.change}
+            />
+            <label>Password Match</label>
+            <input
+              class="form-control"
+              type="password"
+              placeholder="********"
+              name="sPasswordMatch"
+              onChange={props.change}
+            />
+            <label>Email</label>
+            <input
+              class="form-control"
+              type="email"
+              placeholder="email"
+              name="sEmail"
+              onChange={props.change}
+            />
+            <Button text="Register" id="btnRegister" onclick={props.register} />
+          </form>
+          <hr />
+          <form action="/api/login" method="POST">
+            <div className="form-group">
+              <label>Username</label>
+              <input class="form-control" type="username" placeholder="JohnDoe" name="username" />
+              <label>Password</label>
+              <input class="form-control" type="password" placeholder="********" name="password" />
+              <Button
+                type="submit"
+                text="Login"
+                id="btnLogin"
+                onclick={props.login}
+              />
+            </div>
           </form>
         </div>
       </div>

@@ -178,13 +178,13 @@ class App extends Component {
     });
   };
 
- setLoadedTrue = () => {
-  
-     this.setState({
-       loaded: true
-     })
+  setLoadedTrue = () => {
 
- }
+    this.setState({
+      loaded: true
+    })
+
+  }
 
   // search panel
   openRightPanel = () => {
@@ -234,18 +234,24 @@ class App extends Component {
       this.setState({
         collection: data.data,
       });
-      
+
       wishlistAPI.getGames().then(data => {
-        this.setState({
-          wishlist: data.data
-        });
+        if (data !== null) {
+
+          this.setState({
+            wishlist: data.data
+          });
+        }
 
         sellAPI.getSell().then(data => {
-        this.setLoadedTrue();
-        this.loadUsersChats();
-          this.setState({
-            sSell: data.data
-          });
+          this.setLoadedTrue();
+          this.loadUsersChats();
+          if (data !== null) {
+
+            this.setState({
+              sSell: data.data
+            });
+          }
         });
 
       });
@@ -308,8 +314,8 @@ class App extends Component {
                   this.state.loggedIn === true ? (
                     <Redirect to="/profile" />
                   ) : (
-                    <Landing />
-                  )
+                      <Landing />
+                    )
                 }
               />
               <Route
@@ -343,8 +349,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
               <Route
@@ -374,8 +380,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
               <Route
@@ -405,8 +411,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
               <Route
@@ -436,15 +442,15 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
             </Switch>
           </div>
         ) : (
-          <Loading />
-        )}
+            <Loading />
+          )}
       </div>
     );
   }
