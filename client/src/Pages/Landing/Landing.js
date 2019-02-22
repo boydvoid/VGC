@@ -162,6 +162,7 @@ class Landing extends Component {
 							</div>
 						</div>
 						{/* free div */}
+<<<<<<< HEAD
 						<div className="row">
 							<div className="col-xl-12">
 								<div className="bottom-div">
@@ -170,6 +171,16 @@ class Landing extends Component {
 										bottomText="Forever."
 										smallText="We're not kidding when we say Free Forever. VGC is a passion project and charging for such would dilute its purpose."
 										button={false}
+=======
+						<div className = "row">
+							<div className = "col-xl-12 remove-padding">
+								<div className = "bottom-div">
+									<LandingText class = "text-light"
+										topText = "Free."
+										bottomText = "Forever."
+										smallText = "We're not kidding when we say Free Forever. VGC is a passion project and charging for such would dilute its purpose."
+										button = {false}
+>>>>>>> 3d22d66a706c8f1e1a45f3ab8c80f23705c3db3c
 									/>
 								</div>
 							</div>
