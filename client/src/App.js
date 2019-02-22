@@ -133,7 +133,8 @@ class App extends Component {
         this.getGames();
       } else {
         this.setState({
-          loggedIn: false
+          loggedIn: false,
+          loaded: true
         });
       }
     });
