@@ -17,8 +17,6 @@ const Profile = props => (
           data={props.collectionLength}
           category="Collection"
         />
-        <ProfileData borderColor="#4EA3EE" data="100" category="System" />
-        <ProfileData borderColor="#4EEE59" data="100" category="Value" />
         <ProfileData
           borderColor="#CF4EEE"
           data={props.wishlistLength}

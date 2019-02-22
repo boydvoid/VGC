@@ -151,12 +151,12 @@ class Landing extends Component {
 						{/* icons */}
 						<div className = "row">
 							<div className = "col-xl-12 middle-div">
-								<LandingIcons icon = "fas fa-search" title = "Instant Search"/>
-								<LandingIcons icon = "fas fa-database" title = "Database Support"/>
-								<LandingIcons icon = "fas fa-list-alt" title = "Detailed Game Information"/>
-								<LandingIcons icon = "fas fa-dollar-sign" title = "Buy/Sell Games"/>
-								<LandingIcons icon = "fas fa-sitemap" title = "Game Relations"/>
-								<LandingIcons icon = "fas fa-object-group" title = "Easy-To-Use Design"/>
+								<LandingIcons icon = "fas landing-fa fa-search" title = "Instant Search"/>
+								<LandingIcons icon = "fas landing-fa fa-database" title = "Database Support"/>
+								<LandingIcons icon = "fas landing-fa fa-list-alt" title = "Detailed Game Information"/>
+								<LandingIcons icon = "fas landing-fa fa-dollar-sign" title = "Buy/Sell Games"/>
+								<LandingIcons icon = "fas landing-fa fa-sitemap" title = "Game Relations"/>
+								<LandingIcons icon = "fas landing-fa fa-object-group" title = "Easy-To-Use Design"/>
 							</div>
 						</div>
 						{/* free div */}
