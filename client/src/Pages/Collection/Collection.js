@@ -147,7 +147,13 @@ class Collection extends Component {
                     class="collection-btn"
                   />
                   <Button
-                    text={<i class="fas fa-plus"></i>}
+                    text={<i data-Id={game.id}
+                      data-id={game.id}
+                      data-name={game.name}
+                      data-url={game.url}
+                      data-index={game.index}
+
+                      class="fas fa-plus"></i>}
                     onclick={this.addToSell}
                     dataId={game.id}
                     dataName={game.name}
