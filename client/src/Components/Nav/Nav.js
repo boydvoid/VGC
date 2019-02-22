@@ -4,7 +4,7 @@ import Button from '../Button/Button';
 import './Nav.css'
 const Nav = () => (
 
-  <nav class="navbar">
+  <nav className="navbar">
     <Link to="/" className="navbar-brand logo">VGC<span className="logo-dot">.</span></Link>
     <Button class="login-btn" text="Login" toggle="modal" target="#loginModal" />
   </nav>
