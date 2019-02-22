@@ -143,6 +143,13 @@ Middle Div
 .landing-icons {
 	margin: auto;
 	padding: 100px;
+	text-align: center;
+}
+
+.fa, .fas {
+	font-weight: 900;
+	font-size: 3em;
+	margin: 0 0 1em 0;
 }
 
 /*
