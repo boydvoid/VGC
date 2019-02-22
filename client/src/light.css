@@ -116,3 +116,19 @@
 .light-theme .msgNotYou:after {
   border-bottom: 20px solid var(--l_primary);
 }
+
+.light-theme .searchToggle.border-radius-left {
+  color: #3D4866;
+}
+
+.light-theme .searchToggle.border-radius-right {
+  color: #3D4866;
+}
+
+.light-theme .searchToggle.toggleActive.border-radius-left {
+  color: #FFFFFF;
+}
+
+.light-theme .searchToggle.toggleActive.border-radius-right {
+  color: #FFFFFF;
+}
