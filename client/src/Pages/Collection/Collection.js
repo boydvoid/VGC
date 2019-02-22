@@ -46,7 +46,7 @@ class Collection extends Component {
     });
   };
 
- 
+
 
   removeFromCollection = event => {
     const id = event.target.attributes.getNamedItem("data-id").value;
@@ -113,7 +113,7 @@ class Collection extends Component {
     const { collection } = this.state;
     return (
       <div className="container-fluid">
-        <div className="row" style={{padding: "25px"}}>
+        <div className="row" style={{ padding: "25px" }}>
           <div className="w-100 d-flex p-20 section-title">
             <h2 className="primaryText">Collection</h2>
           </div>
@@ -138,23 +138,23 @@ class Collection extends Component {
                 </div>
                 <div>
                   <Button
-                      text="X"
-                      onclick={this.removeFromCollection}
-                      dataId={game.id}
-                      dataName={game.name}
-                      dataUrl={game.url}
-                      dataIndex={game.index}
-                      class="collection-btn"
+                    text="X"
+                    onclick={this.removeFromCollection}
+                    dataId={game.id}
+                    dataName={game.name}
+                    dataUrl={game.url}
+                    dataIndex={game.index}
+                    class="collection-btn"
                   />
                   <Button
-                      text="Add to Sell List"
-                      onclick={this.addToSell}
-                      dataId={game.id}
-                      dataName={game.name}
-                      dataUrl={game.url}
-                      dataIndex={game.index}
-                      class="collection-btn"
-                    />
+                    text={<i class="fas fa-plus"></i>}
+                    onclick={this.addToSell}
+                    dataId={game.id}
+                    dataName={game.name}
+                    dataUrl={game.url}
+                    dataIndex={game.index}
+                    class="collection-btn"
+                  />
                 </div>
               </div>
             );
