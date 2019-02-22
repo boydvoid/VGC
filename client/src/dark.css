@@ -73,6 +73,10 @@
   background-color: var(--d_secondary);
 }
 
+.dark-theme .chatbox h2 {
+  color: var(--d_titleColor);
+}
+
 .dark-theme .chat-title {
   background-color: var(--primaryColor);
   color: var(--d_titleColor);
@@ -101,4 +105,9 @@
 
 .dark-theme .overlay-show {
   background-color: rgba(148, 148, 148, 0.397);
+}
+
+.dark-theme .sellListTitle {
+  color: var(--d_primary);
+  border-bottom: 1px solid var(--d_borderColor);
 }

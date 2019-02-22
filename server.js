@@ -13,24 +13,31 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 // socket.io
 const http = require('http');
-const socketIO = require('socket.io');
+
+const server = http.createServer(app);
+const io = require('socket.io').listen(server);
 const db = require('./Models');
 const publicSell = require('./routes/publicSellRoutes');
 const sellRoutes = require('./routes/sellRoutes');
 const collectionRoutes = require('./routes/collectionRoutes');
+const wishlistRoutes = require('./routes/wishlistRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 const User = require('./routes/userRoutes');
 const routes = require('./routes/apiRoutes');
 const chat = require('./routes/chatRoutes');
+const gamesDB = require('./routes/gamesRoutes');
 
-const server = http.createServer(app);
-const io = socketIO(server);
+
 const users = [];
 const connections = [];
 
-io.sockets.on('connection', (socket) => {
+io.on('connection', (socket) => {
   connections.push(socket);
-  console.log('connected: %s connected', connections.length);
-
+  console.log('Connected: %s', connections.length);
+  socket.on('USER_CONNECTED', (username) => {
+    users.push(username);
+    socket.username = username;
+  });
   // disconnect
   socket.on('disconnect', () => {
     if (!socket.username) return;
@@ -40,15 +47,24 @@ io.sockets.on('connection', (socket) => {
     console.log('Disconnected: %s sockets connected', connections.length);
   });
 
-  socket.on('USER_CONNECTED', (username) => {
-    console.log(username);
-    users.push(username);
-    socket.username = username;
+
+  socket.on('chat started', (chatId) => {
+    console.log(`chat started ${chatId.data._id}`);
+    socket.join(chatId.data._id);
+    io.emit('chat started', { chatId, username: socket.username });
   });
+
   socket.on('chat message', (msg) => {
     console.log(msg);
-    io.emit('chat message', msg);
+    io.sockets.in(msg.chatId).emit('getting message', msg);
   });
+
+  socket.on('join active', (roomId) => {
+    console.log(`joined active ${roomId}`);
+    socket.join(roomId);
+    io.sockets.in(roomId).emit("joined", roomId);
+  });
+
   socket.on('added to collection', (data) => {
     io.emit('added to collection', { data, username: socket.username });
   });
@@ -56,13 +72,23 @@ io.sockets.on('connection', (socket) => {
   socket.on('removed from collection', (data) => {
     io.emit('removed from collection', { data, username: socket.username });
   });
+
+  socket.on('added to wishlist', (data) => {
+    io.emit('added to wishlist', { data, username: socket.username });
+  });
+
+  socket.on('removed from wishlist', (data) => {
+    io.emit('removed from wishlist', { data, username: socket.username });
+  });
+
+  socket.on('added to sell', (data) => {
+    io.emit('added to sell', { data, username: socket.username });
+  });
+
   socket.on('removed from sell', (data) => {
     io.emit('removed from sell', { data, username: socket.username });
   });
 
-  socket.on('chat started', (data) => {
-    io.emit('chat started', { data, username: socket.username });
-  });
 
   socket.on('user 1 chat setup', (data) => {
     io.emit('user 1 chat setup', data);
@@ -88,7 +114,6 @@ if (process.env.NODE_ENV === 'production') {
 
 // mongo
 mongoose.connect(process.env.MONGOLAB_ORANGE_URI || 'mongodb://localhost/games', { useNewUrlParser: true }).then(() => {
-  console.log('connected');
 });
 
 // store the session in mongo db
@@ -117,9 +142,12 @@ app.use(passport.session());
 app.use('/api', routes);
 app.use('/api', User);
 app.use('/api', collectionRoutes);
+app.use('/api', wishlistRoutes);
 app.use('/api', sellRoutes);
 app.use('/api', publicSell);
+app.use('/api', gamesDB);
 app.use('/api', chat);
+app.use('/api', messageRoutes);
 
 // Passport use
 passport.use(new LocalStrategy(

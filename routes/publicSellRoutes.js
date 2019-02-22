@@ -11,7 +11,7 @@ router
   .get(publicSellController.getPublicSell);
 
 router
-  .route('/find/game/:id')
+  .route('/public/sell/find/game/:id')
   .get(publicSellController.findGame);
 
 router

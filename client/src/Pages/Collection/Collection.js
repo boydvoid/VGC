@@ -9,6 +9,7 @@ class Collection extends Component {
   state = {
     username: this.props.username,
     collection: [],
+    latestAdditions: [],
     socket: this.props.socket
   };
 
@@ -21,8 +22,8 @@ class Collection extends Component {
     const { socket } = this.state;
 
     socket.on("added to collection", data => {
-      const { username } = this.state;
-      const tempArray = this.state.collection;
+      const { username, collection } = this.state;
+      const tempArray = collection;
       tempArray.push(data.data.data);
       if (data.username === username) {
         this.setState({
@@ -32,10 +33,11 @@ class Collection extends Component {
     });
 
     socket.on("removed from collection", data => {
-      let tempArray = this.state.collection;
+      const { collection } = this.state;
+      let tempArray = collection;
       const { username } = this.state;
       tempArray = tempArray.filter(array => {
-        return array.index !== data.index;
+        return array.index !== data.data.index;
       });
       if (data.username === username) {
         this.setState({
@@ -63,13 +65,27 @@ class Collection extends Component {
       id,
       name,
       url,
-      index: parseInt(index)
+      index: parseInt(index) // eslint-disable-line 
     };
 
     collectionAPI.updateGames(data).then(done => {
       const { socket } = this.state;
-
+      this.removeFromSell(data);
       socket.emit("removed from collection", data);
+    });
+  };
+
+  removeFromSell = data => {
+    sellAPI.updateSell(data).then(done => {
+      const { socket } = this.state;
+      this.removeFromPublicSell(data);
+      socket.emit("removed from sell", data);
+    });
+  };
+
+  removeFromPublicSell = data => {
+    publicSellAPI.removeSell(data).then(done => {
+      console.log(done);
     });
   };
 
@@ -82,7 +98,7 @@ class Collection extends Component {
       id,
       name,
       url,
-      index: parseInt(index)
+      index: parseInt(index) // eslint-disable-line 
     };
     sellAPI.add(data).then(done => {
       // live update with reloading page
@@ -101,35 +117,55 @@ class Collection extends Component {
   };
 
   render() {
+    const { collection } = this.state;
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-xl-12 d-flex" id="collection-wrapper">
-            {this.state.collection.map((game, i) => {
-              return (
-                <div key={i} className="collection-content">
-                  <img className="collection-img" src={game.url} alt="" />
-                  <p>{game.name}</p>
-                  <Button
-                    text="X"
-                    onclick={this.removeFromCollection}
-                    dataId={game.id}
-                    dataName={game.name}
-                    dataUrl={game.url}
-                    dataIndex={game.index}
-                  />
-                  <Button
-                    text="Add to Sell List"
-                    onclick={this.addToSell}
-                    dataId={game.id}
-                    dataName={game.name}
-                    dataUrl={game.url}
-                    dataIndex={game.index}
-                  />
-                </div>
-              );
-            })}
+          <div className="w-100 d-flex p-20 section-title">
+            <h2 className="primaryText">Collection</h2>
           </div>
+          {collection.map((game, i) => {
+            return (
+              <div
+                key={i}
+                className="col-xl-3 collection-content text-center d-flex"
+                gameid={game.id}
+              >
+                <div>
+                  <img
+                    onClick={this.props.getGameInfo}
+                    className="collection-img"
+                    src={game.url}
+                    alt=""
+                    gameid={game.id}
+                  />
+                  <h2 gameid={game.id} className="gameName">
+                    {game.name}
+                  </h2>
+                </div>
+                <div>
+                  <Button
+                      text="X"
+                      onclick={this.removeFromCollection}
+                      dataId={game.id}
+                      dataName={game.name}
+                      dataUrl={game.url}
+                      dataIndex={game.index}
+                      class="collection-btn"
+                  />
+                  <Button
+                      text="Add to Sell List"
+                      onclick={this.addToSell}
+                      dataId={game.id}
+                      dataName={game.name}
+                      dataUrl={game.url}
+                      dataIndex={game.index}
+                      class="collection-btn"
+                    />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     );

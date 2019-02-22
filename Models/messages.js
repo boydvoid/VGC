@@ -3,10 +3,13 @@ const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 const Schema = mongoose.Schema;
 
-const wishlistSchema = new Schema({
+const messageSchema = new Schema({
   date: { type: Date, default: convertTimeDate() },
-  userID: { type: String, required: true },
-  data: { type: Array, required: true },
+  chatId: { type: String, required: true },
+  message: { type: String, required: true },
+  sender: { type: String, required: true },
+  receiver: { type: String, required: true },
+  read: {type: Boolean}
 });
 
 // Convert UTC to PST.
@@ -19,5 +22,5 @@ function convertTimeDate() {
   return usDate;
 }
 
-const wishlist = mongoose.model('wishlist', wishlistSchema);
-module.exports = wishlist;
+const message = mongoose.model('message', messageSchema);
+module.exports = message;

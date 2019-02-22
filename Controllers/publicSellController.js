@@ -21,18 +21,19 @@ module.exports = {
     });
   },
   findGame: (req, res) => {
+    console.log("id " + req.params.id)
     db.publicSell.findOne({
-      gameIndex: req.params.id,
+      _id: req.params.id,
     }).then((results) => {
       res.send(results);
     });
   },
   remove: (req, res) => {
+    console.log(req.body);
     db.publicSell.find({
       gameIndex: req.body.index,
-    }).remove().then((done) => {
+    }).remove((done) => {
       res.send(done);
     });
   },
-
 };

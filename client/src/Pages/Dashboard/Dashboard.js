@@ -5,6 +5,8 @@ import Searchbar from "../../Components/Searchbar/Searchbar";
 import "./Dashboard.css";
 import RightPanel from "../RightPanel/RightPanel";
 import collectionAPI from "../../utils/collectionAPI";
+import wishlistAPI from "../../utils/wishlistAPI";
+import GamePanel from "../../Components/GamePanel/GamePanel";
 
 class Dashboard extends Component {
   state = {
@@ -23,16 +25,16 @@ class Dashboard extends Component {
   };
 
   initSocket = () => {
-    const { socket } = this.state;
+    const { socket, username } = this.state;
 
     const promise = new Promise((resolve, reject) => {
-      resolve(socket.on("connected"));
+      resolve(socket.emit("USER_CONNECTED", username));
     });
 
+    socket.on("on connection", msg => {
+      console.log(msg);
+    });
     return promise;
-    // promise.then(() => {
-    //   this.checkLogin()
-    // })
   };
 
   logout = () => {
@@ -78,22 +80,6 @@ class Dashboard extends Component {
     }
   };
 
-  openRightPanel = () => {
-    document.getElementById("mySidenav").style.right = "0px";
-    this.setState({
-      rightPanelOpen: true,
-      overlayShow: "overlay-show"
-    });
-  };
-
-  closeRightPanel = () => {
-    document.getElementById("mySidenav").style.right = "-900px";
-    this.setState({
-      rightPanelOpen: false,
-      overlayShow: ""
-    });
-  };
-
   // chat stuffs
 
   addToCollection = event => {
@@ -113,21 +99,40 @@ class Dashboard extends Component {
     });
   };
 
-  addToWishlist = () => {};
+  addToWishlist = event => {
+    const id = event.target.attributes.getNamedItem("data-id").value;
+    const name = event.target.attributes.getNamedItem("data-name").value;
+    const url = event.target.attributes.getNamedItem("data-url").value;
+    const data = {
+      id,
+      name,
+      url,
+      index: ""
+    };
+    wishlistAPI.add(data).then(done => {
+      // live update with reloading page
+      const { socket } = this.state;
+      socket.emit("added to wishlist", done);
+    });
+  };
 
   render() {
     return (
       <div>
         <div
-          className={`overlay ${this.state.overlayShow}`}
-          onClick={this.closeRightPanel}
+          className={`overlay ${this.props.overlayShow}`}
+          onClick={this.props.closeRightPanel}
         />
+
+        {/* Game Panel */}
+        <GamePanel game={this.props.game} />
 
         {/* right panel */}
         <RightPanel
-          closeRightPanel={this.closeRightPanel}
+          closeRightPanel={this.props.closeRightPanel}
           searchedGames={this.state.searchedGames}
           addToCollection={this.addToCollection}
+          addToWishlist={this.addToWishlist}
           socket={this.props.socket}
           username={this.props.username}
           chatIds={this.props.chatIds}
@@ -145,8 +150,8 @@ class Dashboard extends Component {
           <Searchbar
             themeChecked={this.props.themeChecked}
             toggleTheme={this.toggleTheme}
-            openRightPanel={this.openRightPanel}
-            closeRightPanel={this.closeRightPanel}
+            openRightPanel={this.props.openRightPanel}
+            closeRightPanel={this.props.closeRightPanel}
           />
           {this.props.children}
         </div>

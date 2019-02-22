@@ -5,5 +5,6 @@ module.exports = {
 	sell: require("./sell"),
 	wishlist: require("./wishlist"),
 	chat: require("./chat"),
-	publicSell: require("./publicSell")
+	publicSell: require("./publicSell"),
+	message: require("./messages")
 };

@@ -4,20 +4,21 @@ const db = require('../Models');
 
 module.exports = {
   create: (req, res) => {
-    db.userGames.create({
+    console.log('run');
+    db.wishlist.create({
       userID: req.user,
       data: [],
     }).then((data) => {
       db.users.findByIdAndUpdate(
         { _id: req.user },
-        { userGames: data._id },
+        { wishlist: data._id },
       ).then((done) => {
         res.send(done);
       });
     });
   },
   add: (req, res) => {
-    db.userGames.find({
+    db.wishlist.find({
       userID: req.user,
     }).then((games) => {
       const insert = {
@@ -26,7 +27,7 @@ module.exports = {
         url: req.body.url,
         index: Math.floor(Math.random() * 100000000000) + 1,
       };
-      db.userGames.findOneAndUpdate({
+      db.wishlist.findOneAndUpdate({
         userID: req.user,
       },
       { $push: { data: insert } }).then((done) => {
@@ -36,7 +37,7 @@ module.exports = {
   },
   // removes an item from games collection
   updateGames: (req, res) => {
-    db.userGames.findOneAndUpdate(
+    db.wishlist.findOneAndUpdate(
       { userID: req.user },
       { $pull: { data: req.body } },
     ).then((done) => {
@@ -47,17 +48,10 @@ module.exports = {
       });
   },
   getGames: (req, res) => {
-    db.userGames.findOne({
+    db.wishlist.findOne({
       userID: req.user,
     }).then((data) => {
       res.send(data.data);
-    });
-  },
-  getGameById: (req, res) => {
-    db.userGames.findOne({
-      _id: req.params.id,
-    }).then((game) => {
-      res.send(game);
     });
   },
 };

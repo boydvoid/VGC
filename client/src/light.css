@@ -95,9 +95,14 @@
 
 .light-theme .chat-title {
   background-color: var(--primaryColor);
-  color: var(--l_titleColor);
+  color: var(--l_primary);
 }
 
 .light-theme .chatDiv {
   border-color: var(--borderColor)
+}
+
+.light-theme .sellListTitle {
+  color: #000000;
+  border-bottom: 1px solid var(--borderColor);
 }
