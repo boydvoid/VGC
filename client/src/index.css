@@ -166,6 +166,10 @@ Bottom Div
 ---------------------------
 */
 
+.remove-padding {
+	padding: 0;
+}
+
 .bottom-div {
 	background-color: var(--primaryColor);
 	display: grid;

@@ -161,7 +161,7 @@ class Landing extends Component {
 						</div>
 						{/* free div */}
 						<div className = "row">
-							<div className = "col-xl-12">
+							<div className = "col-xl-12 remove-padding">
 								<div className = "bottom-div">
 									<LandingText class = "text-light"
 										topText = "Free."
