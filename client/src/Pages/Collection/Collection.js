@@ -22,12 +22,17 @@ class Collection extends Component {
 
     socket.on("added to collection", data => {
       const { username, collection } = this.state;
-      const tempArray = collection;
-      tempArray.push(data.data.data);
       if (data.username === username) {
-        this.setState({
-          collection: tempArray
-        });
+        const tempArray = collection;
+        const findId = tempArray.findIndex(
+          x => x.index === data.data.data.index
+        );
+        if (findId === -1) {
+          tempArray.push(data.data.data);
+          this.setState({
+            collection: tempArray
+          });
+        }
       }
     });
 
@@ -45,8 +50,6 @@ class Collection extends Component {
       }
     });
   };
-
-
 
   removeFromCollection = event => {
     const id = event.target.attributes.getNamedItem("data-id").value;
@@ -147,13 +150,16 @@ class Collection extends Component {
                     class="collection-btn"
                   />
                   <Button
-                    text={<i data-Id={game.id}
-                      data-id={game.id}
-                      data-name={game.name}
-                      data-url={game.url}
-                      data-index={game.index}
-
-                      class="fas fa-plus"></i>}
+                    text={(
+<i
+                        data-Id={game.id}
+  data-id={game.id}
+  data-name={game.name}
+  data-url={game.url}
+  data-index={game.index}
+  className="fas fa-plus"
+/>
+)}
                     onclick={this.addToSell}
                     dataId={game.id}
                     dataName={game.name}

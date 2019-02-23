@@ -225,13 +225,6 @@ class App extends Component {
 
       wishlistAPI.getGames().then(data => {
         if (data !== null) {
-
-<<<<<<< HEAD
-        sellAPI.getSell().then(data => {
-          this.setLoadedTrue();
-          this.loadUsersChats();
-=======
->>>>>>> 4efc59ad4dff935292321a390bb8722ce7751ddc
           this.setState({
             wishlist: data.data
           });
@@ -241,7 +234,6 @@ class App extends Component {
           this.setLoadedTrue();
           this.loadUsersChats();
           if (data !== null) {
-
             this.setState({
               sSell: data.data
             });
@@ -315,51 +307,43 @@ class App extends Component {
                   loggedIn === true ? <Redirect to="/profile" /> : <Landing />
                 }
               />
-              <ProtectedRoute
-                path="/profile"
-                loggedIn={loggedIn}
-                component={( // eslint-disable-line
-                  <Dashboard
-                    socket={socket}
-                    theme={theme}
-                    username={username}
-                    email={email}
-                    profileImg={img}
-                    active="profile"
-                    chatIds={chatIds}
-                    openRightPanel={this.openRightPanel}
-                    closeRightPanel={this.closeRightPanel}
-                    overlayShow={overlayShow}
-                    game={game}
-                    sUserChats={sUserChats}
-                  />
-                )} // eslint-disable-line
-                innerComponent={( // eslint-disable-line
-                  <Profile
-                    username={username}
-                    collectionLength={collectionLength}
-                    sellingLength={sellingLength}
-                    wishlistLength={wishlistLength}
-                    last5Collection={last5Collection}
-                    last5Wishlist={last5Wishlist}
-                    last5Selllist={last5Selllist}
-                    getGameInfo={this.getGameInfo}
-                  />
-                )} // eslint-disable-line
-              />
-              {/* <Route
+
+              <Route
                 exact
                 path="/profile"
                 render={() =>
                   loggedIn ? (
-                    <Dashboard>
-                      <Profile />
+                    <Dashboard
+                      socket={socket}
+                      theme={theme}
+                      username={username}
+                      email={email}
+                      profileImg={img}
+                      active="profile"
+                      chatIds={chatIds}
+                      openRightPanel={this.openRightPanel}
+                      closeRightPanel={this.closeRightPanel}
+                      overlayShow={overlayShow}
+                      game={game}
+                      sUserChats={sUserChats}
+                    >
+                      <Profile
+                        username={username}
+                        collectionLength={collectionLength}
+                        sellingLength={sellingLength}
+                        wishlistLength={wishlistLength}
+                        last5Collection={last5Collection}
+                        last5Wishlist={last5Wishlist}
+                        last5Selllist={last5Selllist}
+                        getGameInfo={this.getGameInfo}
+                      />
                     </Dashboard>
                   ) : (
-                      <Redirect to="/" />
-                    )
+                    <Redirect to="/" />
+                  )
                 }
-              /> */}
+              />
+
               <Route
                 exact
                 path="/collection"
@@ -387,8 +371,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                      <Redirect to="/" />
-                    )
+                    <Redirect to="/" />
+                  )
                 }
               />
               <Route
@@ -418,8 +402,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                      <Redirect to="/" />
-                    )
+                    <Redirect to="/" />
+                  )
                 }
               />
               <Route
@@ -449,15 +433,15 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                      <Redirect to="/" />
-                    )
+                    <Redirect to="/" />
+                  )
                 }
               />
             </Switch>
           </div>
         ) : (
-            <Loading />
-          )}
+          <Loading />
+        )}
       </div>
     );
   }

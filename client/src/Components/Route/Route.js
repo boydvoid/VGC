@@ -1,22 +1,11 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-const ProtectedRoute = ({
-  component: Component,
-  innerComponent: InnerComponent,
-  loggedIn,
-  ...rest
-}) => (
+const ProtectedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      loggedIn ? (
-        <Component {...props}>
-          <InnerComponent {...props} />
-        </Component>
-      ) : (
-        <Redirect to="/" />
-      )
+      props.loggedIn ? <Component {...props} /> : <Redirect to="/" />
     }
   />
 );

@@ -56,7 +56,7 @@ class RightPanel extends Component {
     const { socket, username } = this.state;
 
     socket.on("chat started", async data => {
-      console.log(data)
+      console.log(data);
       if (username === data.chatId.data.user1) {
         this.runChatSetupUser1(data);
       }
@@ -68,16 +68,14 @@ class RightPanel extends Component {
 
     socket.on("getting message", async msg => {
       const { username } = this.state;
-      console.log(msg)
+      console.log(msg);
       let tempArray = [];
       if (username === msg.receiver) {
-
-
-        tempArray = this.state.chatMessages
-        tempArray.push(msg)
+        tempArray = this.state.chatMessages;
+        tempArray.push(msg);
         this.setState({
           chatMessages: tempArray
-        })
+        });
       }
     });
   };
@@ -99,19 +97,20 @@ class RightPanel extends Component {
 
     // create chat
     const chat = await this.createChatId(chatInfo);
-    console.log(chat)
+    console.log(chat);
     const firstMessage = {
       chatId: chat.data._id,
-      message: `Hello ${chatInfo.user2}, I am interested in your copy of ${chatInfo.gameName}.`,
+      message: `Hello ${chatInfo.user2}, I am interested in your copy of ${
+        chatInfo.gameName
+      }.`,
       sender: chatInfo.user1,
       receiver: chatInfo.user2
-    }
-    console.log(firstMessage)
+    };
+    console.log(firstMessage);
     messageAPI.create(firstMessage).then(message => {
-      console.log(message)
+      console.log(message);
       chatAPI.addMessage(message.data);
     });
-
 
     socket.emit("chat started", chat);
   };
@@ -160,11 +159,10 @@ class RightPanel extends Component {
         this.setState({
           sUsersChats: x
         });
-        socket.emit("user 1 chat setup", x.slice(-1)[0])
+        socket.emit("user 1 chat setup", x.slice(-1)[0]);
         this.chatNotify();
-      })
+      });
     }
-
   };
 
   runChatSetupUser2 = async data => {
@@ -181,13 +179,13 @@ class RightPanel extends Component {
 
           this.setState({
             sUsersChats: []
-          })
+          });
           this.setState({
             sUsersChats: x
           });
           socket.emit("join active", data._id);
           this.chatNotify();
-        })
+        });
       }
     }
   };
@@ -288,15 +286,15 @@ class RightPanel extends Component {
       // get the chats messages
       const tempArray = [];
       chatAPI.getChat(chatId).then(chat => {
-        console.log(chat)
+        console.log(chat);
         chat.data.messages.forEach(message => {
-          console.log(message)
+          console.log(message);
           messageAPI.getMessage(message).then(theMessage => {
-            console.log(theMessage)
+            console.log(theMessage);
             const { username } = this.state;
             theMessage.chatId = chatId;
             tempArray.push(theMessage.data);
-            tempArray.sort(function (a, b) {
+            tempArray.sort(function(a, b) {
               return new Date(b.date) - new Date(a.date);
             });
             if (chat.data.user1 !== username) {
@@ -343,14 +341,14 @@ class RightPanel extends Component {
         message: "",
         chatId,
         sender,
-        receiver,
+        receiver
       };
     } else {
       msgData = {
         message: sInputChat,
         chatId,
         sender,
-        receiver,
+        receiver
       };
     }
 
@@ -362,7 +360,7 @@ class RightPanel extends Component {
       chatMessages: tempArray
     });
 
-    messageAPI.create(msgData).then((message) => {
+    messageAPI.create(msgData).then(message => {
       chatAPI.addMessage(message.data);
       socket.emit("chat message", msgData);
     });
@@ -605,13 +603,13 @@ class RightPanel extends Component {
                 text={<i className="fas fa-search" />}
               />
             ) : (
-                <Button
-                  class="search-btn"
-                  type="submit"
-                  text={<i className="fas fa-search" />}
-                  onclick={sToggleSell ? "" : this.gameSearch}
-                />
-              )}
+              <Button
+                class="search-btn"
+                type="submit"
+                text={<i className="fas fa-search" />}
+                onclick={sToggleSell ? "" : this.gameSearch}
+              />
+            )}
           </form>
         </div>
         {sToggleSell ? (
@@ -624,41 +622,44 @@ class RightPanel extends Component {
             addToWishlist={addToWishlist}
           />
         ) : (
-            // show search list
-            <div className="searchResults">
-              {sResultsGames.map(game => {
-                return (
-                  <div key={game.index} class="d-flex" style={{ padding: "30px" }}>
-                    <img
-                      className="search-img"
-                      src={game.imgUrl}
-                      alt={game.name}
+          // show search list
+          <div className="searchResults">
+            {sResultsGames.map(game => {
+              return (
+                <div
+                  key={game.index}
+                  className="d-flex"
+                  style={{ padding: "30px" }}
+                >
+                  <img
+                    className="search-img"
+                    src={game.imgUrl}
+                    alt={game.name}
+                  />
+                  <div>
+                    <h2 className="secondaryText">{game.name}</h2>
+                    <Button
+                      class="rightPanelBtn"
+                      text="Add to Collection"
+                      dataId={game.id}
+                      dataName={game.name}
+                      dataUrl={game.imgUrl}
+                      onclick={addToCollection}
                     />
-                    <div>
-
-                      <h2 className="secondaryText">{game.name}</h2>
-                      <Button
-                        class="rightPanelBtn"
-                        text="Add to Collection"
-                        dataId={game.id}
-                        dataName={game.name}
-                        dataUrl={game.imgUrl}
-                        onclick={addToCollection}
-                      />
-                      <Button
-                        class="rightPanelBtn"
-                        text="Add to Wishlist"
-                        dataId={game.id}
-                        dataName={game.name}
-                        dataUrl={game.imgUrl}
-                        onclick={addToWishlist}
-                      />
-                    </div>
+                    <Button
+                      class="rightPanelBtn"
+                      text="Add to Wishlist"
+                      dataId={game.id}
+                      dataName={game.name}
+                      dataUrl={game.imgUrl}
+                      onclick={addToWishlist}
+                    />
                   </div>
-                );
-              })}
-            </div>
-          )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }
