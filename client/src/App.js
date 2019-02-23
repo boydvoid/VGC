@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import socketIO from "socket.io-client";
+import ProtectedRoute from "./Components/Route/Route";
 import userAPI from "./utils/userAPI";
 // components
 import Landing from "./Pages/Landing/Landing";
@@ -14,21 +15,18 @@ import sellAPI from "./utils/sellAPI";
 import wishlistAPI from "./utils/wishlistAPI";
 import gamesAPI from "./utils/gamesAPI";
 import Loading from "./Components/loading/Loading";
-import publicSellAPI from './utils/publicSellAPI'
-import chatAPI from './utils/chatAPI'
+import publicSellAPI from "./utils/publicSellAPI";
+import chatAPI from "./utils/chatAPI";
 // socket io
 
 class App extends Component {
   state = {
-    userId: "",
     loggedIn: false,
     username: "",
     email: "",
     theme: "",
     img: "",
     collectionLength: 0,
-    popularSystem: 0,
-    value: 0,
     wishlistLength: 0,
     sellingLength: 0,
     last5Collection: [],
@@ -46,7 +44,6 @@ class App extends Component {
         avgRating: "",
         avgRatingSources: "",
         companies: [],
-        cover: "",
         gameID: "",
         gameModes: [],
         genres: [],
@@ -100,7 +97,6 @@ class App extends Component {
     socket.on("added to sell", data => {
       const { username } = this.state;
       if (data.username === username) {
-        console.log("run added to sell");
         this.getSellLength();
       }
     });
@@ -119,7 +115,6 @@ class App extends Component {
           // connect socket
 
           this.setState({
-            userId: data.data._id,
             loggedIn: true,
             username: data.data.username,
             email: data.data.email,
@@ -158,7 +153,6 @@ class App extends Component {
     wishlistAPI.getGames().then(games => {
       this.getSellLength();
 
-      console.log(games);
       this.setState({
         wishlistLength: games.data.length,
         last5Wishlist: games.data.slice(-5)
@@ -170,7 +164,6 @@ class App extends Component {
   getSellLength = () => {
     // get games for specific user
     sellAPI.getSell().then(games => {
-      console.log(games);
       this.setState({
         sellingLength: games.data.length,
         last5Selllist: games.data.slice(-5)
@@ -178,19 +171,16 @@ class App extends Component {
     });
   };
 
- setLoadedTrue = () => {
-  
-     this.setState({
-       loaded: true
-     })
-
- }
+  setLoadedTrue = () => {
+    this.setState({
+      loaded: true
+    });
+  };
 
   // search panel
   openRightPanel = () => {
     document.getElementById("mySidenav").style.right = "0px";
     this.setState({
-      rightPanelOpen: true,
       overlayShow: "overlay-show"
     });
   };
@@ -204,7 +194,6 @@ class App extends Component {
       document.getElementById("gamePanel").style.right = "-900px";
     }
     this.setState({
-      rightPanelOpen: false,
       overlayShow: ""
     });
   };
@@ -218,9 +207,7 @@ class App extends Component {
   };
 
   getGameInfo = event => {
-    console.log(event.target);
     const id = event.target.attributes.getNamedItem("gameid").value;
-    console.log(id);
     gamesAPI.gameID(id).then(game => {
       document.getElementById("gamePanel").style.right = "0px";
       this.setState({
@@ -229,44 +216,39 @@ class App extends Component {
       });
     });
   };
+
   getGames = () => {
     collectionAPI.getGames().then(data => {
       this.setState({
-        collection: data.data,
+        collection: data.data
       });
-      
+
       wishlistAPI.getGames().then(data => {
         this.setState({
           wishlist: data.data
         });
 
         sellAPI.getSell().then(data => {
-        this.setLoadedTrue();
-        this.loadUsersChats();
+          this.setLoadedTrue();
+          this.loadUsersChats();
           this.setState({
             sSell: data.data
           });
         });
-
       });
     });
   };
 
-
   loadUsersChats = () => {
     const { socket, chatIds } = this.state;
-    console.log(chatIds)
     if (chatIds !== undefined) {
       const tempArray = [];
       const roomsId = [];
       chatIds.forEach(chat => {
-        console.log(chat)
         chatAPI.getChat(chat).then(fullChat => {
-          console.log(fullChat)
           publicSellAPI.findGame(fullChat.data.gameID).then(game => {
             fullChat.data.gameName = game.data.name;
             roomsId.push(fullChat.data._id);
-            console.log(roomsId)
             tempArray.push(fullChat.data);
             this.setState({
               sUserChats: tempArray
@@ -278,7 +260,6 @@ class App extends Component {
     }
   };
 
-
   componentWillUnmount = () => {
     const { socket } = this.state;
     socket.close();
@@ -286,18 +267,32 @@ class App extends Component {
 
   render() {
     const {
+      username,
+      email,
+      img,
+      chatIds,
+      game,
+      overlayShow,
+      sUserChats,
+      wishlist,
+      sSell,
+      collection,
       collectionLength,
       sellingLength,
       wishlistLength,
       last5Wishlist,
       last5Selllist,
-      last5Collection
+      last5Collection,
+      loaded,
+      theme,
+      loggedIn,
+      socket
     } = this.state;
     return (
       <div className="App">
-        {this.state.loaded ? (
+        {loaded ? (
           <div
-            className={this.state.theme === 2 ? "dark-theme" : "light-theme"}
+            className={theme === 2 ? "dark-theme" : "light-theme"}
             id="theme-div"
           >
             <Switch>
@@ -305,72 +300,78 @@ class App extends Component {
                 exact
                 path="/"
                 render={() =>
-                  this.state.loggedIn === true ? (
-                    <Redirect to="/profile" />
-                  ) : (
-                    <Landing />
-                  )
+                  loggedIn === true ? <Redirect to="/profile" /> : <Landing />
                 }
               />
-              <Route
+              <ProtectedRoute
+                path="/profile"
+                loggedIn={loggedIn}
+                component={( // eslint-disable-line
+                  <Dashboard
+                    socket={socket}
+                    theme={theme}
+                    username={username}
+                    email={email}
+                    profileImg={img}
+                    active="profile"
+                    chatIds={chatIds}
+                    openRightPanel={this.openRightPanel}
+                    closeRightPanel={this.closeRightPanel}
+                    overlayShow={overlayShow}
+                    game={game}
+                    sUserChats={sUserChats}
+                  />
+                )} // eslint-disable-line
+                innerComponent={( // eslint-disable-line
+                  <Profile
+                    username={username}
+                    collectionLength={collectionLength}
+                    sellingLength={sellingLength}
+                    wishlistLength={wishlistLength}
+                    last5Collection={last5Collection}
+                    last5Wishlist={last5Wishlist}
+                    last5Selllist={last5Selllist}
+                    getGameInfo={this.getGameInfo}
+                  />
+                )} // eslint-disable-line
+              />
+              {/* <Route
                 exact
                 path="/profile"
                 render={() =>
-                  this.state.loggedIn ? (
-                    <Dashboard
-                      socket={this.state.socket}
-                      theme={this.state.theme}
-                      username={this.state.username}
-                      email={this.state.email}
-                      profileImg={this.state.img}
-                      active="profile"
-                      chatIds={this.state.chatIds}
-                      openRightPanel={this.openRightPanel}
-                      closeRightPanel={this.closeRightPanel}
-                      overlayShow={this.state.overlayShow}
-                      game={this.state.game}
-                      sUserChats={this.state.sUserChats}
-                    >
-                      <Profile
-                        username={this.state.username}
-                        collectionLength={collectionLength}
-                        sellingLength={sellingLength}
-                        wishlistLength={wishlistLength}
-                        last5Collection={last5Collection}
-                        last5Wishlist={last5Wishlist}
-                        last5Selllist={last5Selllist}
-                        getGameInfo={this.getGameInfo}
-                      />
+                  loggedIn ? (
+                    <Dashboard>
+                      <Profile />
                     </Dashboard>
                   ) : (
                     <Redirect to="/" />
                   )
                 }
-              />
+              /> */}
               <Route
                 exact
                 path="/collection"
                 render={() =>
-                  this.state.loggedIn ? (
+                  loggedIn ? (
                     <Dashboard
-                      socket={this.state.socket}
-                      theme={this.state.theme}
-                      username={this.state.username}
-                      email={this.state.email}
-                      profileImg={this.state.img}
+                      socket={socket}
+                      theme={theme}
+                      username={username}
+                      email={email}
+                      profileImg={img}
                       active="collection"
-                      chatIds={this.state.chatIds}
+                      chatIds={chatIds}
                       openRightPanel={this.openRightPanel}
                       closeRightPanel={this.closeRightPanel}
-                      overlayShow={this.state.overlayShow}
-                      game={this.state.game}
-                      sUserChats={this.state.sUserChats}
+                      overlayShow={overlayShow}
+                      game={game}
+                      sUserChats={sUserChats}
                     >
                       <Collection
-                        socket={this.state.socket}
+                        socket={socket}
                         getGameInfo={this.getGameInfo}
-                        username={this.state.username}
-                        collection={this.state.collection}
+                        username={username}
+                        collection={collection}
                       />
                     </Dashboard>
                   ) : (
@@ -382,26 +383,26 @@ class App extends Component {
                 exact
                 path="/wishlist"
                 render={() =>
-                  this.state.loggedIn ? (
+                  loggedIn ? (
                     <Dashboard
-                      socket={this.state.socket}
-                      theme={this.state.theme}
-                      username={this.state.username}
-                      email={this.state.email}
-                      profileImg={this.state.img}
-                      active="wishlist"
-                      chatIds={this.state.chatIds}
+                      socket={socket}
+                      theme={theme}
+                      username={username}
+                      email={email}
+                      profileImg={img}
+                      active="collection"
+                      chatIds={chatIds}
                       openRightPanel={this.openRightPanel}
                       closeRightPanel={this.closeRightPanel}
-                      overlayShow={this.state.overlayShow}
-                      game={this.state.game}
-                      sUserChats={this.state.sUserChats}
+                      overlayShow={overlayShow}
+                      game={game}
+                      sUserChats={sUserChats}
                     >
                       <Wishlist
-                        username={this.state.username}
+                        username={username}
                         getGameInfo={this.getGameInfo}
-                        socket={this.state.socket}
-                        wishlist={this.state.wishlist}
+                        socket={socket}
+                        wishlist={wishlist}
                       />
                     </Dashboard>
                   ) : (
@@ -413,26 +414,26 @@ class App extends Component {
                 exact
                 path="/sell"
                 render={() =>
-                  this.state.loggedIn ? (
+                  loggedIn ? (
                     <Dashboard
-                      socket={this.state.socket}
-                      theme={this.state.theme}
-                      username={this.state.username}
-                      email={this.state.email}
-                      profileImg={this.state.img}
-                      active="sell"
-                      chatIds={this.state.chatIds}
+                      socket={socket}
+                      theme={theme}
+                      username={username}
+                      email={email}
+                      profileImg={img}
+                      active="collection"
+                      chatIds={chatIds}
                       openRightPanel={this.openRightPanel}
                       closeRightPanel={this.closeRightPanel}
-                      overlayShow={this.state.overlayShow}
-                      game={this.state.game}
-                      sUserChats={this.state.sUserChats}
+                      overlayShow={overlayShow}
+                      game={game}
+                      sUserChats={sUserChats}
                     >
                       <Sell
-                        socket={this.state.socket}
+                        socket={socket}
                         getGameInfo={this.getGameInfo}
-                        username={this.state.username}
-                        sSell={this.state.sSell}
+                        username={username}
+                        sSell={sSell}
                       />
                     </Dashboard>
                   ) : (
