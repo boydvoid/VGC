@@ -18,6 +18,7 @@ module.exports = {
     });
   },
   add: (req, res) => {
+    console.log(req.body)
     db.wishlist.find({
       userID: req.user,
     }).then((games) => {
@@ -30,9 +31,9 @@ module.exports = {
       db.wishlist.findOneAndUpdate({
         userID: req.user,
       },
-      { $push: { data: insert } }).then((done) => {
-        res.send(insert);
-      });
+        { $push: { data: insert } }).then((done) => {
+          res.send(insert);
+        });
     });
   },
   // removes an item from games collection
@@ -51,7 +52,13 @@ module.exports = {
     db.wishlist.findOne({
       userID: req.user,
     }).then((data) => {
-      res.send(data.data);
+      if (data !== null) {
+
+        res.send(data.data);
+      }
+      else {
+        res.send([])
+      }
     });
   },
 };

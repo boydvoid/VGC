@@ -4,32 +4,25 @@ import "./GamePanel.css";
 const GamePanel = ({ game }) => (
   <div id="gamePanel" className="sidenav">
     <div className="d-flex">
-      <img className="gamePanelImg" src={game.data.cover} alt="" />
       <div>
-        <h2>{game.data.gameName}</h2>
-        <p>{game.data.avgRating.toString().split(".")[0]}</p>
-        <p>{game.data.summary}</p>
+        <img className="search-img" src={game.data.cover} alt="" />
+      </div>
+      <div>
+        <h2 className="primaryText">{game.data.gameName}</h2>
+        {game.data.gameModes.map(companies => {
+          return <p>{companies}</p>;
+        })}
       </div>
     </div>
-    {game.data.companies.map(companies => {
-      return <p>{companies}</p>;
-    })}
-    {game.data.gameModes.map(companies => {
-      return <p>{companies}</p>;
-    })}
+    <hr />
+    <p>{game.data.summary}</p>
     {game.data.genres.map(companies => {
       return <p>{companies}</p>;
     })}
     {game.data.platform.map(companies => {
       return <p>{companies}</p>;
     })}
-    {game.data.releaseDate.map(companies => {
-      return <p>{companies}</p>;
-    })}
-
-    {game.data.series.map(companies => {
-      return <p>{companies}</p>;
-    })}
+    <hr />
     <iframe
       width="560"
       height="315"
@@ -38,10 +31,8 @@ const GamePanel = ({ game }) => (
       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
     />
-    {game.data.websites.map(companies => {
-      return <p>{companies}</p>;
-    })}
-    <p>{game.data.igdbURL}</p>
+
+    <p> IGDBURL:  {game.data.igdbURL}</p>
   </div>
 );
 

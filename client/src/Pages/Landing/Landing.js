@@ -1,8 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import GamesAPI from "../../utils/gamesAPI";
 import userAPI from "../../utils/userAPI";
 import collectionAPI from "../../utils/collectionAPI";
+import wishlistAPI from "../../utils/wishlistAPI";
 import sellAPI from "../../utils/sellAPI";
 // components
 import LandingIcons from "../../Components/LandingIcons/LandingIcons";
@@ -28,7 +29,7 @@ class Landing extends Component {
 	};
 
 	handleInputChange = event => {
-		const {name, value} = event.target;
+		const { name, value } = event.target;
 
 		this.setState({
 			[name]: value
@@ -49,7 +50,7 @@ class Landing extends Component {
 	};
 
 	getCovers = () => {
-		const {sRandom} = this.state;
+		const { sRandom } = this.state;
 		const gameCoverIDList = [];
 		const gameCoverIDImages = [];
 
@@ -71,7 +72,7 @@ class Landing extends Component {
 
 	registerUser = event => {
 		event.preventDefault();
-		const {sUsername, sPassword, sPasswordMatch, sEmail} = this.state;
+		const { sUsername, sPassword, sPasswordMatch, sEmail } = this.state;
 
 		const data = {
 			username: sUsername,
@@ -93,6 +94,12 @@ class Landing extends Component {
 
 	createUserCollection = () => {
 		collectionAPI.create().then(data => {
+			this.createWishlist();
+		});
+	};
+
+	createWishlist = () => {
+		wishlistAPI.create().then(data => {
 			this.createUserSell();
 		});
 	};
@@ -103,16 +110,11 @@ class Landing extends Component {
 		});
 	};
 
-	componentWillUnmount = () => {
-		const {socket} = this.state;
-
-		socket.emit("disconnect");
-	};
 
 	render() {
-		const {sImages} = this.state;
+		const { sImages } = this.state;
 		return (
-			<div className = "container-fluid">
+			<div className="container-fluid">
 
 				{this.state.sImages.length === 0
 					?
@@ -122,52 +124,52 @@ class Landing extends Component {
 					<div>
 
 						{/* landing */}
-						<Nav/>
-						<Modal id = "loginModal" login = {this.loginUser} register = {this.registerUser} change = {this.handleInputChange}
-							errors = {this.state.modalErrors}/>
-						<div className = "row top-div">
-							<div className = "col-xl-5 landing-left">
-								<LandingText class = "text-dark"
-									topText = "Your Collection."
-									bottomText = "One Location."
-									smallText = "VGC provides users with a modern way to keep track of their collection that's accessible on any device. Simply create an account and start adding games to your collection."
-									button = {true}
-									buttonText = "Register"
-									toggle = "modal"
-									target = "#loginModal"
+						<Nav />
+						<Modal id="loginModal" login={this.loginUser} register={this.registerUser} change={this.handleInputChange}
+							errors={this.state.modalErrors} />
+						<div className="row top-div">
+							<div className="col-xl-5 landing-left">
+								<LandingText class="text-dark"
+									topText="Your Collection."
+									bottomText="One Location."
+									smallText="VGC provides users with a modern way to keep track of their collection that's accessible on any device. Simply create an account and start adding games to your collection."
+									button={true}
+									buttonText="Register"
+									toggle="modal"
+									target="#loginModal"
 								/>
 							</div>
-							<div className = "col-xl-7 landing-right">
-								<div className = "imgGrid">
+							<div className="col-xl-7 landing-right">
+								<div className="imgGrid">
 									{this.state.sImages.map((item) => {
 										if (item[0] !== undefined) {
 
-											return <img key = {item} className = "imgGrid-single img-fluid" src = {item} alt = ""/>
+											return <img key={item} className="imgGrid-single img-fluid" src={item} alt="" />
 										}
 									})}
 								</div>
 							</div>
 						</div>
 						{/* icons */}
-						<div className = "row">
-							<div className = "col-xl-12 middle-div">
-								<LandingIcons icon = "fas landing-fa fa-search" title = "Instant Search"/>
-								<LandingIcons icon = "fas landing-fa fa-database" title = "Database Support"/>
-								<LandingIcons icon = "fas landing-fa fa-list-alt" title = "Detailed Game Information"/>
-								<LandingIcons icon = "fas landing-fa fa-dollar-sign" title = "Buy/Sell Games"/>
-								<LandingIcons icon = "fas landing-fa fa-sitemap" title = "Game Relations"/>
-								<LandingIcons icon = "fas landing-fa fa-object-group" title = "Easy-To-Use Design"/>
+						<div className="row">
+							<div className="col-xl-12 middle-div">
+								<LandingIcons icon="fas landing-fa fa-search" title="Instant Search" />
+								<LandingIcons icon="fas landing-fa fa-database" title="Database Support" />
+								<LandingIcons icon="fas landing-fa fa-list-alt" title="Detailed Game Information" />
+								<LandingIcons icon="fas landing-fa fa-dollar-sign" title="Buy/Sell Games" />
+								<LandingIcons icon="fas landing-fa fa-sitemap" title="Game Relations" />
+								<LandingIcons icon="fas landing-fa fa-object-group" title="Easy-To-Use Design" />
 							</div>
 						</div>
 						{/* free div */}
-						<div className = "row">
-							<div className = "col-xl-12">
-								<div className = "bottom-div">
-									<LandingText class = "text-light"
-										topText = "Free."
-										bottomText = "Forever."
-										smallText = "We're not kidding when we say Free Forever. VGC is a passion project and charging for such would dilute its purpose."
-										button = {false}
+						<div className="row">
+							<div className="col-xl-12 remove-padding">
+								<div className="bottom-div">
+									<LandingText class="text-light"
+										topText="Free."
+										bottomText="Forever."
+										smallText="We're not kidding when we say Free Forever. VGC is a passion project and charging for such would dilute its purpose."
+										button={false}
 									/>
 								</div>
 							</div>

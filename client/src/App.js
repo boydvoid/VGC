@@ -224,16 +224,28 @@ class App extends Component {
       });
 
       wishlistAPI.getGames().then(data => {
-        this.setState({
-          wishlist: data.data
-        });
+        if (data !== null) {
+
+<<<<<<< HEAD
+        sellAPI.getSell().then(data => {
+          this.setLoadedTrue();
+          this.loadUsersChats();
+=======
+>>>>>>> 4efc59ad4dff935292321a390bb8722ce7751ddc
+          this.setState({
+            wishlist: data.data
+          });
+        }
 
         sellAPI.getSell().then(data => {
           this.setLoadedTrue();
           this.loadUsersChats();
-          this.setState({
-            sSell: data.data
-          });
+          if (data !== null) {
+
+            this.setState({
+              sSell: data.data
+            });
+          }
         });
       });
     });
@@ -344,8 +356,8 @@ class App extends Component {
                       <Profile />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               /> */}
               <Route
@@ -375,8 +387,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
               <Route
@@ -406,8 +418,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
               <Route
@@ -437,15 +449,15 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
             </Switch>
           </div>
         ) : (
-          <Loading />
-        )}
+            <Loading />
+          )}
       </div>
     );
   }
