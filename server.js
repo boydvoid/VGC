@@ -47,7 +47,6 @@ io.on('connection', (socket) => {
     console.log('Disconnected: %s sockets connected', connections.length);
   });
 
-
   socket.on('chat started', (chatId) => {
     console.log(`chat started ${chatId.data._id}`);
     socket.join(chatId.data._id);

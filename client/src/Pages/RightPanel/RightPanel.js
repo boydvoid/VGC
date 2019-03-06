@@ -282,44 +282,48 @@ class RightPanel extends Component {
   toggleChatDisplay = event => {
     const { chatListDisplay } = this.state;
     if (chatListDisplay === true) {
-      const chatId = event.target.attributes.getNamedItem("data-chatid").value;
-      // get the chats messages
-      const tempArray = [];
-      chatAPI.getChat(chatId).then(chat => {
-        console.log(chat);
-        chat.data.messages.forEach(message => {
-          console.log(message);
-          messageAPI.getMessage(message).then(theMessage => {
-            console.log(theMessage);
-            const { username } = this.state;
-            theMessage.chatId = chatId;
-            tempArray.push(theMessage.data);
-            tempArray.sort(function(a, b) {
-              return new Date(b.date) - new Date(a.date);
+      if (event.target.attributes.getNamedItem("data-chatId") !== null) {
+        const chatId = event.target.attributes.getNamedItem("data-chatid")
+          .value;
+        console.log(chatId);
+        // get the chats messages
+        const tempArray = [];
+        chatAPI.getChat(chatId).then(chat => {
+          console.log(chat);
+          chat.data.messages.forEach(message => {
+            console.log(message);
+            messageAPI.getMessage(message).then(theMessage => {
+              console.log(theMessage);
+              const { username } = this.state;
+              theMessage.chatId = chatId;
+              tempArray.push(theMessage.data);
+              tempArray.sort(function(a, b) {
+                return new Date(b.date) - new Date(a.date);
+              });
+              if (chat.data.user1 !== username) {
+                this.setState({
+                  chatListDisplay: false,
+                  sUserSpeakingWith: chat.data.user1,
+                  sChatId: theMessage.chatId,
+                  chatMessages: tempArray.reverse()
+                });
+              } else if (chat.data.user2 !== username) {
+                this.setState({
+                  chatListDisplay: false,
+                  sUserSpeakingWith: chat.data.user2,
+                  sChatId: theMessage.chatId,
+                  chatMessages: tempArray.reverse()
+                });
+              }
             });
-            if (chat.data.user1 !== username) {
-              this.setState({
-                chatListDisplay: false,
-                sUserSpeakingWith: chat.data.user1,
-                sChatId: theMessage.chatId,
-                chatMessages: tempArray.reverse()
-              });
-            } else if (chat.data.user2 !== username) {
-              this.setState({
-                chatListDisplay: false,
-                sUserSpeakingWith: chat.data.user2,
-                sChatId: theMessage.chatId,
-                chatMessages: tempArray.reverse()
-              });
-            }
           });
         });
-      });
-    } else {
-      this.setState({
-        sUserSpeakingWith: "",
-        chatListDisplay: true
-      });
+      } else {
+        this.setState({
+          sUserSpeakingWith: "",
+          chatListDisplay: true
+        });
+      }
     }
   };
 

@@ -11,7 +11,7 @@ const Chat = props => (
       onClick={props.chatListDisplay ? props.titleClick : null}
     >
       {props.chatListDisplay ? (
-        <h3>Chat</h3>
+        <h3 style={{paddingLeft: '20px'}}>Chat</h3>
       ) : (
         <div className="titleBarDiv">
           <Button
