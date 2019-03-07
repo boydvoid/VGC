@@ -1,7 +1,7 @@
 import React from "react";
 import "./Chat.css";
 const truncate = string => {
-  if (string.length !== undefined) {
+  if (string !== undefined || string !== null || string !== "") {
 
     if (string.length > 10) return `${string.substring(0, 10)}...`;
   }
