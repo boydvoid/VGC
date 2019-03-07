@@ -1,11 +1,12 @@
 import React from "react";
 import "./Chat.css";
 const truncate = string => {
+  console.log(string)
   if (string !== undefined || string !== null || string !== "") {
 
     if (string.length > 10) return `${string.substring(0, 10)}...`;
+    return string;
   }
-  return string;
 };
 
 const ChatList = props => (
@@ -28,7 +29,7 @@ const ChatList = props => (
             {/* on the list show the name of the person you are talking to */}
             <div>
 
-              <p data-chatid={chatBox._id}>{truncate(chatBox.gameName)}</p>
+              <p data-chatid={chatBox._id}>{chatBox.gameName}</p>
             </div>
           </div>
         );

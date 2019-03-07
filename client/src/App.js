@@ -339,8 +339,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
 
@@ -371,8 +371,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
               <Route
@@ -402,8 +402,8 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
               <Route
@@ -417,7 +417,7 @@ class App extends Component {
                       username={username}
                       email={email}
                       profileImg={img}
-                      active="collection"
+                      active="sell"
                       chatIds={chatIds}
                       openRightPanel={this.openRightPanel}
                       closeRightPanel={this.closeRightPanel}
@@ -433,15 +433,15 @@ class App extends Component {
                       />
                     </Dashboard>
                   ) : (
-                    <Redirect to="/" />
-                  )
+                      <Redirect to="/" />
+                    )
                 }
               />
             </Switch>
           </div>
         ) : (
-          <Loading />
-        )}
+            <Loading />
+          )}
       </div>
     );
   }
